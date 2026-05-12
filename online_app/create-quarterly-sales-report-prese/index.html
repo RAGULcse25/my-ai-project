@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quarterly Sales Report Presentation</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/theme/black.css">
+    <style>
+        .reveal {
+            font-family: Arial, sans-serif;
+        }
+        .reveal h1, .reveal h2, .reveal h3 {
+            color: #fff;
+        }
+        .reveal .slide {
+            background-color: #2f2f2f;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 40px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Quarterly Sales Report Presentation</h1>
+                <p>Welcome to our quarterly sales report presentation.</p>
+            </section>
+            <section>
+                <h2>Introduction</h2>
+                <p>In this presentation, we will review our sales performance for the past quarter.</p>
+                <p>We will cover the following topics:</p>
+                <ul>
+                    <li>Sales overview</li>
+                    <li>Regional sales performance</li>
+                    <li>Product sales performance</li>
+                    <li>Conclusion and recommendations</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Sales Overview</h2>
+                <div class="chart-container">
+                    <canvas id="sales-chart"></canvas>
+                </div>
+                <script>
+                    const ctx = document.getElementById('sales-chart').getContext('2d');
+                    const salesChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                            datasets: [{
+                                label: 'Sales',
+                                data: [100, 120, 140, 160, 180, 200],
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </section>
+            <section>
+                <h2>Regional Sales Performance</h2>
+                <div class="chart-container">
+                    <canvas id="regional-sales-chart"></canvas>
+                </div>
+                <script>
+                    const ctx2 = document.getElementById('regional-sales-chart').getContext('2d');
+                    const regionalSalesChart = new Chart(ctx2, {
+                        type: 'bar',
+                        data: {
+                            labels: ['North', 'South', 'East', 'West'],
+                            datasets: [{
+                                label: 'Sales',
+                                data: [200, 150, 100, 250],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)',
+                                    'rgba(75, 192, 192, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)',
+                                    'rgba(75, 192, 192, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                </script>
+            </section>
+            <section>
+                <h2>Product Sales Performance</h2>
+                <p>Our top-selling products for the quarter were:</p>
+                <ul>
+                    <li>Product A: 30% of total sales</li>
+                    <li>Product B: 25% of total sales</li>
+                    <li>Product C: 20% of total sales</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Conclusion and Recommendations</h2>
+                <p>Based on our sales performance, we recommend:</p>
+                <ul>
+                    <li>Increasing marketing efforts for Product A</li>
+                    <li>Improving product features for Product B</li>
+                    <li>Expanding our sales team to target new regions</li>
+                </ul>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        Reveal.initialize({
+            transition: 'slide',
+            slideNumber: true,
+            keyboard: true,
+            overview: true,
+            center: true,
+            touch: true,
+            loop: false,
+            pdfSeparateFragments: true,
+            hash: true,
+            showNotes: true,
+            autoPlayMedia: true,
+            autoSlide: 3000,
+            autoSlideStoppable: true,
+            autoSlideMethod: Reveal.navigateNext,
+            mouseWheel: true,
+            hideAddressBar: true,
+            previewLinks: true,
+            transitionSpeed: 'default',
+            backgroundTransition: 'default',
+            viewDistance: 3,
+            disableLayout: false,
+            previewLinks: true,
+            dependencies: [
+                { src: 'https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/plugin/notes/notes.js', async: true },
+                { src: 'https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/plugin/markdown/markdown.js', async: true },
+                { src: 'https://cdn.jsdelivr.net/npm/reveal.js@4.1.0/plugin/highlight/highlight.js', async: true }
+            ]
+        });
+    </script>
+</body>
+</html>

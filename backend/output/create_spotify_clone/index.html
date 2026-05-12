@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1db954">
+    <title>Spotify Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+        }
+        .left-sidebar {
+            width: 240px;
+            height: 100vh;
+            background-color: #1a1a1a;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        .left-sidebar .logo {
+            width: 40px;
+            height: 40px;
+            background-color: #1db954;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        .left-sidebar .menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .left-sidebar .menu li {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .left-sidebar .menu li:last-child {
+            border-bottom: none;
+        }
+        .left-sidebar .menu li a {
+            text-decoration: none;
+            color: #fff;
+        }
+        .left-sidebar .menu li a:hover {
+            color: #1db954;
+        }
+        .center-panel {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            margin-left: 240px;
+        }
+        .center-panel .genre-chips {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .center-panel .genre-chips .chip {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 5px;
+        }
+        .center-panel .genre-chips .chip:hover {
+            background-color: #1db954;
+        }
+        .center-panel .featured-playlist {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .center-panel .recently-played {
+            display: flex;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        .center-panel .recently-played .track {
+            width: 150px;
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin: 10px;
+        }
+        .center-panel .popular-tracks {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .center-panel .popular-tracks li {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .center-panel .popular-tracks li:last-child {
+            border-bottom: none;
+        }
+        .center-panel .popular-tracks li .track-info {
+            display: flex;
+            justify-content: space-between;
+        }
+        .right-panel {
+            width: 300px;
+            height: 100vh;
+            background-color: #1a1a1a;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            right: 0;
+        }
+        .right-panel .now-playing {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .right-panel .queue {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .right-panel .queue li {
+            padding: 10px;
+            border-bottom: 1px solid #333;
+        }
+        .right-panel .queue li:last-child {
+            border-bottom: none;
+        }
+        .bottom-player {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background-color: #1a1a1a;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .bottom-player .album-art {
+            width: 60px;
+            height: 60px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+        }
+        .bottom-player .song-info {
+            margin-left: 20px;
+        }
+        .bottom-player .controls {
+            display: flex;
+            justify-content: space-between;
+            width: 200px;
+        }
+        .bottom-player .controls button {
+            width: 30px;
+            height: 30px;
+            border: none;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        .bottom-player .controls button:hover {
+            background-color: #1db954;
+        }
+        .bottom-player .progress-bar {
+            width: 100%;
+            height: 5px;
+            background-color: #333;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .bottom-player .progress-bar .progress {
+            height: 5px;
+            background-color: #1db954;
+            border-radius: 10px;
+        }
+        .bottom-player .volume-slider {
+            width: 100px;
+            height: 5px;
+            background-color: #333;
+            border-radius: 10px;
+        }
+        .bottom-player .volume-slider .volume {
+            height: 5px;
+            background-color: #1db954;
+            border-radius: 10px;
+        }
+        @media (max-width: 768px) {
+            .left-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .center-panel {
+                margin-left: 0;
+            }
+            .right-panel {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="left-sidebar">
+        <div class="logo">S</div>
+        <ul class="menu">
+            <li><a href="#">Your Library</a></li>
+            <li><a href="#">Liked Songs</a></li>
+            <li><a href="#">Playlists</a></li>
+            <li><a href="#">Install App</a></li>
+        </ul>
+        <div class="playlists">
+            <h2>Playlists</h2>
+            <ul>
+                <li><img src="https://picsum.photos/seed/playlist1/300/300" alt=""><span>Playlist 1</span></li>
+                <li><img src="https://picsum.photos/seed/playlist2/300/300" alt=""><span>Playlist 2</span></li>
+                <li><img src="https://picsum.photos/seed/playlist3/300/300" alt=""><span>Playlist 3</span></li>
+                <li><img src="https://picsum.photos/seed/playlist4/300/300" alt=""><span>Playlist 4</span></li>
+                <li><img src="https://picsum.photos/seed/playlist5/300/300" alt=""><span>Playlist 5</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="center-panel">
+        <div class="genre-chips">
+            <div class="chip">All</div>
+            <div class="chip">Pop</div>
+            <div class="chip">Rock</div>
+            <div class="chip">Hip-Hop</div>
+            <div class="chip">Electronic</div>
+            <div class="chip">Classical</div>
+            <div class="chip">Bollywood</div>
+            <div class="chip">Indie</div>
+        </div>
+        <div class="featured-playlist" style="background-image: url('https://picsum.photos/seed/featured/300/300')"></div>
+        <div class="recently-played">
+            <div class="track" style="background-image: url('https://picsum.photos/seed/track1/300/300')"></div>
+            <div class="track" style="background-image: url('https://picsum.photos/seed/track2/300/300')"></div>
+            <div class="track" style="background-image: url('https://picsum.photos/seed/track3/300/300')"></div>
+        </div>
+        <ul class="popular-tracks">
+            <li>
+                <div class="track-info">
+                    <span>1. Blinding Lights</span>
+                    <span>The Weeknd</span>
+                    <span>After Hours</span>
+                    <span>3:20</span>
+                </div>
+            </li>
+            <li>
+                <div class="track-info">
+                    <span>2. Levitating</span>
+                    <span>Dua Lipa</span>
+                    <span>Future Nostalgia</span>
+                    <span>3:23</span>
+                </div>
+            </li>
+            <li>
+                <div class="track-info">
+                    <span>3. Tum Hi Ho</span>
+                    <span>Arijit Singh</span>
+                    <span>Aashiqui 2</span>
+                    <span>4:22</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="right-panel">
+        <div class="now-playing" style="background-image: url('https://picsum.photos/seed/nowplaying/300/300')"></div>
+        <ul class="queue">
+            <li>
+                <div class="track-info">
+                    <span>1. Blinding Lights</span>
+                    <span>The Weeknd</span>
+                    <span>After Hours</span>
+                    <span>3:20</span>
+                </div>
+            </li>
+            <li>
+                <div class="track-info">
+                    <span>2. Levitating</span>
+                    <span>Dua Lipa</span>
+                    <span>Future Nostalgia</span>
+                    <span>3:23</span>
+                </div>
+            </li>
+            <li>
+                <div class="track-info">
+                    <span>3. Tum Hi Ho</span>
+                    <span>Arijit Singh</span>
+                    <span>Aashiqui 2</span>
+                    <span>4:22</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="bottom-player">
+        <div class="album-art" style="background-image: url('https://picsum.photos/seed/albumart/300/300')"></div>
+        <div class="song-info">
+            <span>Blinding Lights</span>
+            <span>The Weeknd</span>
+        </div>
+        <div class="controls">
+            <button>&#10094;</button>
+            <button>&#10073;</button>
+            <button>&#10095;</button>
+        </div>
+        <div class="progress-bar">
+            <div class="progress" style="width: 50%"></div>
+        </div>
+        <div class="volume-slider">
+            <div class="volume" style="width: 50%"></div>
+        </div>
+    </div>
+    <script>
+        const TRACKS = [
+            {id:1,title:"Blinding Lights",artist:"The Weeknd",album:"After Hours",duration:"3:20",genre:"Pop",cover:"https://picsum.photos/seed/track1/300/300",color:"#e91e63"},
+            {id:2,title:"Levitating",artist:"Dua Lipa",album:"Future Nostalgia",duration:"3:23",genre:"Pop",cover:"https://picsum.photos/seed/track2/300/300",color:"#9c27b0"},
+            {id:3,title:"Tum Hi Ho",artist:"Arijit Singh",album:"Aashiqui 2",duration:"4:22",genre:"Bollywood",cover:"https://picsum.photos/seed/track3/300/300",color:"#f44336"},
+            {id:4,title:"Kesariya",artist:"Arijit Singh",album:"Brahmastra",duration:"4:34",genre:"Bollywood",cover:"https://picsum.photos/seed/track4/300/300",color:"#ff9800"},
+            // ... more tracks
+        ];
+        let currentTrack = 0;
+        let playing = false;
+        let audioContext;
+        let source;
+        let gain;
+        let likedTracks = [];
+
+        function playTrack() {
+            if (!playing) {
+                playing = true;
+                audioContext = new AudioContext();
+                source = audioContext.createBufferSource();
+                gain = audioContext.createGain();
+                source.connect(gain);
+                gain.connect(audioContext.destination);
+                source.start();
+                document.querySelector('.bottom-player .controls button:nth-child(2)').innerHTML = '&#10071;';
+            } else {
+                playing = false;
+                source.stop();
+                document.querySelector('.bottom-player .controls button:nth-child(2)').innerHTML = '&#10073;';
+            }
+        }
+
+        function nextTrack() {
+            currentTrack = (currentTrack + 1) % TRACKS.length;
+            updateTrackInfo();
+        }
+
+        function prevTrack() {
+            currentTrack = (currentTrack - 1 + TRACKS.length) % TRACKS.length;
+            updateTrackInfo();
+        }
+
+        function updateTrackInfo() {
+            document.querySelector('.bottom-player .album-art').style.backgroundImage = `url(${TRACKS[currentTrack].cover})`;
+            document.querySelector('.bottom-player .song-info span:nth-child(1)').innerHTML = TRACKS[currentTrack].title;
+            document.querySelector('.bottom-player .song-info span:nth-child(2)').innerHTML = TRACKS[currentTrack].artist;
+        }
+
+        function likeTrack() {
+            likedTracks.push(TRACKS[currentTrack]);
+            localStorage.setItem('likedTracks', JSON.stringify(likedTracks));
+            toast('Added to Liked Songs &#10084;');
+        }
+
+        function toast(message) {
+            const toastElement = document.createElement('div');
+            toastElement.innerHTML = message;
+            toastElement.style.position = 'fixed';
+            toastElement.style.bottom = '20px';
+            toastElement.style.right = '20px';
+            toastElement.style.padding = '10px';
+            toastElement.style.borderRadius = '10px';
+            toastElement.style.background = '#1db954';
+            toastElement.style.color = '#fff';
+            document.body.appendChild(toastElement);
+            setTimeout(() => {
+                toastElement.remove();
+            }, 2000);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ') {
+                playTrack();
+            } else if (e.key === 'ArrowRight') {
+                nextTrack();
+            } else if (e.key === 'ArrowLeft') {
+                prevTrack();
+            }
+        });
+
+        document.querySelector('.bottom-player .controls button:nth-child(2)').addEventListener('click', playTrack);
+        document.querySelector('.bottom-player .controls button:nth-child(1)').addEventListener('click', prevTrack);
+        document.querySelector('.bottom-player .controls button:nth-child(3)').addEventListener('click', nextTrack);
+        document.querySelector('.bottom-player .album-art').addEventListener('click', likeTrack);
+    </script>
+</body>
+</html>

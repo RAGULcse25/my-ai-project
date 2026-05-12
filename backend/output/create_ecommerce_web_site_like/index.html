@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipkart Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Fashion</a></li>
+                <li><a href="#">Home & Kitchen</a></li>
+                <li><a href="#">More</a></li>
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search for products, brands and more">
+            <button id="search-button">Search</button>
+        </div>
+        <div class="user-account">
+            <button id="login-button">Login</button>
+            <button id="cart-button">Cart</button>
+        </div>
+    </header>
+    <main>
+        <section class="hero-section">
+            <h1>Flipkart Clone</h1>
+            <p>India's largest e-commerce website</p>
+            <button id="shop-now-button">Shop Now</button>
+        </section>
+        <section class="product-section">
+            <h2>Featured Products</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <img src="product1.jpg" alt="Product 1">
+                    <h3>Product 1</h3>
+                    <p>₹1000</p>
+                    <button class="add-to-cart-button">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="product2.jpg" alt="Product 2">
+                    <h3>Product 2</h3>
+                    <p>₹2000</p>
+                    <button class="add-to-cart-button">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="product3.jpg" alt="Product 3">
+                    <h3>Product 3</h3>
+                    <p>₹3000</p>
+                    <button class="add-to-cart-button">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="product4.jpg" alt="Product 4">
+                    <h3>Product 4</h3>
+                    <p>₹4000</p>
+                    <button class="add-to-cart-button">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="product5.jpg" alt="Product 5">
+                    <h3>Product 5</h3>
+                    <p>₹5000</p>
+                    <button class="add-to-cart-button">Add to Cart</button>
+                </div>
+            </div>
+        </section>
+        <section class="cart-section">
+            <h2>Cart</h2>
+            <div class="cart-grid">
+                <div class="cart-card">
+                    <img src="product1.jpg" alt="Product 1">
+                    <h3>Product 1</h3>
+                    <p>₹1000</p>
+                    <button class="remove-from-cart-button">Remove</button>
+                </div>
+            </div>
+            <p id="cart-total">Total: ₹0</p>
+            <button id="checkout-button">Checkout</button>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Flipkart Clone</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

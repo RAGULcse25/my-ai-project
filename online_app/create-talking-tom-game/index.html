@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talking Tom Game</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #FF6B9D;
+            --accent-color: #4ECDE6;
+            --background-color: #070B14;
+            --text-color: #FFFFFF;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Glassmorphism Styles */
+        .glassmorphism {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Gradient Styles */
+        .gradient {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+        }
+        
+        /* Animation Styles */
+        .animate {
+            transition: all 0.3s ease;
+        }
+        
+        .animate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        
+        /* Layout Styles */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                padding: 24px;
+            }
+        }
+        
+        @media (max-width: 1440px) {
+            .container {
+                padding: 32px;
+            }
+        }
+        
+        /* Sticky Navbar Styles */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: var(--background-color);
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 16px;
+        }
+        
+        .navbar .nav-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar .nav-links a {
+            margin-left: 16px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+        
+        /* Game Styles */
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        
+        .game-container .game-board {
+            width: 400px;
+            height: 400px;
+            border: 1px solid var(--text-color);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .game-container .game-board .cell {
+            width: 50px;
+            height: 50px;
+            border: 1px solid var(--text-color);
+            border-radius: 8px;
+            margin: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .game-container .game-board .cell:hover {
+            background: var(--primary-color);
+            color: var(--background-color);
+        }
+        
+        .game-container .game-board .cell:active {
+            transform: scale(0.96);
+        }
+        
+        /* Toast Notification Styles */
+        .toast {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: var(--primary-color);
+            color: var(--background-color);
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: bold;
+            animation: toast 0.3s ease;
+        }
+        
+        @keyframes toast {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar glassmorphism">
+        <div class="logo">Talking Tom Game</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="game-container">
+            <div class="game-board">
+                <!-- Game Board Cells will be generated dynamically -->
+            </div>
+            <button class="animate gradient" id="start-game">Start Game</button>
+            <button class="animate gradient" id="pause-game" style="display: none;">Pause Game</button>
+            <button class="animate gradient" id="play-again" style="display: none;">Play Again</button>
+        </div>
+    </div>
+    <div class="toast" id="toast" style="display: none;"></div>
+    
+    <script>
+        // Get elements
+        const gameBoard = document.querySelector('.game-board');
+        const startGameButton = document.getElementById('start-game');
+        const pauseGameButton = document.getElementById('pause-game');
+        const playAgainButton = document.getElementById('play-again');
+        const toast = document.getElementById('toast');
+        
+        // Game variables
+        let gameStarted = false;
+        let gamePaused = false;
+        let currentPlayer = 'X';
+        let gameBoardCells = [];
+        let winningCombinations = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+        
+        // Function to generate game board cells
+        function generateGameBoardCells() {
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.id = `cell-${i}`;
+                cell.addEventListener('click', handleCellClick);
+                gameBoard.appendChild(cell);
+                gameBoardCells.push(cell);
+            }
+        }
+        
+        // Function to handle cell click
+        function handleCellClick(event) {
+            if (gameStarted && !gamePaused) {
+                const cell = event.target;
+                const cellIndex = gameBoardCells.indexOf(cell);
+                if (cell.textContent === '') {
+                    cell.textContent = currentPlayer;
+                    checkForWin();
+                    switchPlayer();
+                }
+            }
+        }
+        
+        // Function to check for win
+        function checkForWin() {
+            for (let i = 0; i < winningCombinations.length; i++) {
+                const combination = winningCombinations[i];
+                const cell1 = gameBoardCells[combination[0]];
+                const cell2 = gameBoardCells[combination[1]];
+                const cell3 = gameBoardCells[combination[2]];
+                if (cell1.textContent === cell2.textContent && cell2.textContent === cell3.textContent && cell1.textContent !== '') {
+                    showToast(`Player ${cell1.textContent} wins!`);
+                    gameStarted = false;
+                    gamePaused = false;
+                    playAgainButton.style.display = 'block';
+                    return;
+                }
+            }
+        }
+        
+        // Function to switch player
+        function switchPlayer() {
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        }
+        
+        // Function to show toast notification
+        function showToast(message) {
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2000);
+        }
+        
+        // Event listeners
+        startGameButton.addEventListener('click', () => {
+            gameStarted = true;
+            gamePaused = false;
+            generateGameBoardCells();
+            startGameButton.style.display = 'none';
+            pauseGameButton.style.display = 'block';
+        });
+        
+        pauseGameButton.addEventListener('click', () => {
+            gamePaused = true;
+            pauseGameButton.style.display = 'none';
+            playAgainButton.style.display = 'block';
+        });
+        
+        playAgainButton.addEventListener('click', () => {
+            gameStarted = false;
+            gamePaused = false;
+            gameBoard.innerHTML = '';
+            gameBoardCells = [];
+            currentPlayer = 'X';
+            playAgainButton.style.display = 'none';
+            startGameButton.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

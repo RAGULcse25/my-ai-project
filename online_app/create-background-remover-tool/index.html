@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Editor</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #left-panel {
+            width: 180px;
+            height: 100vh;
+            background-color: #f0f0f0;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+        #center-canvas {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-left: 180px;
+        }
+        #canvas {
+            border: 1px solid #ccc;
+        }
+        #toolbar {
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+        }
+        #right-panel {
+            width: 200px;
+            height: 100vh;
+            background-color: #f0f0f0;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            overflow-y: auto;
+        }
+        .tool-button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .tool-button:hover {
+            background-color: #f0f0f0;
+        }
+        .filter-slider {
+            width: 100%;
+        }
+        .template-thumbnail {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+        .template-thumbnail:hover {
+            border-color: #aaa;
+        }
+        .layer {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .layer:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div id="left-panel">
+        <input type="file" id="upload-image" accept="image/*">
+        <button class="tool-button" id="select-move">Select/Move</button>
+        <button class="tool-button" id="crop">Crop</button>
+        <button class="tool-button" id="text">Text</button>
+        <button class="tool-button" id="shapes">Shapes</button>
+        <button class="tool-button" id="sticker">Sticker</button>
+        <button class="tool-button" id="draw">Draw</button>
+        <div id="filters">
+            <label>Brightness:</label>
+            <input type="range" class="filter-slider" id="brightness" min="0" max="200" value="100">
+            <label>Contrast:</label>
+            <input type="range" class="filter-slider" id="contrast" min="0" max="200" value="100">
+            <label>Saturation:</label>
+            <input type="range" class="filter-slider" id="saturation" min="0" max="200" value="100">
+            <label>Blur:</label>
+            <input type="range" class="filter-slider" id="blur" min="0" max="10" value="0">
+            <label>Hue:</label>
+            <input type="range" class="filter-slider" id="hue" min="0" max="360" value="0">
+        </div>
+        <div id="adjustments">
+            <label>Sharpen:</label>
+            <input type="range" class="filter-slider" id="sharpen" min="0" max="10" value="0">
+            <label>Vignette:</label>
+            <input type="range" class="filter-slider" id="vignette" min="0" max="10" value="0">
+            <label>Noise:</label>
+            <input type="range" class="filter-slider" id="noise" min="0" max="10" value="0">
+        </div>
+        <div id="templates">
+            <img class="template-thumbnail" src="https://picsum.photos/seed/template1/50/50">
+            <img class="template-thumbnail" src="https://picsum.photos/seed/template2/50/50">
+            <img class="template-thumbnail" src="https://picsum.photos/seed/template3/50/50">
+            <img class="template-thumbnail" src="https://picsum.photos/seed/template4/50/50">
+            <img class="template-thumbnail" src="https://picsum.photos/seed/template5/50/50">
+            <img class="template-thumbnail" src="https://picsum.photos/seed/template6/50/50">
+        </div>
+    </div>
+    <div id="center-canvas">
+        <canvas id="canvas" width="800" height="600"></canvas>
+        <div id="toolbar">
+            <button id="undo">Undo</button>
+            <button id="redo">Redo</button>
+            <button id="zoom-in">+</button>
+            <button id="zoom-out">-</button>
+        </div>
+    </div>
+    <div id="right-panel">
+        <div id="selected-element-properties">
+            <label>Font:</label>
+            <select id="font">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+            </select>
+            <label>Size:</label>
+            <input type="number" id="size" value="12">
+            <label>Color:</label>
+            <input type="color" id="color" value="#000000">
+            <label>Bold:</label>
+            <input type="checkbox" id="bold">
+            <label>Italic:</label>
+            <input type="checkbox" id="italic">
+            <label>Align:</label>
+            <select id="align">
+                <option value="left">Left</option>
+                <option value="center">Center</option>
+                <option value="right">Right</option>
+            </select>
+        </div>
+        <div id="layers">
+            <div class="layer">Layer 1</div>
+            <div class="layer">Layer 2</div>
+            <div class="layer">Layer 3</div>
+        </div>
+    </div>
+    <div id="top-toolbar">
+        <button id="new">New</button>
+        <button id="open-image">Open Image</button>
+        <button id="save-png">Save PNG</button>
+        <button id="save-jpg">Save JPG</button>
+        <button id="copy">Copy</button>
+        <button id="paste">Paste</button>
+        <select id="canvas-size">
+            <option value="800x600">800x600</option>
+            <option value="1024x768">1024x768</option>
+            <option value="1280x960">1280x960</option>
+        </select>
+    </div>
+
+    <script>
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+        let image = new Image();
+        let uploadImage = document.getElementById('upload-image');
+        let selectMove = document.getElementById('select-move');
+        let crop = document.getElementById('crop');
+        let text = document.getElementById('text');
+        let shapes = document.getElementById('shapes');
+        let sticker = document.getElementById('sticker');
+        let draw = document.getElementById('draw');
+        let filters = document.getElementById('filters');
+        let adjustments = document.getElementById('adjustments');
+        let templates = document.getElementById('templates');
+        let undo = document.getElementById('undo');
+        let redo = document.getElementById('redo');
+        let zoomIn = document.getElementById('zoom-in');
+        let zoomOut = document.getElementById('zoom-out');
+        let selectedElementProperties = document.getElementById('selected-element-properties');
+        let layers = document.getElementById('layers');
+        let newButton = document.getElementById('new');
+        let openImage = document.getElementById('open-image');
+        let savePNG = document.getElementById('save-png');
+        let saveJPG = document.getElementById('save-jpg');
+        let copy = document.getElementById('copy');
+        let paste = document.getElementById('paste');
+        let canvasSize = document.getElementById('canvas-size');
+        let brightness = document.getElementById('brightness');
+        let contrast = document.getElementById('contrast');
+        let saturation = document.getElementById('saturation');
+        let blur = document.getElementById('blur');
+        let hue = document.getElementById('hue');
+        let sharpen = document.getElementById('sharpen');
+        let vignette = document.getElementById('vignette');
+        let noise = document.getElementById('noise');
+        let font = document.getElementById('font');
+        let size = document.getElementById('size');
+        let color = document.getElementById('color');
+        let bold = document.getElementById('bold');
+        let italic = document.getElementById('italic');
+        let align = document.getElementById('align');
+        let backgroundRemover = document.getElementById('background-remover');
+
+        let currentState = [];
+        let currentStateIndex = -1;
+        let isDrawing = false;
+        let lastX, lastY;
+        let selectedElement = null;
+        let stickerImage = new Image();
+        stickerImage.src = 'https://picsum.photos/seed/sticker/50/50';
+
+        uploadImage.addEventListener('change', (e) => {
+            let file = e.target.files[0];
+            let reader = new FileReader();
+            reader.onload = (event) => {
+                image.src = event.target.result;
+                image.onload = () => {
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    currentState.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                    currentStateIndex++;
+                }
+            }
+            reader.readAsDataURL(file);
+        });
+
+        selectMove.addEventListener('click', () => {
+            canvas.addEventListener('mousedown', (e) => {
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+                selectedElement = getSelectedElement(x, y);
+                if (selectedElement) {
+                    lastX = x;
+                    lastY = y;
+                    canvas.addEventListener('mousemove', moveElement);
+                    canvas.addEventListener('mouseup', () => {
+                        canvas.removeEventListener('mousemove', moveElement);
+                    });
+                }
+            });
+        });
+
+        crop.addEventListener('click', () => {
+            canvas.addEventListener('mousedown', (e) => {
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+                let cropX = x;
+                let cropY = y;
+                let cropWidth = 0;
+                let cropHeight = 0;
+                canvas.addEventListener('mousemove', (e) => {
+                    let rect = canvas.getBoundingClientRect();
+                    let x = e.clientX - rect.left;
+                    let y = e.clientY - rect.top;
+                    cropWidth = x - cropX;
+                    cropHeight = y - cropY;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.putImageData(currentState[currentStateIndex], 0, 0);
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    ctx.fillRect(0, 0, cropX, canvas.height);
+                    ctx.fillRect(cropX + cropWidth, 0, canvas.width - (cropX + cropWidth), canvas.height);
+                    ctx.fillRect(cropX, 0, cropWidth, cropY);
+                    ctx.fillRect(cropX, cropY + cropHeight, cropWidth, canvas.height - (cropY + cropHeight));
+                });
+                canvas.addEventListener('mouseup', () => {
+                    canvas.removeEventListener('mousemove', () => { });
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.putImageData(currentState[currentStateIndex], 0, 0);
+                    ctx.drawImage(canvas, cropX, cropY, cropWidth, cropHeight, 0, 0, canvas.width, canvas.height);
+                    currentState.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                    currentStateIndex++;
+                });
+            });
+        });
+
+        text.addEventListener('click', () => {
+            canvas.addEventListener('click', (e) => {
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+                let textInput = document.createElement('input');
+                textInput.type = 'text';
+                textInput.style.position = 'absolute';
+                textInput.style.left = x + 'px';
+                textInput.style.top = y + 'px';
+                textInput.style.fontSize = '24px';
+                textInput.style.fontFamily = 'Arial';
+                textInput.style.color = '#000000';
+                document.body.appendChild(textInput);
+                textInput.focus();
+                textInput.addEventListener('blur', () => {
+                    let text = textInput.value;
+                    ctx.font = '24px Arial';
+                    ctx.fillStyle = '#000000';
+                    ctx.textAlign = 'left';
+                    ctx.textBaseline = 'top';
+                    ctx.fillText(text, x, y);
+                    currentState.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                    currentStateIndex++;
+                    document.body.removeChild(textInput);
+                });
+            });
+        });
+
+        shapes.addEventListener('click', () => {
+            canvas.addEventListener('click', (e) => {
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+                let shape = prompt('Enter shape (rect, circle, line):');
+                if (shape === 'rect') {
+                    ctx.fillStyle = '#000000';
+                    ctx.fillRect(x, y, 100, 100);
+                } else if (shape === 'circle') {
+                    ctx.fillStyle = '#000000';
+                    ctx.beginPath();
+                    ctx.arc(x, y, 50, 0, 2 * Math.PI);
+                    ctx.fill();
+                } else if (shape === 'line') {
+                    ctx.strokeStyle = '#000000';
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + 100, y + 100);
+                    ctx.stroke();
+                }
+                currentState.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                currentStateIndex++;
+            });
+        });
+
+        sticker.addEventListener('click', () => {
+            canvas.addEventListener('click', (e) => {
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+                ctx.drawImage(stickerImage, x, y, 50, 50);
+                currentState.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+                currentStateIndex++;
+            });
+        });
+
+        draw.addEventListener('click', () => {
+            isDrawing = true;
+            canvas.addEventListener('mousedown', (e) => {
+                let rect = canvas.getBoundingClientRect();
+                let x = e.clientX - rect.left;
+                let y = e.clientY - rect.top;
+                lastX = x;
+                lastY = y;
+                canvas.addEventListener('mousemove', drawLine);
+            });
+            canvas.addEventListener('mouseup', () => {
+                isDrawing = false;
+                canvas.removeEventListener('mousemove', drawLine);
+            });
+        });
+
+        function drawLine(e) {
+            let rect = canvas.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            lastX = x;
+            lastY = y;
+        }
+
+        function getSelectedElement(x, y) {
+            let pixels = ctx.getImageData(x, y, 1, 1).data;
+            if (pixels[3] === 255) {
+                return { x: x, y: y, width: 100, height: 100 };
+            } else {
+                return null;
+            }
+        }
+
+        function moveElement(e) {
+            let rect = canvas.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.putImageData(currentState[currentStateIndex], 0, 0);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(x, y, 100, 100);
+        }
+
+        undo.addEventListener('click', () => {
+            if (currentStateIndex > 0) {
+                currentStateIndex--;
+                ctx.putImageData(currentState[currentStateIndex], 0, 0);
+            }
+        });
+
+        redo.addEventListener('click', () => {
+            if (currentStateIndex < currentState.length - 1) {
+                currentStateIndex++;
+                ctx.putImageData(currentState[currentStateIndex], 0, 0);
+            }
+        });
+
+        zoomIn.addEventListener('click', () => {
+            canvas.width *= 1.1;
+            canvas.height *= 1.1;
+            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+        });
+
+        zoomOut.addEventListener('click', () => {
+            canvas.width /= 1.1;
+            canvas.height /= 1.1;
+            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
+        });
+
+        savePNG.addEventListener('click', () => {
+            let link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'image.png';
+            link.click();
+        });
+
+        saveJPG.addEventListener('click', () => {
+            let link = document.createElement('a');
+            link.href = canvas.toDataURL('image/jpeg');
+            link.download = 'image.jpg';
+            link.click();
+        });
+
+        brightness.addEventListener('input', () => {
+            ctx.filter = 'brightness(' + brightness.value + '%)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        contrast.addEventListener('input', () => {
+            ctx.filter = 'contrast(' + contrast.value + '%)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        saturation.addEventListener('input', () => {
+            ctx.filter = 'saturate(' + saturation.value + '%)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        blur.addEventListener('input', () => {
+            ctx.filter = 'blur(' + blur.value + 'px)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        hue.addEventListener('input', () => {
+            ctx.filter = 'hue-rotate(' + hue.value + 'deg)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        sharpen.addEventListener('input', () => {
+            ctx.filter = 'contrast(' + sharpen.value + '%)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        vignette.addEventListener('input', () => {
+            ctx.filter = 'contrast(' + vignette.value + '%)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+
+        noise.addEventListener('input', () => {
+            ctx.filter = 'contrast(' + noise.value + '%)';
+            ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        });
+    </script>
+</body>
+</html>

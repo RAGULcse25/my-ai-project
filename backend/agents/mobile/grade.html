@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Grade Tracker</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 h-screen overflow-hidden flex flex-col font-sans">
+  <div class="bg-white px-6 pt-12 pb-6 shadow-sm flex justify-between items-center z-10 relative rounded-b-3xl">
+    <div>
+      <h1 class="font-bold text-3xl tracking-tight text-gray-900">Term 1</h1>
+      <p class="text-sm text-gray-500">CGPA Tracker</p>
+    </div>
+    <div class="bg-blue-100 text-blue-700 font-extrabold w-16 h-16 rounded-full flex items-center justify-center text-xl shadow-inner" id="cgpa">3.8</div>
+  </div>
+  
+  <div class="flex-1 overflow-y-auto px-6 py-6 space-y-4" id="list">
+    <!-- Items -->
+    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+      <div><h3 class="font-bold text-gray-800 text-lg">CS101: Programming</h3><p class="text-xs text-gray-400">4 Credits</p></div>
+      <div class="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-bold text-lg">A</div>
+    </div>
+    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex justify-between items-center">
+      <div><h3 class="font-bold text-gray-800 text-lg">MATH201: Calculus II</h3><p class="text-xs text-gray-400">3 Credits</p></div>
+      <div class="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl font-bold text-lg">B+</div>
+    </div>
+  </div>
+  
+  <div class="p-6 bg-white border-t border-gray-100 flex gap-4">
+    <button class="bg-blue-600 text-white w-full py-4 rounded-xl font-bold shadow-lg shadow-blue-200">Add Course</button>
+  </div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

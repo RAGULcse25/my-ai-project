@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronics - Flipkart</title>
+    <script>
+        // Load theme immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+html,body{margin:0!important;padding:0!important}
+
+        /* Global Variables */
+        :root {
+            --text-primary: #212121;
+            --text-secondary: #6c757d;
+            --text-muted: #adb5bd;
+            --bg-card: #f8f9fa;
+            --bg-card-hover: #f1f3f5;
+            --border: #ddd;
+            --accent-copper: #ffc107;
+            --accent-gradie: #ff69b4;
+            --accent-gradient: linear-gradient(135deg, #ff69b4, #ffe6cc);
+            --flipkart-blue: #2874f0;
+        }
+
+        /* From: templatemo-crypto-dashboard.css */
+        /*
+        ==========================================================================
+        CryptoVault - Dashboard Page Styles
+        ==========================================================================
+        
+        TemplateMo 609 Crypto Vault
+        
+        https://templatemo.com/tm-609-crypto-vault
+        
+        */
+
+        /* ========================================
+           Header
+        ======================================== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            background-color: var(--flipkart-blue);
+            color: #fff;
+            padding: 10px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .header-subtitle {
+            font-size: 15px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-card);
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+
+        .header-search:focus-within {
+            border-color: var(--accent-copper);
+        }
+
+        .header-search svg {
+            color: var(--text-muted);
+        }
+
+        .header-search input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 15px;
+            width: 180px;
+            font-family: inherit;
+        }
+
+        .header-search input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .header-search input:focus {
+            outline: none;
+        }
+
+        .notification-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+
+        .notification-btn:hover {
+            background-color: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 20px;
+            height: 20px;
+            background: var(--accent-gradie);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .product-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-card h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .product-card button {
+            background-color: var(--flipkart-blue);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .product-card button:hover {
+            background-color: #23527c;
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--accent-gradie);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            animation: fade-in 0.5s;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Electronics</h1>
+        <div class="header-right">
+            <div class="header-search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+                <input type="search" id="search-input" placeholder="Search products">
+            </div>
+            <button class="notification-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z"/>
+                    <path d="M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.079z"/>
+                </svg>
+                <span class="notification-badge">3</span>
+            </button>
+            <button class="cart-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.786A.5.5 0 0 1 1.5 3H.5a.5.5 0 0 1-.5-.5zM3.5 4h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3.5a.5.5 0 0 1-.5-.5v-1A.5.5 0 0 1 3.5 4z"/>
+                </svg>
+                <span class="cart-badge">2</span>
+            </button>
+        </div>
+    </header>
+    <main>
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/200/150" alt="Product Image">
+                <h2>Apple iPhone 13</h2>
+                <p>$999</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/201/150" alt="Product Image">
+                <h2>Samsung Galaxy S22</h2>
+                <p>$899</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/202/150" alt="Product Image">
+                <h2>Google Pixel 6</h2>
+                <p>$799</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/203/150" alt="Product Image">
+                <h2>OnePlus 9 Pro</h2>
+                <p>$699</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/204/150" alt="Product Image">
+                <h2>Xiaomi Redmi Note 10</h2>
+                <p>$499</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/205/150" alt="Product Image">
+                <h2>Realme 6 Pro</h2>
+                <p>$399</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/206/150" alt="Product Image">
+                <h2>Asus Zenfone 7</h2>
+                <p>$599</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <img src="https://picsum.photos/seed/electronics/207/150" alt="Product Image">
+                <h2>Motorola Moto G</h2>
+                <p>$299</p>
+                <button class="add-to-cart-btn">Add to Cart</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        const searchInput = document.getElementById('search-input');
+        const productGrid = document.querySelector('.product-grid');
+        const cartBadge = document.querySelector('.cart-badge');
+        let cartCount = 0;
+
+        searchInput.addEventListener('input', (e) => {
+            const searchQuery = e.target.value.toLowerCase();
+            const productCards = productGrid.children;
+
+            for (const productCard of productCards) {
+                const productName = productCard.querySelector('h2').textContent.toLowerCase();
+
+                if (productName.includes(searchQuery)) {
+                    productCard.style.display = 'block';
+                } else {
+                    productCard.style.display = 'none';
+                }
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart-btn')) {
+                cartCount++;
+                cartBadge.textContent = cartCount;
+                const toastNotification = document.createElement('div');
+                toastNotification.classList.add('toast-notification');
+                toastNotification.textContent = 'Product added to cart!';
+                document.body.appendChild(toastNotification);
+                setTimeout(() => {
+                    toastNotification.remove();
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

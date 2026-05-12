@@ -1,0 +1,38 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee Dashboard</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; background: #f4f4f9; }
+    .header { background: #333; color: white; padding: 1rem; text-align: center; }
+    .container { margin: 2rem auto; width: 80%; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <div class="header"><h1>Employee Dashboard</h1></div>
+  <div class="container" id="app">
+    <!-- Employee data will be loaded here -->
+  </div>
+  <script>
+    async function fetchEmployeeData() {
+      try {
+        const response = await fetch('http://localhost:5000/employees');
+        const data = await response.json();
+        const appContainer = document.getElementById('app');
+        appContainer.innerHTML = `
+          <h2>Employee List</h2>
+          <ul>
+            ${data.map(employee => `<li>${employee.name} - ${employee.position}</li>`).join('')}
+          </ul>
+        `;
+      } catch (error) {
+        console.error('Error fetching employee data:', error);
+      }
+    }
+
+    fetchEmployeeData();
+  </script>
+</body>
+</html>
+```

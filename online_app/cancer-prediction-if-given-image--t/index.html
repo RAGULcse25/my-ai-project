@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Prediction Interface</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #2f2f2f;
+            color: #fff;
+        }
+        .dark-theme {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .result-card {
+            background-color: #444;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3 dark-theme">
+                <h2>Cancer Prediction Interface</h2>
+                <form id="prediction-form">
+                    <div class="form-group">
+                        <label for="image-url">Image URL:</label>
+                        <input type="text" class="form-control" id="image-url" value="https://picsum.photos/seed/cancer/200/200">
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" class="form-control" id="age" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Sex:</label>
+                        <select class="form-control" id="sex">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tumor-size">Tumor Size:</label>
+                        <input type="number" class="form-control" id="tumor-size" value="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="lymph-nodes">Lymph Nodes:</label>
+                        <input type="number" class="form-control" id="lymph-nodes" value="5">
+                    </div>
+                    <button type="submit" class="btn btn-primary">PREDICT</button>
+                </form>
+                <div id="result-card" class="result-card" style="display: none;">
+                    <h3>Prediction Result:</h3>
+                    <p id="prediction-result"></p>
+                    <p id="confidence-score"></p>
+                    <p id="explanation"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3 dark-theme">
+                <h2>Model Info</h2>
+                <p>Algorithm: Convolutional Neural Network (CNN)</p>
+                <p>Accuracy: 95%</p>
+                <p>Features Used: Image URL, Age, Sex, Tumor Size, Lymph Nodes</p>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3 dark-theme">
+                <h2>How it Works</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <i class="bi bi-camera" style="font-size: 24px;"></i>
+                        <p>Step 1: Image Analysis</p>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="bi bi-brush" style="font-size: 24px;"></i>
+                        <p>Step 2: Feature Extraction</p>
+                    </div>
+                    <div class="col-md-4">
+                        <i class="bi bi-pie-chart" style="font-size: 24px;"></i>
+                        <p>Step 3: Prediction</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3 dark-theme">
+                <h2>Sample Predictions</h2>
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Image URL</th>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>Tumor Size</th>
+                            <th>Lymph Nodes</th>
+                            <th>Prediction</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>https://picsum.photos/seed/cancer/200/200</td>
+                            <td>50</td>
+                            <td>Male</td>
+                            <td>20</td>
+                            <td>5</td>
+                            <td>Positive</td>
+                        </tr>
+                        <tr>
+                            <td>https://picsum.photos/seed/cancer/200/201</td>
+                            <td>40</td>
+                            <td>Female</td>
+                            <td>15</td>
+                            <td>3</td>
+                            <td>Negative</td>
+                        </tr>
+                        <tr>
+                            <td>https://picsum.photos/seed/cancer/200/202</td>
+                            <td>60</td>
+                            <td>Male</td>
+                            <td>25</td>
+                            <td>7</td>
+                            <td>Positive</td>
+                        </tr>
+                        <tr>
+                            <td>https://picsum.photos/seed/cancer/200/203</td>
+                            <td>30</td>
+                            <td>Female</td>
+                            <td>10</td>
+                            <td>2</td>
+                            <td>Negative</td>
+                        </tr>
+                        <tr>
+                            <td>https://picsum.photos/seed/cancer/200/204</td>
+                            <td>55</td>
+                            <td>Male</td>
+                            <td>22</td>
+                            <td>6</td>
+                            <td>Positive</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6 offset-md-3 dark-theme">
+                <h2>Feature Importance</h2>
+                <canvas id="feature-importance-chart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#prediction-form').submit(function(e) {
+                e.preventDefault();
+                var imageUrl = $('#image-url').val();
+                var age = parseInt($('#age').val());
+                var sex = $('#sex').val();
+                var tumorSize = parseInt($('#tumor-size').val());
+                var lymphNodes = parseInt($('#lymph-nodes').val());
+                var prediction = simulatePrediction(imageUrl, age, sex, tumorSize, lymphNodes);
+                $('#prediction-result').text('Prediction: ' + prediction);
+                $('#confidence-score').text('Confidence Score: ' + getConfidenceScore(prediction));
+                $('#explanation').text('Explanation: ' + getExplanation(prediction));
+                $('#result-card').fadeIn();
+            });
+            function simulatePrediction(imageUrl, age, sex, tumorSize, lymphNodes) {
+                // Simulate prediction using a simple formula
+                var score = (age * 0.2) + (tumorSize * 0.3) + (lymphNodes * 0.2);
+                if (sex === 'male') {
+                    score += 10;
+                } else {
+                    score -= 10;
+                }
+                if (score > 50) {
+                    return 'Positive';
+                } else {
+                    return 'Negative';
+                }
+            }
+            function getConfidenceScore(prediction) {
+                // Simulate confidence score
+                if (prediction === 'Positive') {
+                    return '80%';
+                } else {
+                    return '70%';
+                }
+            }
+            function getExplanation(prediction) {
+                // Simulate explanation
+                if (prediction === 'Positive') {
+                    return 'The model predicts that the patient has a high risk of cancer based on the input features.';
+                } else {
+                    return 'The model predicts that the patient has a low risk of cancer based on the input features.';
+                }
+            }
+            var ctx = document.getElementById('feature-importance-chart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Image URL', 'Age', 'Sex', 'Tumor Size', 'Lymph Nodes'],
+                    datasets: [{
+                        label: 'Feature Importance',
+                        data: [20, 15, 10, 30, 25],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

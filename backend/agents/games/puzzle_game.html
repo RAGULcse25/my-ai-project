@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>🧩 Puzzle — S.E.A.D.S.</title>
+<style>
+body{background:#070B14;color:#FFF;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;padding:50px;}
+#grid{display:grid;grid-template-columns:repeat(3,100px);gap:5px;background:#222;padding:5px;border-radius:8px;}
+.tile{width:100px;height:100px;background:linear-gradient(135deg,#6C63FF,#4ECDE6);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:bold;cursor:pointer;border-radius:6px;transition:0.2s;}
+.tile.empty{background:transparent;cursor:default;}
+h1 { background:linear-gradient(135deg,#FF6B9D,#4ECDE6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+</style>
+</head>
+<body>
+<h1>Sliding Puzzle</h1>
+<div style="margin-bottom:20px;font-size:20px">Moves: <span id="moves">0</span></div>
+<div id="grid"></div>
+<script>
+let tiles=[1,2,3,4,5,6,7,8,0];
+let moves=0;
+tiles.sort(()=>Math.random()-0.5); // shuffle
+
+function render(){
+  const g = document.getElementById('grid');
+  g.innerHTML='';
+  tiles.forEach((t,i)=>{
+    const el = document.createElement('div');
+    el.className = 'tile ' + (t===0?'empty':'');
+    el.textContent = t!==0?t:'';
+    el.onclick = ()=>clickTile(i);
+    g.appendChild(el);
+  });
+  document.getElementById('moves').textContent=moves;
+}
+
+function clickTile(i){
+  const zeroIdx = tiles.indexOf(0);
+  const row1=Math.floor(i/3), col1=i%3;
+  const row2=Math.floor(zeroIdx/3), col2=zeroIdx%3;
+  if(Math.abs(row1-row2)+Math.abs(col1-col2)===1){
+    [tiles[i], tiles[zeroIdx]] = [tiles[zeroIdx], tiles[i]];
+    moves++;
+    render();
+    if(tiles.slice(0,8).every((v,i)=>v===i+1)) setTimeout(()=>alert("You Win!"), 200);
+  }
+}
+render();
+</script>
+</body>
+</html>

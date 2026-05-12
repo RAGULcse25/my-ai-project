@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Game</title>
+    <style>
+        /* Add some basic styling to our game */
+        body {
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            width: 800px;
+            height: 600px;
+            border: 1px solid black;
+            margin: 40px auto;
+        }
+        #game-canvas {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #score-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #lives-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #game-over-screen button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas" width="800" height="600"></canvas>
+        <div id="score-overlay">Score: 0</div>
+        <div id="lives-overlay">Lives: 3</div>
+        <div id="game-over-screen">
+            <h1>Game Over!</h1>
+            <button id="restart-button">Restart</button>
+        </div>
+    </div>
+
+    <script>
+        // Get our canvas and context
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set up our game variables
+        let score = 0;
+        let lives = 3;
+        let gameOver = false;
+        let playerX = canvas.width / 2;
+        let playerY = canvas.height / 2;
+        let playerSpeed = 5;
+        let playerRadius = 20;
+        let obstacles = [];
+        let obstacleSpeed = 2;
+
+        // Set up our event listeners
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                playerY -= playerSpeed;
+            } else if (e.key === 'ArrowDown') {
+                playerY += playerSpeed;
+            } else if (e.key === 'ArrowLeft') {
+                playerX -= playerSpeed;
+            } else if (e.key === 'ArrowRight') {
+                playerX += playerSpeed;
+            }
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches[0].clientX < canvas.width / 2) {
+                playerX -= playerSpeed;
+            } else {
+                playerX += playerSpeed;
+            }
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches[0].clientX < canvas.width / 2) {
+                playerX -= playerSpeed;
+            } else {
+                playerX += playerSpeed;
+            }
+        });
+
+        // Set up our game loop
+        function update() {
+            if (!gameOver) {
+                // Clear our canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                // Draw our player
+                ctx.beginPath();
+                ctx.arc(playerX, playerY, playerRadius, 0, 2 * Math.PI);
+                ctx.fillStyle = 'blue';
+                ctx.fill();
+
+                // Update our obstacles
+                for (let i = 0; i < obstacles.length; i++) {
+                    obstacles[i].y += obstacleSpeed;
+                    if (obstacles[i].y > canvas.height) {
+                        obstacles.splice(i, 1);
+                    }
+                }
+
+                // Draw our obstacles
+                for (let i = 0; i < obstacles.length; i++) {
+                    ctx.beginPath();
+                    ctx.rect(obstacles[i].x, obstacles[i].y, 20, 20);
+                    ctx.fillStyle = 'red';
+                    ctx.fill();
+                }
+
+                // Check for collisions
+                for (let i = 0; i < obstacles.length; i++) {
+                    if (checkCollision(playerX, playerY, playerRadius, obstacles[i].x, obstacles[i].y, 10)) {
+                        lives--;
+                        obstacles.splice(i, 1);
+                        if (lives === 0) {
+                            gameOver = true;
+                        }
+                    }
+                }
+
+                // Update our score
+                score++;
+                document.getElementById('score-overlay').innerHTML = 'Score: ' + score;
+                document.getElementById('lives-overlay').innerHTML = 'Lives: ' + lives;
+
+                // Add new obstacles
+                if (Math.random() < 0.1) {
+                    obstacles.push({ x: Math.random() * (canvas.width - 20), y: 0 });
+                }
+
+                // Keep our player inside the canvas
+                if (playerX - playerRadius < 0) {
+                    playerX = playerRadius;
+                } else if (playerX + playerRadius > canvas.width) {
+                    playerX = canvas.width - playerRadius;
+                }
+                if (playerY - playerRadius < 0) {
+                    playerY = playerRadius;
+                } else if (playerY + playerRadius > canvas.height) {
+                    playerY = canvas.height - playerRadius;
+                }
+            } else {
+                // Show our game over screen
+                document.getElementById('game-over-screen').style.display = 'flex';
+            }
+        }
+
+        // Set up our draw function
+        function draw() {
+            requestAnimationFrame(update);
+        }
+
+        // Start our game
+        document.getElementById('game-container').addEventListener('click', () => {
+            draw();
+        });
+
+        // Restart our game
+        document.getElementById('restart-button').addEventListener('click', () => {
+            score = 0;
+            lives = 3;
+            gameOver = false;
+            playerX = canvas.width / 2;
+            playerY = canvas.height / 2;
+            obstacles = [];
+            document.getElementById('game-over-screen').style.display = 'none';
+            draw();
+        });
+
+        // Check for collisions
+        function checkCollision(x1, y1, r1, x2, y2, r2) {
+            let distance = Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+            return distance < r1 + r2;
+        }
+    </script>
+</body>
+</html>

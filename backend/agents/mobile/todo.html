@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Todo App</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-purple-50 h-screen overflow-hidden flex flex-col font-sans">
+  <div class="px-6 pt-12 pb-4">
+    <h1 class="font-extrabold text-4xl text-gray-900 mb-1">Tasks.</h1>
+    <p class="text-purple-600 font-medium text-sm">3 pending tasks today</p>
+  </div>
+  
+  <div class="flex-1 overflow-y-auto px-6 py-4 space-y-3">
+    <div class="bg-white p-5 rounded-2xl shadow-sm border border-purple-100 flex items-start gap-4">
+      <input type="checkbox" class="w-6 h-6 rounded-full border-2 border-purple-200 mt-1 accent-purple-600">
+      <div>
+        <h3 class="font-bold text-gray-800">Review Code Architecture</h3>
+        <p class="text-xs text-gray-400 mt-1 flex gap-1 items-center"><i data-lucide="clock" class="w-3 h-3"></i> 10:00 AM</p>
+      </div>
+    </div>
+    <div class="bg-white p-5 rounded-2xl shadow-sm border border-purple-100 flex items-start gap-4 opacity-50">
+      <input type="checkbox" checked class="w-6 h-6 rounded-full border-2 border-purple-200 mt-1 accent-purple-600">
+      <div class="line-through">
+        <h3 class="font-bold text-gray-500">Morning Standup Meeting</h3>
+      </div>
+    </div>
+  </div>
+  
+  <div class="p-6 bg-white border-t border-purple-50" style="padding-bottom: 30px;">
+    <div class="flex gap-2">
+      <input type="text" placeholder="Add a new task..." class="flex-1 bg-purple-50 rounded-xl px-4 py-3 outline-none focus:border-purple-300 border border-transparent">
+      <button class="bg-purple-600 text-white p-3 rounded-xl shadow shadow-purple-200"><i data-lucide="plus"></i></button>
+    </div>
+  </div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

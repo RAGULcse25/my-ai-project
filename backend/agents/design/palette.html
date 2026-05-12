@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Color Palette Generator</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 flex flex-col h-screen font-sans">
+  <div class="p-6 border-b flex justify-between items-center bg-white shadow-sm z-10">
+    <div class="font-black text-2xl tracking-tighter flex items-center gap-2"><i data-lucide="palette" class="text-pink-500"></i> Chromatic</div>
+    <div class="text-sm font-semibold text-gray-400">Press Spacebar to generate</div>
+    <button class="border border-gray-300 text-gray-700 px-6 py-2 rounded-full font-bold shadow-sm hover:bg-gray-50">Export CSS</button>
+  </div>
+  
+  <div class="flex-1 flex w-full">
+    <div class="flex-1 bg-[#2C3E50] group relative cursor-pointer" onclick="cpy('#2C3E50')">
+      <div class="absolute bottom-16 left-0 right-0 text-center text-white font-mono text-xl opacity-0 group-hover:opacity-100 transition-opacity font-bold tracking-widest drop-shadow-md">#2C3E50</div>
+    </div>
+    <div class="flex-1 bg-[#E74C3C] group relative cursor-pointer" onclick="cpy('#E74C3C')">
+      <div class="absolute bottom-16 left-0 right-0 text-center text-white font-mono text-xl opacity-0 group-hover:opacity-100 transition-opacity font-bold tracking-widest drop-shadow-md">#E74C3C</div>
+    </div>
+    <div class="flex-1 bg-[#ECF0F1] group relative cursor-pointer" onclick="cpy('#ECF0F1')">
+      <div class="absolute bottom-16 left-0 right-0 text-center text-gray-800 font-mono text-xl opacity-0 group-hover:opacity-100 transition-opacity font-bold tracking-widest drop-shadow-md">#ECF0F1</div>
+    </div>
+    <div class="flex-1 bg-[#3498DB] group relative cursor-pointer" onclick="cpy('#3498DB')">
+      <div class="absolute bottom-16 left-0 right-0 text-center text-white font-mono text-xl opacity-0 group-hover:opacity-100 transition-opacity font-bold tracking-widest drop-shadow-md">#3498DB</div>
+    </div>
+    <div class="flex-1 bg-[#2980B9] group relative cursor-pointer" onclick="cpy('#2980B9')">
+      <div class="absolute bottom-16 left-0 right-0 text-center text-white font-mono text-xl opacity-0 group-hover:opacity-100 transition-opacity font-bold tracking-widest drop-shadow-md">#2980B9</div>
+    </div>
+  </div>
+  <script>lucide.createIcons(); function cpy(t){alert('Copied '+t);}</script>
+</body>
+</html>

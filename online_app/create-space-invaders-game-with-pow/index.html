@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>🚀 Space Invaders — S.E.A.D.S.</title>
+<style>
+body{background:#000;color:#FFF;font-family:sans-serif;display:flex;flex-direction:column;align-items:center;}
+canvas{background:url('https://images.unsplash.com/photo-1534796636912-3b95b3ab5986'); background-size:cover; border:2px solid #333;}
+</style>
+</head>
+<body>
+<h1>Space Invaders</h1>
+<canvas id="cvs" width="600" height="600"></canvas>
+<script>
+const cvs=document.getElementById('cvs');const ctx=cvs.getContext('2d');
+const player={x:275,y:550,w:50,h:30,speed:5};
+const bullets=[], enemies=[];
+let keys={};
+window.addEventListener('keydown',e=>keys[e.code]=true);
+window.addEventListener('keyup',e=>keys[e.code]=false);
+
+for(let r=0;r<4;r++){
+  for(let c=0;c<8;c++){
+    enemies.push({x:50+c*60,y:50+r*40,w:40,h:30,alive:true});
+  }
+}
+
+let enemyDir=1;
+
+function update(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  
+  if(keys['ArrowLeft']) player.x-=player.speed;
+  if(keys['ArrowRight']) player.x+=player.speed;
+  if(keys['Space']) {
+    if(bullets.length===0 || bullets[bullets.length-1].y < 400)
+    bullets.push({x:player.x+20,y:player.y,w:10,h:20});
+    keys['Space']=false; // semi-auto
+  }
+  
+  ctx.fillStyle='#4ECDE6';
+  ctx.fillRect(player.x,player.y,player.w,player.h);
+  
+  // Bullets
+  ctx.fillStyle='#FF6B9D';
+  for(let i=0;i<bullets.length;i++){
+    bullets[i].y-=10;
+    ctx.fillRect(bullets[i].x,bullets[i].y,bullets[i].w,bullets[i].h);
+  }
+  
+  // Enemies
+  ctx.fillStyle='#61d345';
+  let moveDown=false;
+  enemies.forEach(e=>{
+    if(e.alive){
+      e.x+=enemyDir*1.5;
+      if(e.x<10 || e.x>550) moveDown=true;
+      
+      // Collision
+      bullets.forEach((b,i)=>{
+        if(b.x < e.x+e.w && b.x+b.w > e.x && b.y < e.y+e.h && b.y+b.h > e.y){
+          e.alive=false; bullets.splice(i,1);
+        }
+      });
+      ctx.fillRect(e.x,e.y,e.w,e.h);
+    }
+  });
+  
+  if(moveDown){ enemyDir*=-1; enemies.forEach(e=>e.y+=20); }
+  
+  requestAnimationFrame(update);
+}
+update();
+</script>
+</body>
+</html>

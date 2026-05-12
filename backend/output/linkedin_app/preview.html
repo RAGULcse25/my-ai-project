@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn App Clone</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0a66c2;
+            --secondary-color: #ffffff;
+            --background-color: #1a1d23;
+            --text-color: #ffffff;
+            --dark-text-color: #333333;
+            --light-text-color: #cccccc;
+            --border-color: #444444;
+            --box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .profile-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            background-color: var(--secondary-color);
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .name {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+        .feed {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            background-color: var(--secondary-color);
+            margin-top: 20px;
+        }
+        .post {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .post-content {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+        .like-button, .comment-button, .share-button {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .like-button:hover, .comment-button:hover, .share-button:hover {
+            background-color: #0069d9;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+            background-color: var(--secondary-color);
+            margin-top: 20px;
+        }
+        .connection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .connection-name {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: var(--secondary-color);
+            margin-top: 20px;
+        }
+        .search-input {
+            font-size: 16px;
+            font-weight: 400;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+        }
+        .search-button {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .search-button:hover {
+            background-color: #0069d9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile-page">
+            <img src="https://picsum.photos/100/100" alt="Avatar" class="avatar">
+            <h2 class="name">John Doe</h2>
+            <h3 class="title">Software Engineer at ABC Company</h3>
+        </div>
+        <div class="feed">
+            <div class="post">
+                <p class="post-content">This is a sample post content.</p>
+                <div class="post-actions">
+                    <button class="like-button" onclick="likePost(this)">Like</button>
+                    <button class="comment-button" onclick="commentPost(this)">Comment</button>
+                    <button class="share-button" onclick="sharePost(this)">Share</button>
+                </div>
+            </div>
+            <div class="post">
+                <p class="post-content">This is another sample post content.</p>
+                <div class="post-actions">
+                    <button class="like-button" onclick="likePost(this)">Like</button>
+                    <button class="comment-button" onclick="commentPost(this)">Comment</button>
+                    <button class="share-button" onclick="sharePost(this)">Share</button>
+                </div>
+            </div>
+            <div class="post">
+                <p class="post-content">This is yet another sample post content.</p>
+                <div class="post-actions">
+                    <button class="like-button" onclick="likePost(this)">Like</button>
+                    <button class="comment-button" onclick="commentPost(this)">Comment</button>
+                    <button class="share-button" onclick="sharePost(this)">Share</button>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+            <h2>Connections</h2>
+            <div class="connection">
+                <p class="connection-name">Jane Doe</p>
+            </div>
+            <div class="connection">
+                <p class="connection-name">Bob Smith</p>
+            </div>
+            <div class="connection">
+                <p class="connection-name">Alice Johnson</p>
+            </div>
+        </div>
+        <div class="search-bar">
+            <input type="text" class="search-input" id="search-input" placeholder="Search posts...">
+            <button class="search-button" onclick="searchPosts()">Search</button>
+        </div>
+    </div>
+    <script>
+        function likePost(button) {
+            button.textContent = 'Liked';
+            button.style.backgroundColor = '#0069d9';
+            button.disabled = true;
+        }
+        function commentPost(button) {
+            alert('Comment posted!');
+        }
+        function sharePost(button) {
+            alert('Post shared!');
+        }
+        function searchPosts() {
+            const searchInput = document.getElementById('search-input');
+            const posts = document.querySelectorAll('.post');
+            const searchQuery = searchInput.value.toLowerCase();
+            posts.forEach(post => {
+                const postContent = post.querySelector('.post-content').textContent.toLowerCase();
+                if (postContent.includes(searchQuery)) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

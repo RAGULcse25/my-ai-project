@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic Wood Chess</title>
+    <style>
+html,body{margin:0!important;padding:0!important;overflow:hidden}
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        #board {
+            width: 560px;
+            height: 560px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        #sidebar {
+            width: 240px;
+            height: 560px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            float: right;
+        }
+        #move-history {
+            width: 220px;
+            height: 200px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        #captured-pieces {
+            width: 220px;
+            height: 100px;
+            padding: 10px;
+        }
+        #turn-indicator {
+            width: 220px;
+            height: 50px;
+            padding: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .piece {
+            font-size: 40px;
+            cursor: pointer;
+        }
+        .highlight {
+            background-color: yellow;
+        }
+        .valid-move {
+            background-color: green;
+        }
+        .check {
+            background-color: red;
+        }
+        .last-move {
+            background-color: lightblue;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="board" width="560" height="560"></canvas>
+    <div id="sidebar">
+        <div id="move-history"></div>
+        <div id="captured-pieces"></div>
+        <div id="turn-indicator"></div>
+    </div>
+    <script>
+        const board = document.getElementById('board');
+        const ctx = board.getContext('2d');
+        const sidebar = document.getElementById('sidebar');
+        const moveHistory = document.getElementById('move-history');
+        const capturedPieces = document.getElementById('captured-pieces');
+        const turnIndicator = document.getElementById('turn-indicator');
+
+        let pieces = [];
+        let selectedPiece = null;
+        let validMoves = [];
+        let lastMove = null;
+        let check = false;
+        let turn = 'white';
+        let moveHistoryArray = [];
+        let capturedPiecesArray = [];
+
+        // Initialize board
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                let piece = null;
+                if (i === 1) {
+                    piece = { type: 'pawn', color: 'white', moved: false };
+                } else if (i === 6) {
+                    piece = { type: 'pawn', color: 'black', moved: false };
+                } else if (i === 0) {
+                    if (j === 0 || j === 7) {
+                        piece = { type: 'rook', color: 'white', moved: false };
+                    } else if (j === 1 || j === 6) {
+                        piece = { type: 'knight', color: 'white', moved: false };
+                    } else if (j === 2 || j === 5) {
+                        piece = { type: 'bishop', color: 'white', moved: false };
+                    } else if (j === 3) {
+                        piece = { type: 'queen', color: 'white', moved: false };
+                    } else if (j === 4) {
+                        piece = { type: 'king', color: 'white', moved: false };
+                    }
+                } else if (i === 7) {
+                    if (j === 0 || j === 7) {
+                        piece = { type: 'rook', color: 'black', moved: false };
+                    } else if (j === 1 || j === 6) {
+                        piece = { type: 'knight', color: 'black', moved: false };
+                    } else if (j === 2 || j === 5) {
+                        piece = { type: 'bishop', color: 'black', moved: false };
+                    } else if (j === 3) {
+                        piece = { type: 'queen', color: 'black', moved: false };
+                    } else if (j === 4) {
+                        piece = { type: 'king', color: 'black', moved: false };
+                    }
+                }
+                pieces.push(piece);
+            }
+        }
+
+        // Draw board
+        function drawBoard() {
+            ctx.clearRect(0, 0, 560, 560);
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    let color = (i + j) % 2 === 0 ? '#fff' : '#ccc';
+                    ctx.fillStyle = color;
+                    ctx.fillRect(i * 70, j * 70, 70, 70);
+                }
+            }
+            for (let i = 0; i < pieces.length; i++) {
+                let piece = pieces[i];
+                if (piece) {
+                    let x = (i % 8) * 70 + 10;
+                    let y = Math.floor(i / 8) * 70 + 10;
+                    ctx.font = '40px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillStyle = piece.color === 'white' ? '#fff' : '#000';
+                    ctx.fillText(getPieceSymbol(piece.type), x + 35, y + 35);
+                }
+            }
+            if (selectedPiece) {
+                let x = (selectedPiece.index % 8) * 70 + 10;
+                let y = Math.floor(selectedPiece.index / 8) * 70 + 10;
+                ctx.fillStyle = 'yellow';
+                ctx.fillRect(x, y, 70, 70);
+            }
+            for (let i = 0; i < validMoves.length; i++) {
+                let x = (validMoves[i].index % 8) * 70 + 10;
+                let y = Math.floor(validMoves[i].index / 8) * 70 + 10;
+                ctx.fillStyle = 'green';
+                ctx.fillRect(x, y, 70, 70);
+            }
+            if (lastMove) {
+                let x = (lastMove.from.index % 8) * 70 + 10;
+                let y = Math.floor(lastMove.from.index / 8) * 70 + 10;
+                ctx.fillStyle = 'lightblue';
+                ctx.fillRect(x, y, 70, 70);
+                x = (lastMove.to.index % 8) * 70 + 10;
+                y = Math.floor(lastMove.to.index / 8) * 70 + 10;
+                ctx.fillStyle = 'lightblue';
+                ctx.fillRect(x, y, 70, 70);
+            }
+            if (check) {
+                let x = getKingIndex('black') % 8 * 70 + 10;
+                let y = Math.floor(getKingIndex('black') / 8) * 70 + 10;
+                ctx.fillStyle = 'red';
+                ctx.fillRect(x, y, 70, 70);
+            }
+        }
+
+        // Get piece symbol
+        function getPieceSymbol(type) {
+            switch (type) {
+                case 'king':
+                    return '\u2654';
+                case 'queen':
+                    return '\u2655';
+                case 'rook':
+                    return '\u2656';
+                case 'bishop':
+                    return '\u2657';
+                case 'knight':
+                    return '\u2658';
+                case 'pawn':
+                    return '\u2659';
+                default:
+                    return '';
+            }
+        }
+
+        // Get king index
+        function getKingIndex(color) {
+            for (let i = 0; i < pieces.length; i++) {
+                let piece = pieces[i];
+                if (piece && piece.type === 'king' && piece.color === color) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        // Handle click
+        board.addEventListener('click', (e) => {
+            let x = Math.floor(e.clientX / 70);
+            let y = Math.floor(e.clientY / 70);
+            let index = y * 8 + x;
+            if (selectedPiece) {
+                if (validMoves.some((move) => move.index === index)) {
+                    let piece = pieces[selectedPiece.index];
+                    let to = pieces[index];
+                    pieces[index] = piece;
+                    pieces[selectedPiece.index] = null;
+                    if (piece.type === 'pawn' && (index / 8) === (selectedPiece.index / 8 + (piece.color === 'white' ? 1 : -1))) {
+                        piece.moved = true;
+                    }
+                    lastMove = { from: selectedPiece, to: { index: index, piece: to } };
+                    selectedPiece = null;
+                    validMoves = [];
+                    turn = turn === 'white' ? 'black' : 'white';
+                    check = isCheck();
+                    drawBoard();
+                    updateMoveHistory();
+                    updateCapturedPieces();
+                    updateTurnIndicator();
+                    if (isCheckmate()) {
+                        drawGameOver('checkmate');
+                    } else if (isStalemate()) {
+                        drawGameOver('stalemate');
+                    }
+                } else {
+                    selectedPiece = null;
+                    validMoves = [];
+                    drawBoard();
+                }
+            } else {
+                let piece = pieces[index];
+                if (piece && piece.color === turn) {
+                    selectedPiece = { index: index, piece: piece };
+                    validMoves = getValidMoves(piece);
+                    drawBoard();
+                }
+            }
+        });
+
+        // Get valid moves
+        function getValidMoves(piece) {
+            let moves = [];
+            switch (piece.type) {
+                case 'pawn':
+                    moves = getPawnMoves(piece);
+                    break;
+                case 'rook':
+                    moves = getRookMoves(piece);
+                    break;
+                case 'knight':
+                    moves = getKnightMoves(piece);
+                    break;
+                case 'bishop':
+                    moves = getBishopMoves(piece);
+                    break;
+                case 'queen':
+                    moves = getQueenMoves(piece);
+                    break;
+                case 'king':
+                    moves = getKingMoves(piece);
+                    break;
+                default:
+                    break;
+            }
+            return moves;
+        }
+
+        // Get pawn moves
+        function getPawnMoves(piece) {
+            let moves = [];
+            let direction = piece.color === 'white' ? 1 : -1;
+            let index = piece.index;
+            let row = Math.floor(index / 8);
+            let col = index % 8;
+            if (row + direction >= 0 && row + direction < 8) {
+                if (!pieces[(row + direction) * 8 + col]) {
+                    moves.push({ index: (row + direction) * 8 + col });
+                    if ((piece.color === 'white' && row === 1) || (piece.color === 'black' && row === 6)) {
+                        if (!pieces[(row + direction * 2) * 8 + col]) {
+                            moves.push({ index: (row + direction * 2) * 8 + col });
+                        }
+                    }
+                }
+                if (col > 0 && pieces[(row + direction) * 8 + col - 1] && pieces[(row + direction) * 8 + col - 1].color !== piece.color) {
+                    moves.push({ index: (row + direction) * 8 + col - 1 });
+                }
+                if (col < 7 && pieces[(row + direction) * 8 + col + 1] && pieces[(row + direction) * 8 + col + 1].color !== piece.color) {
+                    moves.push({ index: (row + direction) * 8 + col + 1 });
+                }
+            }
+            return moves;
+        }
+
+        // Get rook moves
+        function getRookMoves(piece) {
+            let moves = [];
+            let index = piece.index;
+            let row = Math.floor(index / 8);
+            let col = index % 8;
+            for (let i = 1; i < 8; i++) {
+                if (row + i < 8) {
+                    let newIndex = (row + i) * 8 + col;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            for (let i = 1; i < 8; i++) {
+                if (row - i >= 0) {
+                    let newIndex = (row - i) * 8 + col;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            for (let i = 1; i < 8; i++) {
+                if (col + i < 8) {
+                    let newIndex = row * 8 + col + i;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            for (let i = 1; i < 8; i++) {
+                if (col - i >= 0) {
+                    let newIndex = row * 8 + col - i;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            return moves;
+        }
+
+        // Get knight moves
+        function getKnightMoves(piece) {
+            let moves = [];
+            let index = piece.index;
+            let row = Math.floor(index / 8);
+            let col = index % 8;
+            let directions = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]];
+            for (let i = 0; i < directions.length; i++) {
+                let newRow = row + directions[i][0];
+                let newCol = col + directions[i][1];
+                if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                    let newIndex = newRow * 8 + newCol;
+                    if (!pieces[newIndex] || pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                    }
+                }
+            }
+            return moves;
+        }
+
+        // Get bishop moves
+        function getBishopMoves(piece) {
+            let moves = [];
+            let index = piece.index;
+            let row = Math.floor(index / 8);
+            let col = index % 8;
+            for (let i = 1; i < 8; i++) {
+                if (row + i < 8 && col + i < 8) {
+                    let newIndex = (row + i) * 8 + col + i;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            for (let i = 1; i < 8; i++) {
+                if (row + i < 8 && col - i >= 0) {
+                    let newIndex = (row + i) * 8 + col - i;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            for (let i = 1; i < 8; i++) {
+                if (row - i >= 0 && col + i < 8) {
+                    let newIndex = (row - i) * 8 + col + i;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            for (let i = 1; i < 8; i++) {
+                if (row - i >= 0 && col - i >= 0) {
+                    let newIndex = (row - i) * 8 + col - i;
+                    if (!pieces[newIndex]) {
+                        moves.push({ index: newIndex });
+                    } else if (pieces[newIndex].color !== piece.color) {
+                        moves.push({ index: newIndex });
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            return moves;
+        }
+
+        // Get queen moves
+        function getQueenMoves(piece) {
+            let moves = getRookMoves(piece);
+            moves = moves.concat(getBishopMoves(piece));
+            return moves;
+        }
+
+        // Get king moves
+        function getKingMoves(piece) {
+            let moves = [];
+            let index = piece.index;
+            let row = Math.floor(index / 8);
+            let col = index % 8;
+            for (let i = -1; i <= 1; i++) {
+                for (let j = -1; j <= 1; j++) {
+                    if (i === 0 && j === 0) {
+                        continue;
+                    }
+                    let newRow = row + i;
+                    let newCol = col + j;
+                    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        let newIndex = newRow * 8 + newCol;
+                        if (!pieces[newIndex] || pieces[newIndex].color !== piece.color) {
+                            moves.push({ index: newIndex });
+                        }
+                    }
+                }
+            }
+            return moves;
+        }
+
+        // Check if check
+        function isCheck() {
+            let kingIndex = getKingIndex(turn);
+            let row = Math.floor(kingIndex / 8);
+            let col = kingIndex % 8;
+            for (let i = 0; i < pieces.length; i++) {
+                let piece = pieces[i];
+                if (piece && piece.color !== turn) {
+                    let moves = getValidMoves(piece);
+                    for (let j = 0; j < moves.length; j++) {
+                        if (moves[j].index === kingIndex) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Check if checkmate
+        function isCheckmate() {
+            if (!isCheck()) {
+                return false;
+            }
+            for (let i = 0; i < pieces.length; i++) {
+                let piece = pieces[i];
+                if (piece && piece.color === turn) {
+                    let moves = getValidMoves(piece);
+                    for (let j = 0; j < moves.length; j++) {
+                        let newPieces = pieces.slice();
+                        let newPiece = newPieces[i];
+                        newPieces[moves[j].index] = newPiece;
+                        newPieces[i] = null;
+                        if (!isCheck()) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
+        // Check if stalemate
+        function isStalemate() {
+            if (isCheck()) {
+                return false;
+            }
+            for (let i = 0; i < pieces.length; i++) {
+                let piece = pieces[i];
+                if (piece && piece.color === turn) {
+                    let moves = getValidMoves(piece);
+                    if (moves.length > 0) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        // Update move history
+        function updateMoveHistory() {
+            moveHistory.innerHTML = '';
+            for (let i = 0; i < moveHistoryArray.length; i++) {
+                let move = moveHistoryArray[i];
+                let notation = getNotation(move);
+                moveHistory.innerHTML += notation + '<br>';
+            }
+        }
+
+        // Get notation
+        function getNotation(move) {
+            let from = move.from;
+            let to = move.to;
+            let piece = from.piece;
+            let notation = '';
+            if (piece.type === 'king') {
+                notation += 'K';
+            } else if (piece.type === 'queen') {
+                notation += 'Q';
+            } else if (piece.type === 'rook') {
+                notation += 'R';
+            } else if (piece.type === 'bishop') {
+                notation += 'B';
+            } else if (piece.type === 'knight') {
+                notation += 'N';
+            } else if (piece.type === 'pawn') {
+                notation += '';
+            }
+            notation += String.fromCharCode(97 + to.index % 8);
+            notation += 8 - Math.floor(to.index / 8);
+            return notation;
+        }
+
+        // Update captured pieces
+        function updateCapturedPieces() {
+            capturedPieces.innerHTML = '';
+            for (let i = 0; i < capturedPiecesArray.length; i++) {
+                let piece = capturedPiecesArray[i];
+                capturedPieces.innerHTML += getPieceSymbol(piece.type) + ' ';
+            }
+        }
+
+        // Update turn indicator
+        function updateTurnIndicator() {
+            turnIndicator.innerHTML = turn === 'white' ? 'White\'s turn' : 'Black\'s turn';
+        }
+
+        // Draw game over
+        function drawGameOver(result) {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.fillRect(0, 0, 560, 560);
+            ctx.font = '40px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = '#fff';
+            ctx.fillText(result === 'checkmate' ? 'Checkmate!' : 'Stalemate!', 280, 280);
+            let restartButton = document.createElement('button');
+            restartButton.innerHTML = 'Restart';
+            restartButton.style.position = 'absolute';
+            restartButton.style.top = '50%';
+            restartButton.style.left = '50%';
+            restartButton.style.transform = 'translate(-50%, -50%)';
+            restartButton.style.fontSize = '24px';
+            restartButton.style.padding = '10px 20px';
+            restartButton.style.border = 'none';
+            restartButton.style.borderRadius = '5px';
+            restartButton.style.background = '#4CAF50';
+            restartButton.style.color = '#fff';
+            restartButton.style.cursor = 'pointer';
+            restartButton.addEventListener('click', () => {
+                location.reload();
+            });
+            board.parentNode.appendChild(restartButton);
+        }
+
+        drawBoard();
+        updateTurnIndicator();
+    </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Photo Editor</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{background:#18181b;color:#fff;}
+canvas{max-width:100%;max-height:600px;border-radius:8px;}
+input[type=range]{accent-color:#8b5cf6;width:100%;}
+</style>
+</head>
+<body class="h-screen flex flex-col font-sans">
+  <nav class="bg-[#0f0f12] h-14 border-b border-[#27272a] flex items-center justify-between px-4">
+    <div class="font-bold flex items-center gap-2"><i data-lucide="image" class="text-violet-500"></i> PhotoEditor Pro</div>
+    <div class="flex gap-2">
+      <button class="bg-[#27272a] hover:bg-[#3f3f46] px-4 py-1.5 rounded text-sm font-medium transition">Reset</button>
+      <button class="bg-violet-600 hover:bg-violet-500 px-4 py-1.5 rounded text-sm font-medium shadow transition">Export</button>
+    </div>
+  </nav>
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <div class="w-72 bg-[#121214] border-r border-[#27272a] p-5 overflow-y-auto">
+      <h3 class="text-xs font-bold text-gray-500 mb-4 uppercase tracking-wider">Adjustments</h3>
+      
+      <div class="mb-5">
+        <div class="flex justify-between text-sm mb-2"><span>Brightness</span><span id="br-val">100%</span></div>
+        <input type="range" id="br" min="0" max="200" value="100" oninput="update()">
+      </div>
+      <div class="mb-5">
+        <div class="flex justify-between text-sm mb-2"><span>Contrast</span><span id="ct-val">100%</span></div>
+        <input type="range" id="ct" min="0" max="200" value="100" oninput="update()">
+      </div>
+      <div class="mb-5">
+        <div class="flex justify-between text-sm mb-2"><span>Saturation</span><span id="st-val">100%</span></div>
+        <input type="range" id="st" min="0" max="200" value="100" oninput="update()">
+      </div>
+      <div class="mb-5">
+        <div class="flex justify-between text-sm mb-2"><span>Blur</span><span id="bl-val">0px</span></div>
+        <input type="range" id="bl" min="0" max="20" value="0" oninput="update()">
+      </div>
+      
+      <h3 class="text-xs font-bold text-gray-500 mt-8 mb-4 uppercase tracking-wider">Filters</h3>
+      <div class="grid grid-cols-2 gap-2">
+        <button class="bg-[#27272a] hover:bg-violet-600 p-2 rounded text-sm transition" onclick="setPreset(100,100,100,0)">Normal</button>
+        <button class="bg-[#27272a] hover:bg-violet-600 p-2 rounded text-sm transition" onclick="setPreset(110,120,80,0)">Vintage</button>
+        <button class="bg-[#27272a] hover:bg-violet-600 p-2 rounded text-sm transition" onclick="setPreset(120,110,150,0)">Vivid</button>
+        <button class="bg-[#27272a] hover:bg-violet-600 p-2 rounded text-sm transition" onclick="setPreset(90,130,0,0)">B & W</button>
+      </div>
+    </div>
+    
+    <!-- Canvas -->
+    <div class="flex-1 bg-[#09090b] flex items-center justify-center p-8 relative">
+      <img id="img" src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=1000" class="max-w-full max-h-full rounded-lg shadow-2xl transition-all duration-75 object-contain" crossorigin="anonymous">
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+    function update(){
+      let br=document.getElementById('br').value;
+      let ct=document.getElementById('ct').value;
+      let st=document.getElementById('st').value;
+      let bl=document.getElementById('bl').value;
+      document.getElementById('br-val').innerText=br+"%";
+      document.getElementById('ct-val').innerText=ct+"%";
+      document.getElementById('st-val').innerText=st+"%";
+      document.getElementById('bl-val').innerText=bl+"px";
+      document.getElementById('img').style.filter = `brightness(${br}%) contrast(${ct}%) saturate(${st}%) blur(${bl}px)`;
+    }
+    function setPreset(b,c,s,bl){
+      document.getElementById('br').value=b; document.getElementById('ct').value=c;
+      document.getElementById('st').value=s; document.getElementById('bl').value=bl;
+      update();
+    }
+  </script>
+</body>
+</html>

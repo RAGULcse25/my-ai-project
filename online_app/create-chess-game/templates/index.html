@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.4/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide@1.7.0/dist/lucide.min.css" rel="stylesheet">
+</head>
+<body class="dark bg-gray-900 text-white">
+    <div class="max-w-md mx-auto p-4">
+        <!-- Home Screen -->
+        <div id="home" class="block">
+            <h1 class="text-3xl font-bold mb-4">Chess Game</h1>
+            <button id="start-game" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Start Game</button>
+            <button id="join-game" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Join Game</button>
+        </div>
+
+        <!-- Start Game Screen -->
+        <div id="start-game-screen" class="hidden">
+            <h1 class="text-3xl font-bold mb-4">Start Game</h1>
+            <form id="start-game-form">
+                <label for="game-name" class="block text-sm font-medium text-gray-200 mb-2">Game Name:</label>
+                <input type="text" id="game-name" class="block w-full p-2 pl-10 text-sm text-gray-200 bg-gray-700 border border-gray-600 rounded">
+                <label for="player-name" class="block text-sm font-medium text-gray-200 mb-2">Player Name:</label>
+                <input type="text" id="player-name" class="block w-full p-2 pl-10 text-sm text-gray-200 bg-gray-700 border border-gray-600 rounded">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Game</button>
+            </form>
+        </div>
+
+        <!-- Join Game Screen -->
+        <div id="join-game-screen" class="hidden">
+            <h1 class="text-3xl font-bold mb-4">Join Game</h1>
+            <form id="join-game-form">
+                <label for="game-id" class="block text-sm font-medium text-gray-200 mb-2">Game ID:</label>
+                <input type="text" id="game-id" class="block w-full p-2 pl-10 text-sm text-gray-200 bg-gray-700 border border-gray-600 rounded">
+                <label for="player-name" class="block text-sm font-medium text-gray-200 mb-2">Player Name:</label>
+                <input type="text" id="player-name" class="block w-full p-2 pl-10 text-sm text-gray-200 bg-gray-700 border border-gray-600 rounded">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Join Game</button>
+            </form>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="hidden">
+            <h1 class="text-3xl font-bold mb-4">Game</h1>
+            <div class="grid grid-cols-8 grid-rows-8 gap-1">
+                <!-- Chess Board -->
+                <div id="chess-board" class="grid grid-cols-8 grid-rows-8 gap-1">
+                    <!-- Pieces will be rendered here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 p-2 flex justify-around">
+        <button id="home-btn" class="text-gray-200 hover:text-white">
+            <i class="lucide lucide-home"></i>
+        </button>
+        <button id="start-game-btn" class="text-gray-200 hover:text-white">
+            <i class="lucide lucide-plus"></i>
+        </button>
+        <button id="join-game-btn" class="text-gray-200 hover:text-white">
+            <i class="lucide lucide-users"></i>
+        </button>
+    </nav>
+
+    <script>
+        // Show/hide screens
+        document.getElementById('start-game').addEventListener('click', () => {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('start-game-screen').classList.remove('hidden');
+        });
+
+        document.getElementById('join-game').addEventListener('click', () => {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('join-game-screen').classList.remove('hidden');
+        });
+
+        document.getElementById('start-game-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Create game logic here
+            document.getElementById('start-game-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+        });
+
+        document.getElementById('join-game-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // Join game logic here
+            document.getElementById('join-game-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+        });
+
+        // Bottom navigation bar
+        document.getElementById('home-btn').addEventListener('click', () => {
+            document.getElementById('home').classList.remove('hidden');
+            document.getElementById('start-game-screen').classList.add('hidden');
+            document.getElementById('join-game-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.add('hidden');
+        });
+
+        document.getElementById('start-game-btn').addEventListener('click', () => {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('start-game-screen').classList.remove('hidden');
+            document.getElementById('join-game-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.add('hidden');
+        });
+
+        document.getElementById('join-game-btn').addEventListener('click', () => {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('start-game-screen').classList.add('hidden');
+            document.getElementById('join-game-screen').classList.remove('hidden');
+            document.getElementById('game-screen').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>

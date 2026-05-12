@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #070B14;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .glassmorphism {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .sticky-navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sticky-navbar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 24px;
+        }
+        .sticky-navbar li {
+            cursor: pointer;
+        }
+        .sticky-navbar li:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        .canvas-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #canvas {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+        }
+        .score {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .lives {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .level {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+        .game-over {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 24px;
+        }
+        .restart-button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 12px 24px;
+            cursor: pointer;
+        }
+        .restart-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body>
+    <div class="sticky-navbar">
+        <div>
+            <img src="https://picsum.photos/seed/1/50/50" alt="Logo">
+        </div>
+        <ul>
+            <li>Home</li>
+            <li>Instructions</li>
+        </ul>
+    </div>
+    <div class="container">
+        <div class="glassmorphism">
+            <h1 class="score">Score: 0</h1>
+            <h2 class="lives">Lives: 3</h2>
+            <h2 class="level">Level: 1</h2>
+            <div class="canvas-container">
+                <canvas id="canvas" width="800" height="600"></canvas>
+            </div>
+            <div class="game-over" id="game-over" style="display: none;">Game Over!</div>
+            <button class="restart-button" id="restart-button" style="display: none;">Restart</button>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreElement = document.querySelector('.score');
+        const livesElement = document.querySelector('.lives');
+        const levelElement = document.querySelector('.level');
+        const gameOverElement = document.getElementById('game-over');
+        const restartButton = document.getElementById('restart-button');
+        let score = 0;
+        let lives = 3;
+        let level = 1;
+        let gameOver = false;
+        let pieces = [];
+        let selectedPiece = null;
+        let possibleMoves = [];
+
+        // Initialize pieces
+        for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+                if ((i + j) % 2 === 0) {
+                    pieces.push({
+                        x: i,
+                        y: j,
+                        type: 'pawn',
+                        color: 'white'
+                    });
+                } else {
+                    pieces.push({
+                        x: i,
+                        y: j,
+                        type: 'pawn',
+                        color: 'black'
+                    });
+                }
+            }
+        }
+
+        // Draw board
+        function drawBoard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if ((i + j) % 2 === 0) {
+                        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                    } else {
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                    }
+                    ctx.fillRect(i * 100, j * 100, 100, 100);
+                }
+            }
+        }
+
+        // Draw pieces
+        function drawPieces() {
+            for (let i = 0; i < pieces.length; i++) {
+                const piece = pieces[i];
+                if (piece.type === 'pawn') {
+                    ctx.fillStyle = piece.color === 'white' ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)';
+                    ctx.beginPath();
+                    ctx.arc(piece.x * 100 + 50, piece.y * 100 + 50, 40, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+        }
+
+        // Handle mouse click
+        canvas.addEventListener('click', (e) => {
+            if (gameOver) return;
+            const x = Math.floor(e.clientX / 100);
+            const y = Math.floor(e.clientY / 100);
+            const piece = pieces.find((p) => p.x === x && p.y === y);
+            if (piece) {
+                selectedPiece = piece;
+                possibleMoves = getPossibleMoves(piece);
+            } else {
+                if (selectedPiece) {
+                    const move = possibleMoves.find((m) => m.x === x && m.y === y);
+                    if (move) {
+                        makeMove(selectedPiece, move);
+                    }
+                    selectedPiece = null;
+                    possibleMoves = [];
+                }
+            }
+        });
+
+        // Get possible moves
+        function getPossibleMoves(piece) {
+            const moves = [];
+            if (piece.type === 'pawn') {
+                if (piece.color === 'white') {
+                    if (piece.y > 0) {
+                        moves.push({ x: piece.x, y: piece.y - 1 });
+                    }
+                    if (piece.y > 1) {
+                        moves.push({ x: piece.x, y: piece.y - 2 });
+                    }
+                } else {
+                    if (piece.y < 7) {
+                        moves.push({ x: piece.x, y: piece.y + 1 });
+                    }
+                    if (piece.y < 6) {
+                        moves.push({ x: piece.x, y: piece.y + 2 });
+                    }
+                }
+            }
+            return moves;
+        }
+
+        // Make move
+        function makeMove(piece, move) {
+            piece.x = move.x;
+            piece.y = move.y;
+            score++;
+            scoreElement.textContent = `Score: ${score}`;
+            if (score >= 10) {
+                level++;
+                levelElement.textContent = `Level: ${level}`;
+            }
+        }
+
+        // Handle game over
+        function handleGameOver() {
+            gameOver = true;
+            gameOverElement.style.display = 'block';
+            restartButton.style.display = 'block';
+        }
+
+        // Restart game
+        restartButton.addEventListener('click', () => {
+            gameOver = false;
+            score = 0;
+            lives = 3;
+            level = 1;
+            pieces = [];
+            selectedPiece = null;
+            possibleMoves = [];
+            scoreElement.textContent = `Score: ${score}`;
+            livesElement.textContent = `Lives: ${lives}`;
+            levelElement.textContent = `Level: ${level}`;
+            gameOverElement.style.display = 'none';
+            restartButton.style.display = 'none';
+            initializePieces();
+        });
+
+        // Initialize pieces
+        function initializePieces() {
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    if ((i + j) % 2 === 0) {
+                        pieces.push({
+                            x: i,
+                            y: j,
+                            type: 'pawn',
+                            color: 'white'
+                        });
+                    } else {
+                        pieces.push({
+                            x: i,
+                            y: j,
+                            type: 'pawn',
+                            color: 'black'
+                        });
+                    }
+                }
+            }
+        }
+
+        // Main loop
+        function loop() {
+            drawBoard();
+            drawPieces();
+            if (gameOver) {
+                handleGameOver();
+            }
+            requestAnimationFrame(loop);
+        }
+
+        loop();
+    </script>
+</body>
+</html>

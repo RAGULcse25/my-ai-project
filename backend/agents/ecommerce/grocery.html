@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Grocery Store</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>*{font-family:'Inter',sans-serif;box-sizing:border-box;margin:0;padding:0;} body{background:#f0fdf4;}</style>
+</head>
+<body>
+<nav class="sticky top-0 z-50 bg-white shadow-sm px-6 py-3">
+  <div class="max-w-7xl mx-auto flex items-center gap-4">
+    <div class="font-black text-2xl text-emerald-600 flex items-center gap-2"><i data-lucide="shopping-basket"></i> FreshBasket</div>
+    <div class="flex-1 flex bg-gray-100 rounded-xl overflow-hidden border border-gray-200">
+      <input type="text" placeholder="Search vegetables, fruits, dairy..." class="flex-1 px-4 py-2.5 bg-transparent text-sm outline-none">
+      <button class="bg-emerald-600 px-5 hover:bg-emerald-700 text-white transition"><i data-lucide="search" class="w-4 h-4"></i></button>
+    </div>
+    <div class="bg-emerald-600 text-white px-4 py-2 rounded-xl flex items-center gap-2 cursor-pointer hover:bg-emerald-700 transition font-semibold text-sm">
+      <i data-lucide="map-pin" class="w-4 h-4"></i> Mumbai — 10 min delivery
+    </div>
+    <button class="relative"><i data-lucide="shopping-cart" class="w-6 h-6 text-gray-700"></i><span class="absolute -top-1 -right-1 bg-emerald-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">4</span></button>
+  </div>
+</nav>
+
+<!-- Hero Banner -->
+<div class="max-w-7xl mx-auto px-6 py-6">
+  <div class="bg-gradient-to-r from-emerald-600 to-teal-500 rounded-3xl p-8 flex justify-between items-center">
+    <div class="text-white">
+      <p class="text-emerald-200 font-semibold text-sm mb-2">🚛 Free delivery above ₹199</p>
+      <h1 class="text-4xl font-black mb-3">Fresh & Organic <br>Delivered in 10 min!</h1>
+      <button class="bg-white text-emerald-700 font-bold px-8 py-3 rounded-xl hover:shadow-lg transition">Order Now</button>
+    </div>
+    <div class="hidden md:flex gap-4">
+      <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=250&auto=format" class="w-36 h-36 object-cover rounded-2xl shadow-xl border-4 border-white/30">
+      <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=250&auto=format" class="w-36 h-36 object-cover rounded-2xl shadow-xl border-4 border-white/30 mt-4">
+    </div>
+  </div>
+</div>
+
+<!-- Categories -->
+<div class="max-w-7xl mx-auto px-6 pb-4">
+  <div class="flex gap-4 overflow-x-auto pb-2">
+    <div class="flex flex-col items-center gap-2 cursor-pointer min-w-fit">
+      <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-sm hover:scale-110 transition">🥦</div>
+      <span class="text-xs font-semibold text-gray-600">Vegetables</span>
+    </div>
+    <div class="flex flex-col items-center gap-2 cursor-pointer min-w-fit">
+      <div class="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-sm hover:scale-110 transition">🍎</div>
+      <span class="text-xs font-semibold text-gray-600">Fruits</span>
+    </div>
+    <div class="flex flex-col items-center gap-2 cursor-pointer min-w-fit">
+      <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-sm hover:scale-110 transition">🥛</div>
+      <span class="text-xs font-semibold text-gray-600">Dairy</span>
+    </div>
+    <div class="flex flex-col items-center gap-2 cursor-pointer min-w-fit">
+      <div class="bg-amber-100 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-sm hover:scale-110 transition">🍞</div>
+      <span class="text-xs font-semibold text-gray-600">Bakery</span>
+    </div>
+    <div class="flex flex-col items-center gap-2 cursor-pointer min-w-fit">
+      <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-sm hover:scale-110 transition">🥩</div>
+      <span class="text-xs font-semibold text-gray-600">Meat</span>
+    </div>
+    <div class="flex flex-col items-center gap-2 cursor-pointer min-w-fit">
+      <div class="bg-teal-100 w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-sm hover:scale-110 transition">🧴</div>
+      <span class="text-xs font-semibold text-gray-600">Beverages</span>
+    </div>
+  </div>
+</div>
+
+<!-- Products -->
+<div class="max-w-7xl mx-auto px-6 pb-16">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">🔥 Today's Deals</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
+      <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=200&auto=format" class="w-full h-24 object-cover rounded-xl mb-3">
+      <h3 class="text-sm font-semibold text-gray-800">Tomatoes (1kg)</h3>
+      <p class="text-lg font-black text-emerald-600 mt-1">₹39</p>
+      <button class="w-full border-2 border-emerald-600 text-emerald-600 text-xs font-bold py-1.5 rounded-lg mt-2 hover:bg-emerald-600 hover:text-white transition">+ Add</button>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
+      <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=200&auto=format" class="w-full h-24 object-cover rounded-xl mb-3">
+      <h3 class="text-sm font-semibold text-gray-800">Bananas (12 pcs)</h3>
+      <p class="text-lg font-black text-emerald-600 mt-1">₹49</p>
+      <button class="w-full border-2 border-emerald-600 text-emerald-600 text-xs font-bold py-1.5 rounded-lg mt-2 hover:bg-emerald-600 hover:text-white transition">+ Add</button>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
+      <img src="https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=200&auto=format" class="w-full h-24 object-cover rounded-xl mb-3">
+      <h3 class="text-sm font-semibold text-gray-800">Amul Milk (1L)</h3>
+      <p class="text-lg font-black text-emerald-600 mt-1">₹68</p>
+      <button class="w-full border-2 border-emerald-600 text-emerald-600 text-xs font-bold py-1.5 rounded-lg mt-2 hover:bg-emerald-600 hover:text-white transition">+ Add</button>
+    </div>
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
+      <img src="https://images.unsplash.com/photo-1506807803488-8eafc15316c7?w=200&auto=format" class="w-full h-24 object-cover rounded-xl mb-3">
+      <h3 class="text-sm font-semibold text-gray-800">Bread (400g)</h3>
+      <p class="text-lg font-black text-emerald-600 mt-1">₹45</p>
+      <button class="w-full border-2 border-emerald-600 text-emerald-600 text-xs font-bold py-1.5 rounded-lg mt-2 hover:bg-emerald-600 hover:text-white transition">+ Add</button>
+    </div>
+  </div>
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

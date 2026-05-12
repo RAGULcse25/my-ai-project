@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Movie RecSys</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>body{background:#040D1A;color:#fff;} .glass{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);}</style>
+</head>
+<body class="p-8 font-sans">
+  <div class="max-w-5xl mx-auto">
+    <div class="flex items-center gap-4 mb-10"><i data-lucide="film" class="text-rose-500 w-10 h-10"></i><div><h1 class="text-3xl font-black">Neural Collaborative Filtering</h1><p class="text-slate-400">Deep Learning Recommender System Embeddings</p></div></div>
+    
+    <div class="flex gap-4 mb-8">
+      <input type="text" value="User ID: 89402 (Sci-Fi Fan)" class="glass bg-transparent p-4 w-full rounded-lg text-rose-300 font-mono outline-none" readonly>
+      <button class="bg-rose-600 px-8 py-4 rounded-lg font-bold shadow-lg shadow-rose-900"><i data-lucide="refresh-cw"></i></button>
+    </div>
+
+    <h3 class="text-xl font-bold mb-4 text-slate-300">Latent Factor Matches (K=4)</h3>
+    <div class="grid grid-cols-4 gap-6">
+      <div class="bg-black border border-white/10 rounded-xl overflow-hidden group">
+        <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400" class="w-full h-48 object-cover opacity-70 group-hover:opacity-100 transition">
+        <div class="p-4"><div class="flex justify-between items-center mb-2"><h4 class="font-bold">Interstellar</h4><span class="text-green-400 text-xs font-bold font-mono">98.4%</span></div><p class="text-xs text-slate-500">Cosine Sim: 0.962</p></div>
+      </div>
+      <div class="bg-black border border-white/10 rounded-xl overflow-hidden group">
+        <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400" class="w-full h-48 object-cover opacity-70 group-hover:opacity-100 transition">
+        <div class="p-4"><div class="flex justify-between items-center mb-2"><h4 class="font-bold">Arrival</h4><span class="text-green-400 text-xs font-bold font-mono">94.1%</span></div><p class="text-xs text-slate-500">Cosine Sim: 0.915</p></div>
+      </div>
+      <div class="bg-black border border-white/10 rounded-xl overflow-hidden group">
+        <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=400" class="w-full h-48 object-cover opacity-70 group-hover:opacity-100 transition">
+        <div class="p-4"><div class="flex justify-between items-center mb-2"><h4 class="font-bold">Gravity</h4><span class="text-green-400 text-xs font-bold font-mono">89.2%</span></div><p class="text-xs text-slate-500">Cosine Sim: 0.880</p></div>
+      </div>
+      <div class="bg-black border border-white/10 rounded-xl overflow-hidden group">
+        <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=400" class="w-full h-48 object-cover opacity-70 grayscale group-hover:grayscale-0 transition">
+        <div class="p-4"><div class="flex justify-between items-center mb-2"><h4 class="font-bold">Dune</h4><span class="text-yellow-400 text-xs font-bold font-mono">76.5%</span></div><p class="text-xs text-slate-500">Cosine Sim: 0.741</p></div>
+      </div>
+    </div>
+    
+    <div class="mt-8 glass p-6 rounded-xl font-mono text-xs text-emerald-400">
+      > model.predict([user_idx], [item_idx])<br>
+      > Epoch 50/50 - loss: 0.2314 - val_loss: 0.2845 - rmse: 0.841<br>
+      > T-SNE projection generated.
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

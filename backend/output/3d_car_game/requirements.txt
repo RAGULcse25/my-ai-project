@@ -1,0 +1,10 @@
+# List of required packages for the 3D Car Game project
+PyOpenGL
+Pygame
+Panda3D
+Pymunk
+PyQt
+numpy
+pandas
+scikit-learn
+sqlite3

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Points of the Metaverse Presentation</title>
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@4/dist/reveal.css">
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@4/dist/theme/black.css">
+    <style>
+        /* Custom CSS for Dark Professional theme */
+        .reveal {
+            background: linear-gradient(120deg, #6C63FF, #FF6B9D, #4ECDE6);
+        }
+        .reveal .slides {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        .reveal .slide {
+            background: linear-gradient(120deg, #6C63FF, #FF6B9D, #4ECDE6);
+            padding: 24px;
+        }
+        .reveal h1, .reveal h2, .reveal h3 {
+            font-family: 'Inter', sans-serif;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+        .reveal p {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: #FFFFFF;
+        }
+        .reveal ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .reveal li {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            color: #FFFFFF;
+            margin-bottom: 12px;
+        }
+        .reveal .progress-bar {
+            background: linear-gradient(120deg, #6C63FF, #FF6B9D, #4ECDE6);
+            height: 10px;
+            border-radius: 5px;
+        }
+        .reveal .progress-bar span {
+            background: #FFFFFF;
+            height: 10px;
+            border-radius: 5px;
+            display: block;
+            width: 0;
+            animation: progress 10s linear infinite;
+        }
+        @keyframes progress {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Main Points of the Metaverse Presentation</h1>
+                <p>Objective & Goal: Build an autonomous system that converts ideas into production-ready web apps using AI agents.</p>
+                <p>Reduce manual debugging and bridge the gap between prompting and deployment.</p>
+            </section>
+            <section>
+                <h2>Problem Identified</h2>
+                <p>Standard LLMs (like ChatGPT) often generate broken code or hallucinate CSS classes.</p>
+                <p>Non-coders struggle to fix syntax/logic errors.</p>
+                <p>Developers spend ~40% of their time fixing small UI/UX bugs.</p>
+            </section>
+            <section>
+                <h2>Traditional vs. Swarm Approach</h2>
+                <p>Traditional: Single-prompt AI generation (e.g., Copilot, Cursor, ChatGPT).</p>
+                <p>Drawbacks: No self-correction, logic failures in complex JS, no live preview.</p>
+                <p>Swarm Approach: 6 specialized agents working in stages with self-correction and review.</p>
+            </section>
+            <section>
+                <h2>Modules in the Swarm</h2>
+                <ul>
+                    <li>Market Researcher – analyzes industry trends.</li>
+                    <li>Architect – drafts technical logic and data flow.</li>
+                    <li>Developer – generates raw HTML/JS.</li>
+                    <li>UI Designer – adds Tailwind CSS, animations, aesthetics.</li>
+                    <li>Debugger – scans for syntax/tag errors.</li>
+                    <li>QA Tester – final verification and production-ready stamp.</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Architecture & Workflow</h2>
+                <p>Input: User query.</p>
+                <p>Processing: 6-stage pipeline.</p>
+                <p>Output: index.html + live preview.</p>
+                <p>Uses DeepSeek for reasoning and Llama for UI aesthetics.</p>
+            </section>
+            <section>
+                <h2>Advantages</h2>
+                <ul>
+                    <li>99% error-free code.</li>
+                    <li>Highly aesthetic UI.</li>
+                    <li>Fully autonomous (no human intervention).</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Disadvantages</h2>
+                <ul>
+                    <li>Higher API token usage.</li>
+                    <li>Latency (~45 seconds per run).</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Future Scope</h2>
+                <ul>
+                    <li>Multi-file support (React/Next.js projects).</li>
+                    <li>Vector memory integration (RAG with ChromaDB/Pinecone).</li>
+                    <li>Cloud deployment pipeline (Vercel/Netlify + GitHub Actions CI/CD).</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Key Takeaway</h2>
+                <p>Iterative agent workflows (AI checking AI) outperform single large models.</p>
+                <p>Demonstrates the future of “Agentic Programming” where AI builds software autonomously.</p>
+            </section>
+            <section>
+                <h2>Conclusion</h2>
+                <p>The Metaverse Presentation Objective & Goal is to build an autonomous system that converts ideas into production-ready web apps using AI agents.</p>
+                <p>This system has the potential to revolutionize the way we build software and bridge the gap between prompting and deployment.</p>
+                <div class="progress-bar">
+                    <span style="width: 100%;"></span>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="https://unpkg.com/reveal.js@4/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            width: 1280,
+            height: 720,
+            margin: 0.1,
+            minScale: 1,
+            maxScale: 1,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'default',
+            slideNumber: true,
+            hash: true,
+            keyboard: true,
+            overview: true,
+            center: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            shuffle: false,
+            fragments: true,
+            embedded: false,
+            help: true,
+            showNotes: false,
+            autoSlide: 0,
+            autoSlideStoppable: true,
+            autoSlideMethod: 'default',
+            mouseWheel: false,
+            hideAddressBar: true,
+            previewLinks: false,
+            transitionStyle: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'default',
+            viewDistance: 3,
+            disableLayout: false,
+            mobileLayoutWidth: 768,
+            mobileLayoutHeight: 0,
+            controlsLayout: 'bottom-right',
+            controlsBackArrows: 'faded',
+            visibility: 'uncovered',
+            disabled: true,
+            progress: true,
+            progressStyle: null,
+            progressFormat: '<span class="progress-bar"><span style="width: {{current}}/{{total}};"></span></span>',
+            defaultTiming: 0,
+            touchBackend: 'precomputed',
+            ignoreMouseWheel: false,
+            observeChanges: true,
+            hashOneBasedIndex: false,
+            pause: 0,
+            pauseOnHover: true,
+            showSlideNumber: 'speaker',
+            loading: {
+                text: 'Loading...',
+                background: 'none',
+                dark: false,
+                min: false
+            }
+        });
+    </script>
+</body>
+</html>

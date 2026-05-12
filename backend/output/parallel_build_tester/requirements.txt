@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+scikit-learn
+pandas
+numpy
+streamlit
+sqlite3
+python-dotenv 
+# for environment variable management
+pydantic 
+# for data validation and parsing
+# other dependencies may be added as needed

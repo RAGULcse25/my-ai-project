@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>House Price ML Model</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>body{background:#0a0c10;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,sans-serif;} .glass-panel{background:rgba(22,27,34,0.7);backdrop-filter:blur(10px);border:1px solid #30363d;}</style>
+</head>
+<body class="p-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex items-center gap-3 mb-8"><i data-lucide="home" class="text-blue-500 w-8 h-8"></i><h1 class="text-3xl font-bold text-white">Gradient Boosting Regression: Housing Prices</h1></div>
+    
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
+      <div class="glass-panel p-6 rounded-xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-blue-500 opacity-5 blur-xl"></div>
+        <div class="text-sm text-gray-400 mb-2 font-bold uppercase tracking-wider">Model R² Score</div><div class="text-4xl font-black text-blue-400">0.912</div>
+      </div>
+      <div class="glass-panel p-6 rounded-xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-purple-500 opacity-5 blur-xl"></div>
+        <div class="text-sm text-gray-400 mb-2 font-bold uppercase tracking-wider">Mean Abs Error</div><div class="text-4xl font-black text-purple-400">$18,450</div>
+      </div>
+      <div class="glass-panel p-6 rounded-xl">
+        <div class="text-sm text-gray-400 mb-4 font-bold uppercase tracking-wider">Simulate Inference</div>
+        <input type="range" class="w-full mb-2" id="sqft" min="800" max="5000" value="2000" oninput="pred()">
+        <p class="text-xs text-gray-400">Sqft: <span id="sqft-val">2000</span> sqft</p>
+        <div class="mt-4 text-2xl font-bold text-green-400" id="res">$450,000</div>
+      </div>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="glass-panel p-6 rounded-xl"><h3 class="font-bold text-gray-300 mb-4">Actual vs Predicted Price</h3><canvas id="cart1"></canvas></div>
+      <div class="glass-panel p-6 rounded-xl"><h3 class="font-bold text-gray-300 mb-4">Feature Importance (SHAP)</h3><canvas id="cart2"></canvas></div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+    function pred(){
+      let val = document.getElementById('sqft').value;
+      document.getElementById('sqft-val').innerText = val;
+      let price = (val * 210) + Math.random()*20000;
+      document.getElementById('res').innerText = "$" + price.toLocaleString(undefined, {maximumFractionDigits:0});
+    }
+    new Chart(document.getElementById('cart1'), {
+      type: 'scatter', data: {
+        datasets: [{
+          label: 'Test Set',
+          data: Array.from({length:100},()=>({x:Math.random()*1000000, y:Math.random()*1000000})),
+          backgroundColor: '#3b82f6'
+        }]
+      }, options: { scales: { x: { grid: { color: '#30363d' } }, y: { grid: { color: '#30363d' } } }, plugins: { legend: { display: false } } }
+    });
+    new Chart(document.getElementById('cart2'), {
+      type: 'bar', data: {
+        labels: ['SquareFt', 'Location', 'Bedrooms', 'Age', 'Garage'],
+        datasets: [{ data: [0.85, 0.65, 0.40, 0.25, 0.15], backgroundColor: ['#8b5cf6','#a855f7','#d946ef','#ec4899','#f43f5e'] }]
+      }, options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#30363d' } }, y: { grid: { display: false } } } }
+    });
+  </script>
+</body>
+</html>

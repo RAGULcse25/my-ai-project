@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temple Run</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #game-canvas {
+            border: 1px solid black;
+        }
+        #score-hud {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #game-over-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #game-over-overlay button {
+            padding: 10px 20px;
+            font-size: 24px;
+            border: none;
+            border-radius: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+        #game-over-overlay button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas" width="400" height="600"></canvas>
+        <div id="score-hud">Score: 0</div>
+        <div id="game-over-overlay">
+            <h1>Game Over!</h1>
+            <button id="restart-button">Restart</button>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+        const scoreHud = document.getElementById('score-hud');
+        const gameOverOverlay = document.getElementById('game-over-overlay');
+        const restartButton = document.getElementById('restart-button');
+
+        let score = 0;
+        let playerX = 100;
+        let playerY = 100;
+        let playerWidth = 50;
+        let playerHeight = 50;
+        let obstacleX = 400;
+        let obstacleY = 100;
+        let obstacleWidth = 50;
+        let obstacleHeight = 50;
+        let obstacleSpeed = 2;
+        let gameOver = false;
+
+        function drawPlayer() {
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+        }
+
+        function drawObstacle() {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(obstacleX, obstacleY, obstacleWidth, obstacleHeight);
+        }
+
+        function update() {
+            if (!gameOver) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                drawPlayer();
+                drawObstacle();
+
+                obstacleX -= obstacleSpeed;
+                if (obstacleX < -obstacleWidth) {
+                    obstacleX = 400;
+                }
+
+                if (checkCollision()) {
+                    gameOver = true;
+                }
+
+                score++;
+                scoreHud.textContent = `Score: ${score}`;
+
+                requestAnimationFrame(update);
+            } else {
+                gameOverOverlay.style.display = 'flex';
+            }
+        }
+
+        function checkCollision() {
+            if (playerX + playerWidth > obstacleX &&
+                playerX < obstacleX + obstacleWidth &&
+                playerY + playerHeight > obstacleY &&
+                playerY < obstacleY + obstacleHeight) {
+                return true;
+            }
+            return false;
+        }
+
+        restartButton.addEventListener('click', () => {
+            gameOver = false;
+            score = 0;
+            playerX = 100;
+            playerY = 100;
+            obstacleX = 400;
+            obstacleY = 100;
+            gameOverOverlay.style.display = 'none';
+            update();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp') {
+                playerY -= 10;
+            } else if (e.key === 'ArrowDown') {
+                playerY += 10;
+            } else if (e.key === 'ArrowLeft') {
+                playerX -= 10;
+            } else if (e.key === 'ArrowRight') {
+                playerX += 10;
+            }
+        });
+
+        update();
+    </script>
+</body>
+</html>

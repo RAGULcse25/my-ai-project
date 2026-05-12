@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Car Game</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #070B14;
+            color: #fff;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .glassmorphism {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 24px;
+        }
+        .gradient {
+            background: linear-gradient(90deg, #6C63FF, #FF6B9D, #4ECDE6);
+            padding: 24px;
+            border-radius: 16px;
+        }
+        .shadow {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 24px;
+        }
+        .nav a:hover {
+            color: #6C63FF;
+        }
+        .start-menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .start-menu button {
+            padding: 24px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(90deg, #6C63FF, #FF6B9D, #4ECDE6);
+            color: #fff;
+            cursor: pointer;
+        }
+        .start-menu button:hover {
+            background: linear-gradient(90deg, #4ECDE6, #FF6B9D, #6C63FF);
+        }
+        .game-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #fff;
+            border-radius: 16px;
+        }
+        .game-container canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+        }
+        .pause-menu {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .pause-menu button {
+            padding: 24px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(90deg, #6C63FF, #FF6B9D, #4ECDE6);
+            color: #fff;
+            cursor: pointer;
+        }
+        .pause-menu button:hover {
+            background: linear-gradient(90deg, #4ECDE6, #FF6B9D, #6C63FF);
+        }
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-over button {
+            padding: 24px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(90deg, #6C63FF, #FF6B9D, #4ECDE6);
+            color: #fff;
+            cursor: pointer;
+        }
+        .game-over button:hover {
+            background: linear-gradient(90deg, #4ECDE6, #FF6B9D, #6C63FF);
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav glassmorphism shadow">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+    </nav>
+    <div class="container">
+        <div class="start-menu">
+            <button id="start-button">Start Game</button>
+        </div>
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" width="800" height="600"></canvas>
+        </div>
+        <div class="pause-menu" id="pause-menu">
+            <button id="resume-button">Resume Game</button>
+            <button id="restart-button">Restart Game</button>
+        </div>
+        <div class="game-over" id="game-over">
+            <button id="play-again-button">Play Again</button>
+        </div>
+    </div>
+    <script>
+        let canvas = document.getElementById('game-canvas');
+        let ctx = canvas.getContext('2d');
+        let gameContainer = document.getElementById('game-container');
+        let pauseMenu = document.getElementById('pause-menu');
+        let gameOver = document.getElementById('game-over');
+        let startButton = document.getElementById('start-button');
+        let resumeButton = document.getElementById('resume-button');
+        let restartButton = document.getElementById('restart-button');
+        let playAgainButton = document.getElementById('play-again-button');
+        let car = {
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            width: 50,
+            height: 50,
+            speed: 5,
+            direction: 'right'
+        };
+        let obstacles = [];
+        let score = 0;
+        let gameOverFlag = false;
+        let pauseFlag = false;
+        let animationFrame;
+        function drawCar() {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(car.x, car.y, car.width, car.height);
+        }
+        function drawObstacles() {
+            for (let i = 0; i < obstacles.length; i++) {
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
+            }
+        }
+        function updateCar() {
+            if (car.direction === 'right') {
+                car.x += car.speed;
+            } else if (car.direction === 'left') {
+                car.x -= car.speed;
+            } else if (car.direction === 'up') {
+                car.y -= car.speed;
+            } else if (car.direction === 'down') {
+                car.y += car.speed;
+            }
+            if (car.x < 0) {
+                car.x = canvas.width;
+            } else if (car.x > canvas.width) {
+                car.x = 0;
+            }
+            if (car.y < 0) {
+                car.y = canvas.height;
+            } else if (car.y > canvas.height) {
+                car.y = 0;
+            }
+        }
+        function updateObstacles() {
+            for (let i = 0; i < obstacles.length; i++) {
+                obstacles[i].x += obstacles[i].speed;
+                if (obstacles[i].x < 0) {
+                    obstacles[i].x = canvas.width;
+                }
+            }
+        }
+        function checkCollision() {
+            for (let i = 0; i < obstacles.length; i++) {
+                if (car.x < obstacles[i].x + obstacles[i].width &&
+                    car.x + car.width > obstacles[i].x &&
+                    car.y < obstacles[i].y + obstacles[i].height &&
+                    car.y + car.height > obstacles[i].y) {
+                    gameOverFlag = true;
+                }
+            }
+        }
+        function drawScore() {
+            ctx.font = '24px Arial';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+            ctx.fillText('Score: ' + score, 10, 10);
+        }
+        function updateScore() {
+            score++;
+        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCar();
+            drawObstacles();
+            drawScore();
+        }
+        function update() {
+            updateCar();
+            updateObstacles();
+            checkCollision();
+            updateScore();
+        }
+        function animate() {
+            draw();
+            update();
+            animationFrame = requestAnimationFrame(animate);
+        }
+        function startGame() {
+            startButton.style.display = 'none';
+            gameContainer.style.display = 'block';
+            obstacles = [];
+            for (let i = 0; i < 10; i++) {
+                obstacles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    width: 50,
+                    height: 50,
+                    speed: Math.random() * 5
+                });
+            }
+            car.x = canvas.width / 2;
+            car.y = canvas.height / 2;
+            car.direction = 'right';
+            score = 0;
+            gameOverFlag = false;
+            pauseFlag = false;
+            animate();
+        }
+        function pauseGame() {
+            pauseMenu.style.display = 'block';
+            pauseFlag = true;
+            cancelAnimationFrame(animationFrame);
+        }
+        function resumeGame() {
+            pauseMenu.style.display = 'none';
+            pauseFlag = false;
+            animate();
+        }
+        function restartGame() {
+            pauseMenu.style.display = 'none';
+            gameOver.style.display = 'none';
+            startGame();
+        }
+        function playAgain() {
+            gameOver.style.display = 'none';
+            startGame();
+        }
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight') {
+                car.direction = 'right';
+            } else if (event.key === 'ArrowLeft') {
+                car.direction = 'left';
+            } else if (event.key === 'ArrowUp') {
+                car.direction = 'up';
+            } else if (event.key === 'ArrowDown') {
+                car.direction = 'down';
+            }
+        });
+        startButton.addEventListener('click', startGame);
+        resumeButton.addEventListener('click', resumeGame);
+        restartButton.addEventListener('click', restartGame);
+        playAgainButton.addEventListener('click', playAgain);
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'hidden') {
+                pauseGame();
+            } else {
+                resumeGame();
+            }
+        });
+        setInterval(function() {
+            if (gameOverFlag) {
+                gameOver.style.display = 'block';
+                cancelAnimationFrame(animationFrame);
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

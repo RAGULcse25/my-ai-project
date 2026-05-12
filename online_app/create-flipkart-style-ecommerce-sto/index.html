@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipkart-like Ecommerce Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="nav-header">
+        <div class="logo">
+            <img src="https://picsum.photos/seed/logo/100/30" alt="Logo">
+        </div>
+        <div class="search-bar">
+            <input type="search" placeholder="Search for products">
+            <button>Search</button>
+        </div>
+        <div class="cart-icon">
+            <img src="https://picsum.photos/seed/cart/20/20" alt="Cart">
+            <span class="cart-badge">0</span>
+        </div>
+        <div class="account">
+            <img src="https://picsum.photos/seed/account/20/20" alt="Account">
+        </div>
+    </header>
+    <nav class="category-bar">
+        <ul>
+            <li><a href="#">Electronics</a></li>
+            <li><a href="#">Fashion</a></li>
+            <li><a href="#">Home</a></li>
+        </ul>
+    </nav>
+    <section class="hero-section">
+        <div class="banner-carousel">
+            <div class="banner">
+                <img src="https://picsum.photos/seed/banner1/1200/400" alt="Banner 1">
+            </div>
+            <div class="banner">
+                <img src="https://picsum.photos/seed/banner2/1200/400" alt="Banner 2">
+            </div>
+            <div class="banner">
+                <img src="https://picsum.photos/seed/banner3/1200/400" alt="Banner 3">
+            </div>
+        </div>
+    </section>
+    <section class="product-grid">
+        <product-card>
+            <img src="https://picsum.photos/seed/product1/200/200" alt="Product 1">
+            <h2>Product 1</h2>
+            <p>Price: $10</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product2/200/200" alt="Product 2">
+            <h2>Product 2</h2>
+            <p>Price: $20</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product3/200/200" alt="Product 3">
+            <h2>Product 3</h2>
+            <p>Price: $30</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product4/200/200" alt="Product 4">
+            <h2>Product 4</h2>
+            <p>Price: $40</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product5/200/200" alt="Product 5">
+            <h2>Product 5</h2>
+            <p>Price: $50</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product6/200/200" alt="Product 6">
+            <h2>Product 6</h2>
+            <p>Price: $60</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product7/200/200" alt="Product 7">
+            <h2>Product 7</h2>
+            <p>Price: $70</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product8/200/200" alt="Product 8">
+            <h2>Product 8</h2>
+            <p>Price: $80</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product9/200/200" alt="Product 9">
+            <h2>Product 9</h2>
+            <p>Price: $90</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product10/200/200" alt="Product 10">
+            <h2>Product 10</h2>
+            <p>Price: $100</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product11/200/200" alt="Product 11">
+            <h2>Product 11</h2>
+            <p>Price: $110</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product12/200/200" alt="Product 12">
+            <h2>Product 12</h2>
+            <p>Price: $120</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product13/200/200" alt="Product 13">
+            <h2>Product 13</h2>
+            <p>Price: $130</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product14/200/200" alt="Product 14">
+            <h2>Product 14</h2>
+            <p>Price: $140</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product15/200/200" alt="Product 15">
+            <h2>Product 15</h2>
+            <p>Price: $150</p>
+        </product-card>
+        <product-card>
+            <img src="https://picsum.photos/seed/product16/200/200" alt="Product 16">
+            <h2>Product 16</h2>
+            <p>Price: $160</p>
+        </product-card>
+    </section>
+    <div class="product-modal" id="product-modal">
+        <div class="product-modal-content">
+            <img src="https://picsum.photos/seed/product-modal/400/400" alt="Product Modal">
+            <h2>Product Modal</h2>
+            <p>Price: $10</p>
+            <button>Buy Now</button>
+        </div>
+    </div>
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-sidebar-content">
+            <h2>Cart</h2>
+            <ul>
+                <li>
+                    <img src="https://picsum.photos/seed/cart-product1/100/100" alt="Cart Product 1">
+                    <h3>Cart Product 1</h3>
+                    <p>Price: $10</p>
+                </li>
+                <li>
+                    <img src="https://picsum.photos/seed/cart-product2/100/100" alt="Cart Product 2">
+                    <h3>Cart Product 2</h3>
+                    <p>Price: $20</p>
+                </li>
+            </ul>
+            <button>Place Order</button>
+        </div>
+    </div>
+    <div class="payment-modal" id="payment-modal">
+        <div class="payment-modal-content">
+            <h2>Payment</h2>
+            <form>
+                <label for="card-number">Card Number:</label>
+                <input type="text" id="card-number" name="card-number">
+                <label for="expiration-date">Expiration Date:</label>
+                <input type="text" id="expiration-date" name="expiration-date">
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv">
+                <button>Pay Now</button>
+            </form>
+        </div>
+    </div>
+    <div class="order-success-screen" id="order-success-screen">
+        <div class="order-success-screen-content">
+            <h2>Order Successful!</h2>
+            <p>Thank you for your order.</p>
+        </div>
+    </div>
+    <footer>
+        <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">FAQ</a></li>
+        </ul>
+        <div class="payment-logos">
+            <img src="https://picsum.photos/seed/visa/50/20" alt="Visa">
+            <img src="https://picsum.photos/seed/mastercard/50/20" alt="Mastercard">
+            <img src="https://picsum.photos/seed/paypal/50/20" alt="Paypal">
+        </div>
+    </footer>
+    <script src="app.js"></script>
+</body>
+</html>

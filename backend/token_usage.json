@@ -1,0 +1,32 @@
+{
+  "date": "2026-03-21",
+  "providers": {
+    "groq": {
+      "tokens": 68709,
+      "requests": 92,
+      "cost": 0.0
+    },
+    "cerebras": {
+      "tokens": 0,
+      "requests": 0,
+      "cost": 0.0
+    },
+    "together": {
+      "tokens": 0,
+      "requests": 0,
+      "cost": 0.0
+    },
+    "gemini": {
+      "tokens": 0,
+      "requests": 0,
+      "cost": 0.0
+    },
+    "openrouter": {
+      "tokens": 0,
+      "requests": 0,
+      "cost": 0.0
+    }
+  },
+  "total_tokens": 68709,
+  "total_cost": 0.0
+}

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock Paper Scissors Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    #canvas {
+      width: 560px;
+      height: 560px;
+      border: 1px solid #000;
+      float: left;
+    }
+    #sidebar {
+      width: 200px;
+      height: 560px;
+      float: left;
+      background-color: #ccc;
+      padding: 10px;
+    }
+    #move-history {
+      padding: 10px;
+    }
+    #captured-pieces {
+      padding: 10px;
+    }
+    #new-game-button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #new-game-button:hover {
+      background-color: #3e8e41;
+    }
+    .piece {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+    }
+    .selected {
+      background-color: yellow;
+    }
+    .valid-move {
+      background-color: green;
+      opacity: 0.5;
+      border-radius: 50%;
+      width: 10px;
+      height: 10px;
+    }
+    #rock-button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #rock-button:hover {
+      background-color: #3e8e41;
+    }
+    #paper-button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #paper-button:hover {
+      background-color: #3e8e41;
+    }
+    #scissors-button {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #scissors-button:hover {
+      background-color: #3e8e41;
+    }
+    #result {
+      padding: 10px;
+    }
+    #python-game {
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="560" height="560"></canvas>
+  <div id="sidebar">
+    <h2>Rock Paper Scissors Game</h2>
+    <button id="rock-button">Rock</button>
+    <button id="paper-button">Paper</button>
+    <button id="scissors-button">Scissors</button>
+    <div id="result"></div>
+    <h2>Move History</h2>
+    <div id="move-history"></div>
+    <h2>Captured Pieces</h2>
+    <div id="captured-pieces"></div>
+    <button id="new-game-button">New Game</button>
+    <div id="python-game">
+      <h2>Python Game</h2>
+      <button id="python-rock-button">Rock</button>
+      <button id="python-paper-button">Paper</button>
+      <button id="python-scissors-button">Scissors</button>
+      <div id="python-result"></div>
+    </div>
+  </div>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const sidebar = document.getElementById('sidebar');
+    const moveHistory = document.getElementById('move-history');
+    const capturedPieces = document.getElementById('captured-pieces');
+    const newGameButton = document.getElementById('new-game-button');
+    const rockButton = document.getElementById('rock-button');
+    const paperButton = document.getElementById('paper-button');
+    const scissorsButton = document.getElementById('scissors-button');
+    const result = document.getElementById('result');
+    const pythonGame = document.getElementById('python-game');
+    const pythonRockButton = document.getElementById('python-rock-button');
+    const pythonPaperButton = document.getElementById('python-paper-button');
+    const pythonScissorsButton = document.getElementById('python-scissors-button');
+    const pythonResult = document.getElementById('python-result');
+    let board = [];
+    let selectedPiece = null;
+    let validMoves = [];
+    let moveHistoryArray = [];
+    let capturedPiecesArray = [];
+    let isCheck = false;
+    let isCheckmate = false;
+    let isStalemate = false;
+    let turn = 'white';
+    let aiDepth = 2;
+    let theme = 'classic';
+    let extras = ['move hints'];
+    let images = {
+      'white_pawn': 'https://picsum.photos/seed/pawn/60/60',
+      'white_knight': 'https://picsum.photos/seed/knight/60/60',
+      'white_bishop': 'https://picsum.photos/seed/bishop/60/60',
+      'white_rook': 'https://picsum.photos/seed/rook/60/60',
+      'white_queen': 'https://picsum.photos/seed/queen/60/60',
+      'white_king': 'https://picsum.photos/seed/king/60/60',
+      'black_pawn': 'https://picsum.photos/seed/pawn/60/60',
+      'black_knight': 'https://picsum.photos/seed/knight/60/60',
+      'black_bishop': 'https://picsum.photos/seed/bishop/60/60',
+      'black_rook': 'https://picsum.photos/seed/rook/60/60',
+      'black_queen': 'https://picsum.photos/seed/queen/60/60',
+      'black_king': 'https://picsum.photos/seed/king/60/60',
+    };
+    function initBoard() {
+      for (let i = 0; i < 8; i++) {
+        board[i] = [];
+        for (let j = 0; j < 8; j++) {
+          if (i === 1) {
+            board[i][j] = 'white_pawn';
+          } else if (i === 6) {
+            board[i][j] = 'black_pawn';
+          } else if (i === 0) {
+            if (j === 0 || j === 7) {
+              board[i][j] = 'white_rook';
+            } else if (j === 1 || j === 6) {
+              board[i][j] = 'white_knight';
+            } else if (j === 2 || j === 5) {
+              board[i][j] = 'white_bishop';
+            } else if (j === 3) {
+              board[i][j] = 'white_queen';
+            } else if (j === 4) {
+              board[i][j] = 'white_king';
+            }
+          } else if (i === 7) {
+            if (j === 0 || j === 7) {
+              board[i][j] = 'black_rook';
+            } else if (j === 1 || j === 6) {
+              board[i][j] = 'black_knight';
+            } else if (j === 2 || j === 5) {
+              board[i][j] = 'black_bishop';
+            } else if (j === 3) {
+              board[i][j] = 'black_queen';
+            } else if (j === 4) {
+              board[i][j] = 'black_king';
+            }
+          }
+        }
+      }
+    }
+    function pythonGamePlay(playerChoice) {
+      const choices = ['rock', 'paper', 'scissors'];
+      const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+      let result;
+      if (playerChoice === computerChoice) {
+        result = 'It\'s a tie!';
+      } else if ((playerChoice === 'rock' && computerChoice === 'scissors') ||
+                 (playerChoice === 'scissors' && computerChoice === 'paper') ||
+                 (playerChoice === 'paper' && computerChoice === 'rock')) {
+        result = 'You win!';
+      } else {
+        result = 'Computer wins!';
+      }
+      pythonResult.innerText = `You chose ${playerChoice}, computer chose ${computerChoice}. ${result}`;
+    }
+    pythonRockButton.addEventListener('click', () => pythonGamePlay('rock'));
+    pythonPaperButton.addEventListener('click', () => pythonGamePlay('paper'));
+    pythonScissorsButton.addEventListener('click', () => pythonGamePlay('scissors'));
+    initBoard();
+  </script>
+</body>
+</html>

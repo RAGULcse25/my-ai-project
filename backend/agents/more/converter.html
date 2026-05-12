@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Unit Converter</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>body{background:#fafafa; font-family:sans-serif;} select{appearance:none;} .custom-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 1rem center; background-size:1em;}</style>
+</head>
+<body class="h-screen flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] max-w-md w-full overflow-hidden border border-gray-100">
+    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-white relative">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 blur-2xl"></div>
+      <h1 class="text-2xl font-black mb-1 flex items-center gap-2 tracking-tight"><i data-lucide="arrow-left-right"></i> ConvertIO</h1>
+      <p class="text-blue-200 text-sm">Universal Unit Converter</p>
+      
+      <div class="flex gap-2 mt-6 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
+        <button class="snap-start min-w-fit bg-white text-blue-600 font-bold px-4 py-2 rounded-xl text-sm shadow flex items-center gap-1"><i data-lucide="ruler" class="w-4 h-4"></i> Length</button>
+        <button class="snap-start min-w-fit bg-white/20 hover:bg-white/30 text-white font-medium px-4 py-2 rounded-xl text-sm flex items-center gap-1 transition"><i data-lucide="weight" class="w-4 h-4"></i> Weight</button>
+        <button class="snap-start min-w-fit bg-white/20 hover:bg-white/30 text-white font-medium px-4 py-2 rounded-xl text-sm flex items-center gap-1 transition"><i data-lucide="thermometer" class="w-4 h-4"></i> Temp</button>
+        <button class="snap-start min-w-fit bg-white/20 hover:bg-white/30 text-white font-medium px-4 py-2 rounded-xl text-sm flex items-center gap-1 transition"><i data-lucide="clock" class="w-4 h-4"></i> Time</button>
+      </div>
+    </div>
+    
+    <div class="p-8 space-y-6">
+      <div class="relative bg-gray-50 rounded-2xl border border-gray-200 p-4 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200 transition">
+        <label class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 block">From</label>
+        <div class="flex items-center gap-4">
+          <input type="number" value="100" class="bg-transparent text-4xl w-full font-black text-gray-800 outline-none" id="input1">
+          <select class="custom-select bg-gray-200 text-gray-700 font-bold py-2 pl-4 pr-10 rounded-xl outline-none border border-transparent focus:border-blue-500"><option>Meters (m)</option><option>Kilometers (km)</option><option>Centimeters (cm)</option></select>
+        </div>
+      </div>
+      
+      <div class="flex justify-center -my-3 relative z-10">
+        <button class="bg-blue-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-4 border-white hover:rotate-180 transition duration-500"><i data-lucide="arrow-down-up"></i></button>
+      </div>
+      
+      <div class="relative bg-blue-50 rounded-2xl border border-blue-100 p-4">
+        <label class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2 block">To</label>
+        <div class="flex items-center gap-4">
+          <input type="number" value="328.084" class="bg-transparent text-4xl w-full font-black text-blue-600 outline-none" id="input2" readonly>
+          <select class="custom-select bg-white text-blue-700 font-bold py-2 pl-4 pr-10 rounded-xl outline-none border border-blue-200 shadow-sm"><option>Feet (ft)</option><option>Inches (in)</option><option>Miles (mi)</option></select>
+        </div>
+      </div>
+      
+      <div class="text-center font-mono text-sm text-gray-400 bg-gray-50 py-2 rounded-xl border border-gray-100">Formula: <span class="font-bold text-gray-600">multiply the length value by 3.281</span></div>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>🧱 Tetris — S.E.A.D.S.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&display=swap');
+body{background:#070B14;color:#FFF;font-family:'Outfit',sans-serif;display:flex;flex-direction:column;align-items:center;height:100vh;margin:0;}
+h1{margin-top:20px;font-size:2rem;background:linear-gradient(135deg,#FF6B9D,#4ECDE6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.wrap{display:flex;gap:20px;margin-top:20px;}
+canvas{background:rgba(255,255,255,0.03);border:2px solid rgba(255,255,255,0.1);border-radius:8px;}
+.info{display:flex;flex-direction:column;gap:10px;font-size:1.2rem;font-weight:700;}
+button{margin-top:20px;padding:10px 20px;background:linear-gradient(135deg,#6C63FF,#4ECDE6);border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;font-family:'Outfit';}
+</style>
+</head>
+<body>
+<h1>Neon Tetris</h1>
+<div class="wrap">
+  <canvas id="tetris" width="240" height="400"></canvas>
+  <div class="info">
+    <div>Score: <span id="score">0</span></div>
+    <div>Lines: <span id="lines">0</span></div>
+    <button onclick="start()">Start Game</button>
+    <div style="font-size:0.9rem;color:#777;margin-top:20px;">Use Arrows to Move/Rotate. Space to quick drop.</div>
+  </div>
+</div>
+<script>
+const cvs=document.getElementById('tetris');const ctx=cvs.getContext('2d');
+const cols=12;const rows=20;const S=20;
+ctx.scale(1,1);
+let board=[], piece, score=0, lines=0, dropCounter=0, dropInterval=1000, lastTime=0, req;
+const COLORS=[null,'#FF0D72','#0DC2FF','#0DFF72','#F538FF','#FF8E0D','#FFE138','#3877FF'];
+const PIECES=['',
+  [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], //I
+  [[2,0,0],[2,2,2],[0,0,0]], //J
+  [[0,0,3],[3,3,3],[0,0,0]], //L
+  [[4,4],[4,4]], //O
+  [[0,5,5],[5,5,0],[0,0,0]], //S
+  [[0,6,0],[6,6,6],[0,0,0]], //T
+  [[7,7,0],[0,7,7],[0,0,0]] //Z
+];
+function createMatrix(w,h){const matrix=[];while(h--)matrix.push(new Array(w).fill(0));return matrix;}
+function drawMatrix(mat,ox,oy){
+  mat.forEach((row,y)=>{row.forEach((val,x)=>{
+    if(val!==0){
+      ctx.fillStyle=COLORS[val];ctx.shadowBlur=10;ctx.shadowColor=COLORS[val];
+      ctx.fillRect((x+ox)*S,(y+oy)*S,S-1,S-1);ctx.shadowBlur=0;
+    }
+  });});
+}
+function merge(){piece.mat.forEach((r,y)=>{r.forEach((v,x)=>{if(v!==0)board[y+piece.y][x+piece.x]=v;});});}
+function collide(b,p){
+  for(let y=0;y<p.mat.length;++y)for(let x=0;x<p.mat[y].length;++x)
+    if(p.mat[y][x]!==0 && (b[y+p.y]&&b[y+p.y][x+p.x]) !== 0) return true;
+  return false;
+}
+function sweep(){
+  let rowCount=1;
+  outer:for(let y=board.length-1;y>0;--y){
+    for(let x=0;x<board[y].length;++x)if(board[y][x]===0)continue outer;
+    const r=board.splice(y,1)[0].fill(0);board.unshift(r);++y;
+    score+=rowCount*10;rowCount*=2;lines++;dropInterval=Math.max(100,1000-(lines*20));
+    document.getElementById('score').innerText=score;document.getElementById('lines').innerText=lines;
+  }
+}
+function resetPiece(){
+  const t=PIECES[Math.floor(Math.random()*7)+1];
+  piece={mat:t,x:(cols/2|0)-(t[0].length/2|0),y:0};
+  if(collide(board,piece)){board=createMatrix(cols,rows);score=0;lines=0;dropInterval=1000;}
+}
+function rotate(mat,dir){
+  for(let y=0;y<mat.length;++y)for(let x=0;x<y;++x)[mat[x][y],mat[y][x]]=[mat[y][x],mat[x][y]];
+  if(dir>0)mat.forEach(row=>row.reverse());else mat.reverse();
+}
+function step(dir){piece.x+=dir;if(collide(board,piece))piece.x-=dir;}
+function drop(){piece.y++;if(collide(board,piece)){piece.y--;merge();resetPiece();sweep();dropCounter=0;}}
+function hardDrop(){while(!collide(board,piece)){piece.y++;}piece.y--;merge();resetPiece();sweep();dropCounter=0;}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft') step(-1);
+  if(e.key==='ArrowRight') step(1);
+  if(e.key==='ArrowDown') drop();
+  if(e.key==='ArrowUp'){rotate(piece.mat,1);if(collide(board,piece))rotate(piece.mat,-1);}
+  if(e.key===' ') hardDrop();
+});
+function update(time=0){
+  const dt=time-lastTime;lastTime=time;dropCounter+=dt;
+  if(dropCounter>dropInterval){drop();dropCounter=0;}
+  ctx.fillStyle='#070B14';ctx.fillRect(0,0,cvs.width,cvs.height);
+  drawMatrix(board,0,0);if(piece)drawMatrix(piece.mat,piece.x,piece.y);
+  req=requestAnimationFrame(update);
+}
+function start(){board=createMatrix(cols,rows);resetPiece();score=0;lines=0;dropInterval=1000;if(req)cancelAnimationFrame(req);update();}
+</script>
+</body>
+</html>

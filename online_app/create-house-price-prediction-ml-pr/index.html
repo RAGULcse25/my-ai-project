@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.4/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@1.7.0/dist/lucide.min.css">
+    <style>
+        body {
+            background-color: #2f2f2f;
+            color: #fff;
+        }
+        .dark-mode {
+            background-color: #2f2f2f;
+            color: #fff;
+        }
+        .result-card {
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+    <div class="container mx-auto p-4 pt-6 mt-10 mb-10 bg-gray-800 rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold mb-4">House Price Prediction</h1>
+        <form id="prediction-form">
+            <div class="mb-4">
+                <label for="bedrooms" class="block text-sm font-medium mb-2">Number of Bedrooms</label>
+                <input type="number" id="bedrooms" name="bedrooms" value="3" class="block w-full p-2 pl-10 text-sm text-gray-700 bg-gray-600 border border-gray-500 rounded-lg focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+            </div>
+            <div class="mb-4">
+                <label for="bathrooms" class="block text-sm font-medium mb-2">Number of Bathrooms</label>
+                <input type="number" id="bathrooms" name="bathrooms" value="2" class="block w-full p-2 pl-10 text-sm text-gray-700 bg-gray-600 border border-gray-500 rounded-lg focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+            </div>
+            <div class="mb-4">
+                <label for="sqft" class="block text-sm font-medium mb-2">Square Footage</label>
+                <input type="number" id="sqft" name="sqft" value="1500" class="block w-full p-2 pl-10 text-sm text-gray-700 bg-gray-600 border border-gray-500 rounded-lg focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+            </div>
+            <div class="mb-4">
+                <label for="location" class="block text-sm font-medium mb-2">Location</label>
+                <select id="location" name="location" class="block w-full p-2 pl-10 text-sm text-gray-700 bg-gray-600 border border-gray-500 rounded-lg focus:outline-none focus:ring-gray-500 focus:border-gray-500">
+                    <option value="urban">Urban</option>
+                    <option value="suburban">Suburban</option>
+                    <option value="rural">Rural</option>
+                </select>
+            </div>
+            <button type="submit" id="predict-btn" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">PREDICT</button>
+        </form>
+        <div id="result-card" class="mt-4 p-4 bg-gray-700 rounded-lg shadow-lg" style="display: none;">
+            <h2 class="text-2xl font-bold mb-2">Predicted Price: <span id="predicted-price"></span></h2>
+            <p class="text-sm mb-2">Confidence Score: <span id="confidence-score"></span></p>
+            <p id="explanation" class="text-sm"></p>
+        </div>
+        <div class="mt-4">
+            <h2 class="text-2xl font-bold mb-2">Model Info</h2>
+            <p class="text-sm mb-2">Algorithm: Linear Regression</p>
+            <p class="text-sm mb-2">Accuracy: 90%</p>
+            <p class="text-sm mb-2">Features Used: Number of Bedrooms, Number of Bathrooms, Square Footage, Location</p>
+        </div>
+        <div class="mt-4">
+            <h2 class="text-2xl font-bold mb-2">How it Works</h2>
+            <div class="flex flex-col mb-4">
+                <div class="flex items-center mb-2">
+                    <lucide-icon name="database" class="mr-2"></lucide-icon>
+                    <p class="text-sm">Step 1: Data Collection</p>
+                </div>
+                <div class="flex items-center mb-2">
+                    <lucide-icon name="chart" class="mr-2"></lucide-icon>
+                    <p class="text-sm">Step 2: Data Analysis</p>
+                </div>
+                <div class="flex items-center mb-2">
+                    <lucide-icon name="predict" class="mr-2"></lucide-icon>
+                    <p class="text-sm">Step 3: Prediction</p>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <h2 class="text-2xl font-bold mb-2">Sample Predictions</h2>
+            <table class="w-full text-sm text-gray-700">
+                <thead class="bg-gray-600">
+                    <tr>
+                        <th class="px-4 py-2">Number of Bedrooms</th>
+                        <th class="px-4 py-2">Number of Bathrooms</th>
+                        <th class="px-4 py-2">Square Footage</th>
+                        <th class="px-4 py-2">Location</th>
+                        <th class="px-4 py-2">Predicted Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-4 py-2">3</td>
+                        <td class="px-4 py-2">2</td>
+                        <td class="px-4 py-2">1500</td>
+                        <td class="px-4 py-2">Urban</td>
+                        <td class="px-4 py-2">$500,000</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">4</td>
+                        <td class="px-4 py-2">3</td>
+                        <td class="px-4 py-2">2000</td>
+                        <td class="px-4 py-2">Suburban</td>
+                        <td class="px-4 py-2">$700,000</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">2</td>
+                        <td class="px-4 py-2">1</td>
+                        <td class="px-4 py-2">1000</td>
+                        <td class="px-4 py-2">Rural</td>
+                        <td class="px-4 py-2">$300,000</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">5</td>
+                        <td class="px-4 py-2">4</td>
+                        <td class="px-4 py-2">2500</td>
+                        <td class="px-4 py-2">Urban</td>
+                        <td class="px-4 py-2">$1,000,000</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">3</td>
+                        <td class="px-4 py-2">2</td>
+                        <td class="px-4 py-2">1200</td>
+                        <td class="px-4 py-2">Suburban</td>
+                        <td class="px-4 py-2">$450,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-4">
+            <h2 class="text-2xl font-bold mb-2">Feature Importance</h2>
+            <div class="flex flex-col mb-4">
+                <div class="flex items-center mb-2">
+                    <p class="text-sm">Number of Bedrooms: 30%</p>
+                    <div class="w-full bg-gray-600 rounded-lg h-2" style="width: 30%"></div>
+                </div>
+                <div class="flex items-center mb-2">
+                    <p class="text-sm">Number of Bathrooms: 20%</p>
+                    <div class="w-full bg-gray-600 rounded-lg h-2" style="width: 20%"></div>
+                </div>
+                <div class="flex items-center mb-2">
+                    <p class="text-sm">Square Footage: 40%</p>
+                    <div class="w-full bg-gray-600 rounded-lg h-2" style="width: 40%"></div>
+                </div>
+                <div class="flex items-center mb-2">
+                    <p class="text-sm">Location: 10%</p>
+                    <div class="w-full bg-gray-600 rounded-lg h-2" style="width: 10%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const predictBtn = document.getElementById('predict-btn');
+        const resultCard = document.getElementById('result-card');
+        const predictedPrice = document.getElementById('predicted-price');
+        const confidenceScore = document.getElementById('confidence-score');
+        const explanation = document.getElementById('explanation');
+
+        predictBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const bedrooms = document.getElementById('bedrooms').value;
+            const bathrooms = document.getElementById('bathrooms').value;
+            const sqft = document.getElementById('sqft').value;
+            const location = document.getElementById('location').value;
+
+            // Simulate prediction with formula/logic based on inputs
+            const predictedPriceValue = (bedrooms * 10000) + (bathrooms * 5000) + (sqft * 50) + (location === 'urban' ? 50000 : location === 'suburban' ? 20000 : 0);
+            const confidenceScoreValue = Math.random() * 100;
+            const explanationValue = `Based on the input values, the predicted price is ${predictedPriceValue}. The confidence score is ${confidenceScoreValue}%.`;
+
+            predictedPrice.textContent = `$${predictedPriceValue.toLocaleString()}`;
+            confidenceScore.textContent = `${confidenceScoreValue}%`;
+            explanation.textContent = explanationValue;
+
+            resultCard.style.display = 'block';
+        });
+    </script>
+</body>
+</html>

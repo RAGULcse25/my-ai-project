@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+pymongo[srv]
+python-dotenv
+groq
+langchain-groq
+GitPython
+requests
+pydantic
+pydantic-settings
+cerebras-cloud-sdk
+google-generativeai
+together
+openai
+httpx

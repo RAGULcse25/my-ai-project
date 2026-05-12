@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Churn Prediction</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-[#111] text-gray-300 font-sans p-8">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl font-bold text-white mb-2 border-l-4 border-orange-500 pl-4">Telecom Churn Prediction <span class="text-sm font-medium bg-orange-500/20 text-orange-400 px-2 py-1 rounded ml-2">XGBoost</span></h1>
+    <p class="text-gray-500 mb-8 ml-5">Cross-validated area under ROC curve: 0.89</p>
+
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5">
+        <h4 class="text-xs uppercase text-gray-500 font-bold mb-2">Total Customers</h4>
+        <div class="text-3xl font-bold text-white mb-1">7,043</div>
+      </div>
+      <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5">
+        <h4 class="text-xs uppercase text-gray-500 font-bold mb-2">Global Churn Rate</h4>
+        <div class="text-3xl font-bold text-red-400 mb-1">26.5%</div>
+      </div>
+      <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5">
+        <h4 class="text-xs uppercase text-gray-500 font-bold mb-2">High Risk Cohort</h4>
+        <div class="text-3xl font-bold text-orange-400 mb-1">1,240</div>
+      </div>
+      <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5 bg-gradient-to-br from-orange-600/20 to-transparent">
+        <h4 class="text-xs uppercase text-orange-500 font-bold mb-2">Model Accuracy</h4>
+        <div class="text-3xl font-bold text-orange-500 mb-1">84.2%</div>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5">
+        <h3 class="font-bold text-white mb-6 flex justify-between">Feature Importance <span><i data-lucide="bar-chart-2" class="w-5 h-5 text-gray-500"></i></span></h3>
+        <canvas id="c1" height="200"></canvas>
+      </div>
+      <div class="bg-[#1a1a1a] p-6 rounded-xl border border-white/5">
+        <h3 class="font-bold text-white mb-6">Customer Risk Matrix</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="text-xs text-gray-500 uppercase bg-[#0a0a0a]"><tr><th class="p-3">CustID</th><th class="p-3">Tenure</th><th class="p-3">Contract</th><th class="p-3">Risk Score</th></tr></thead>
+            <tbody>
+              <tr class="border-b border-white/5"><td class="p-3 font-mono font-bold">#7590-VHVEG</td><td class="p-3">1 month</td><td class="p-3">M2M</td><td class="p-3"><span class="bg-red-500/20 text-red-500 px-2 py-1 rounded font-bold">0.89 (High)</span></td></tr>
+              <tr class="border-b border-white/5"><td class="p-3 font-mono font-bold">#5575-GNVDE</td><td class="p-3">34 months</td><td class="p-3">1 Year</td><td class="p-3"><span class="bg-orange-500/20 text-orange-500 px-2 py-1 rounded font-bold">0.65 (Med)</span></td></tr>
+              <tr class="border-b border-white/5"><td class="p-3 font-mono font-bold">#3668-QPYBK</td><td class="p-3">2 months</td><td class="p-3">M2M</td><td class="p-3"><span class="bg-red-500/20 text-red-500 px-2 py-1 rounded font-bold">0.91 (High)</span></td></tr>
+              <tr><td class="p-3 font-mono font-bold">#7795-CFOCW</td><td class="p-3">45 months</td><td class="p-3">2 Year</td><td class="p-3"><span class="bg-green-500/20 text-green-500 px-2 py-1 rounded font-bold">0.12 (Low)</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+    new Chart(document.getElementById('c1'), {
+      type: 'bar', data: {
+        labels: ['Contract Type', 'Monthly Charges', 'Tenure', 'Total Charges', 'Tech Support'],
+        datasets: [{ data: [0.45, 0.22, 0.18, 0.10, 0.05], backgroundColor: '#f97316' }]
+      }, options: { indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#333' } }, y: { grid: { display: false } } } }
+    });
+  </script>
+</body>
+</html>

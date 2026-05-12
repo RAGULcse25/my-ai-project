@@ -1,0 +1,80 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn import svm
+import pickle
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Generate synthetic dataset
+np.random.seed(0)
+X = np.random.rand(1000, 8)
+y = (X[:, 0] > 0.5).astype(int)
+
+# Create a pandas DataFrame
+df = pd.DataFrame(X, columns=['Pregnancies', 'Glucose', 'BloodPressure', 'SkinThickness', 'Insulin', 'BMI', 'DiabetesPedigreeFunction', 'Age'])
+df['Outcome'] = y
+
+# Define features and target
+X = df.drop('Outcome', axis=1)
+y = df['Outcome']
+
+# Split dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Standardize features
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+# Train SVM model
+svm_model = svm.SVC(kernel='rbf', C=1)
+svm_model.fit(X_train, y_train)
+
+# Train Random Forest model
+rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
+rf_model.fit(X_train, y_train)
+
+# Save models
+with open('svm_model.pkl', 'wb') as f:
+    pickle.dump(svm_model, f)
+
+with open('rf_model.pkl', 'wb') as f:
+    pickle.dump(rf_model, f)
+
+# Make predictions
+y_pred_svm = svm_model.predict(X_test)
+y_pred_rf = rf_model.predict(X_test)
+
+# Evaluate models
+print("SVM Model Accuracy:", accuracy_score(y_test, y_pred_svm))
+print("Random Forest Model Accuracy:", accuracy_score(y_test, y_pred_rf))
+
+# Print classification reports
+print("SVM Model Classification Report:")
+print(classification_report(y_test, y_pred_svm))
+print("Random Forest Model Classification Report:")
+print(classification_report(y_test, y_pred_rf))
+
+# Plot confusion matrices
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+sns.heatmap(confusion_matrix(y_test, y_pred_svm), annot=True, cmap='Blues')
+plt.title("SVM Model Confusion Matrix")
+
+plt.subplot(1, 2, 2)
+sns.heatmap(confusion_matrix(y_test, y_pred_rf), annot=True, cmap='Blues')
+plt.title("Random Forest Model Confusion Matrix")
+
+plt.show()
+
+# Plot feature importance
+plt.figure(figsize=(10, 6))
+plt.barh(X.columns, rf_model.feature_importances_)
+plt.title("Random Forest Model Feature Importance")
+plt.show()

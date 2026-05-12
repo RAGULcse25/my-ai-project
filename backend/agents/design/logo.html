@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Logo Maker</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 flex flex-col h-screen font-sans">
+  <div class="flex-1 flex overflow-hidden">
+    <div class="w-64 bg-white border-r border-slate-200 p-6 shadow-sm z-10 flex flex-col">
+      <div class="font-bold text-xl mb-8 flex items-center gap-2"><i data-lucide="pen-tool" class="text-rose-500"></i> MarkCreate</div>
+      
+      <label class="text-xs font-bold text-slate-400 mb-2 uppercase">Brand Name</label>
+      <input type="text" value="Apex Dynamics" class="w-full border-b-2 border-slate-200 py-2 mb-6 font-semibold outline-none focus:border-rose-500 bg-transparent text-lg text-slate-800">
+      
+      <label class="text-xs font-bold text-slate-400 mb-2 uppercase">Icon Picker</label>
+      <div class="grid grid-cols-4 gap-2 mb-6">
+        <div class="aspect-square bg-rose-50 text-rose-500 flex items-center justify-center rounded border border-rose-200 cursor-pointer"><i data-lucide="triangle"></i></div>
+        <div class="aspect-square bg-slate-50 text-slate-500 flex items-center justify-center rounded border border-slate-200 cursor-pointer hover:bg-slate-100"><i data-lucide="aperture"></i></div>
+        <div class="aspect-square bg-slate-50 text-slate-500 flex items-center justify-center rounded border border-slate-200 cursor-pointer hover:bg-slate-100"><i data-lucide="hexagon"></i></div>
+        <div class="aspect-square bg-slate-50 text-slate-500 flex items-center justify-center rounded border border-slate-200 cursor-pointer hover:bg-slate-100"><i data-lucide="command"></i></div>
+      </div>
+
+      <label class="text-xs font-bold text-slate-400 mb-2 uppercase">Color Scheme</label>
+      <div class="flex gap-2">
+        <div class="w-8 h-8 rounded-full bg-rose-500 ring-2 ring-offset-2 ring-rose-500 cursor-pointer"></div>
+        <div class="w-8 h-8 rounded-full bg-blue-600 cursor-pointer"></div>
+        <div class="w-8 h-8 rounded-full bg-emerald-500 cursor-pointer"></div>
+        <div class="w-8 h-8 rounded-full bg-slate-900 cursor-pointer"></div>
+      </div>
+      
+      <button class="mt-auto bg-rose-500 text-white w-full py-4 rounded-xl font-bold shadow-lg shadow-rose-200 hover:-translate-y-1 transition">Export SVG</button>
+    </div>
+    
+    <div class="flex-1 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxjaXJjbGUgY3g9IjEiIGN5PSIxIiByPSIxIiBmaWxsPSIjZTE1ZWM1Ii8+Cjwvc3ZnPg==')] flex flex-col items-center justify-center">
+      <!-- Artboard -->
+      <div class="bg-white w-[500px] h-[500px] shadow-2xl flex flex-col items-center justify-center border border-slate-100 group relative">
+        <div class="absolute inset-0 border-2 border-dashed border-rose-400 opacity-0 group-hover:opacity-100 transition m-4 pointer-events-none"></div>
+        
+        <i data-lucide="triangle" class="w-32 h-32 text-rose-500 mb-6" stroke-width="2.5"></i>
+        <h1 class="text-4xl font-black text-slate-900 tracking-tight" style="font-family:serif;">Apex Dynamics</h1>
+        <p class="text-rose-500 tracking-[0.3em] text-xs font-bold uppercase mt-2">Industrial Solutions</p>
+      </div>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

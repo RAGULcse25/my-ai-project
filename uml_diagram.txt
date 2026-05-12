@@ -1,0 +1,255 @@
+= S.E.A.D.S. v14 Full UML Diagram Suite =
+(Render these blocks using PlantUML)
+
+' ==========================================
+' 📌 STRUCTURAL DIAGRAMS
+' ==========================================
+
+' 1. Class Diagram
+@startuml Class_Diagram
+title 1. Class Diagram
+class ClarificationAgent {
+  + parse_intent(input)
+  + generate_questions()
+}
+class ArchitectureAgent {
+  + research(topic)
+  + plan_architecture()
+}
+class CodingAgent {
+  + generate_code()
+}
+class VerificationAgent {
+  + verify_code()
+}
+ClarificationAgent --> ArchitectureAgent : intent JSON
+ArchitectureAgent --> CodingAgent : component specs
+CodingAgent --> VerificationAgent : component source code
+@enduml
+
+' 2. Object Diagram
+@startuml Object_Diagram
+title 2. Object Diagram
+object "geminiFlash:ClarificationAgent" as obj1 {
+  status = "active"
+}
+object "deepSeekR1:ArchitectureAgent" as obj2 {
+  model = "deepseek-reasoner"
+}
+object "qwen2.5:CodingAgent" as obj3 {
+  framework = "React/Tailwind"
+}
+obj1 --> obj2 : passes parsed JSON
+obj2 --> obj3 : configures architecture
+@enduml
+
+' 3. Component Diagram
+@startuml Component_Diagram
+title 3. Component Diagram
+component "UI Interface (React)" as UI
+component "API Gateway (FastAPI)" as API
+component "Multi-Agent Orchestrator" as Orchestrator
+component "AI Model Endpoints (OpenRouter)" as Models
+UI --> API : User Requests
+API --> Orchestrator : Parse & Dispatch
+Orchestrator --> Models : API Calls
+@enduml
+
+' 4. Deployment Diagram
+@startuml Deployment_Diagram
+title 4. Deployment Diagram
+node "Client Browser" {
+  artifact "React Frontend Preview"
+}
+node "Application Server (Python)" {
+  component "S.E.A.D.S. Engine"
+  component "Template DB"
+}
+node "OpenRouter Cloud" {
+  component "LLM Endpoints (Claude, DeepSeek)"
+}
+"Client Browser" --> "Application Server (Python)" : HTTP/WebSocket
+"Application Server (Python)" --> "OpenRouter Cloud" : API Calls
+@enduml
+
+' 5. Package Diagram
+@startuml Package_Diagram
+title 5. Package Diagram
+package "Frontend" {
+  [Web Builder Interface]
+}
+package "Backend Core" {
+  [Agent Orchestration]
+  [LLM Communication Client]
+}
+package "Templates" {
+  [Category Database]
+}
+[Frontend] ..> [Backend Core] : uses
+[Backend Core] ..> [Templates] : loads
+@enduml
+
+' 6. Composite Structure Diagram
+@startuml Composite_Structure_Diagram
+title 6. Composite Structure Diagram
+class MultiAgentSystem << (C,#FF7700) System >> {
+    port "API Port" as p1
+    port "LLM Interface" as p2
+}
+class ClarificationAgent
+class CodingAgent
+
+MultiAgentSystem *-- ClarificationAgent
+MultiAgentSystem *-- CodingAgent
+p1 -- ClarificationAgent : Input Request
+CodingAgent -- p2 : Dispatch Output
+@enduml
+
+' 7. Profile Diagram
+@startuml Profile_Diagram
+title 7. Profile Diagram
+package "<<Profile>> S.E.A.D.S." {
+  class "<<Stereotype>> Agent" as Agent
+  class "<<Stereotype>> LLM" as LLM
+}
+Agent ..> "<<Metaclass>> Class"
+LLM ..> "<<Metaclass>> API"
+@enduml
+
+
+' ==========================================
+' 📌 BEHAVIORAL DIAGRAMS
+' ==========================================
+
+' 8. Use Case Diagram
+@startuml Use_Case_Diagram
+title 8. Use Case Diagram
+left to right direction
+actor "Developer/User" as User
+package S.E.A.D.S. {
+  usecase "Provide Project Idea" as UC1
+  usecase "Answer Clarifying Questions" as UC2
+  usecase "Preview Application Features" as UC3
+  usecase "Download/Deploy Code" as UC4
+}
+User --> UC1
+User --> UC2
+User --> UC3
+User --> UC4
+@enduml
+
+' 9. Activity Diagram
+@startuml Activity_Diagram
+title 9. Activity Diagram
+start
+:User inputs idea;
+:Gemini parses intent;
+if (Missing required details?) then (yes)
+  :Ask Dynamic Questions;
+  :Wait for User Answers;
+else (no)
+endif
+:DeepSeek-R1 Plans Architecture;
+fork
+  :Code Component 1 (Logic);
+fork again
+  :Code Component 2 (UI);
+end fork
+:Claude 3 Opus Code Verification;
+:Store in DB and Render Preview;
+stop
+@enduml
+
+' 10. State Machine Diagram
+@startuml State_Machine_Diagram
+title 10. State Machine Diagram
+[*] --> IntentParsing
+IntentParsing --> Questioning : Missing Info
+Questioning --> IntentParsing : Answered
+IntentParsing --> ArchitecturePlanning : Complete
+ArchitecturePlanning --> GeneratingCode
+GeneratingCode --> VerifyingCode
+VerifyingCode --> GeneratingCode : Errors Found
+VerifyingCode --> Completed : Approved
+Completed --> [*]
+@enduml
+
+' 11. Sequence Diagram
+@startuml Sequence_Diagram
+title 11. Sequence Diagram
+actor User
+participant "SEADS Orchestrator" as Orchestrator
+participant "LLM Models" as Models
+
+User -> Orchestrator : Send Idea
+Orchestrator -> Models : Request Intent JSON
+Models --> Orchestrator : Return Intent & Questions
+Orchestrator -> User : Show Clarification Qs
+User -> Orchestrator : Answers
+Orchestrator -> Models : Get Architecture & Parallel Code
+Models --> Orchestrator : Return Verified Source Code
+Orchestrator --> User : Generate Interactive Preview
+@enduml
+
+' 12. Communication Diagram
+@startuml Communication_Diagram
+title 12. Communication Diagram (Object Collaboration)
+object "User_Client" as user
+object "SEADS_Pipeline" as pipeline
+object "LLM_Cloud" as llms
+
+user --> pipeline : 1: Submit Application Request
+pipeline --> llms : 2: Request Intent JSON (Gemini)
+llms --> pipeline : 3: Return Parsed JSON
+pipeline --> llms : 4: Dispatch Parallel Code Gen (DeepSeek)
+llms --> pipeline : 5: Return Code Artifacts
+pipeline --> user : 6: Present Live Output
+@enduml
+
+' 13. Interaction Overview Diagram
+@startuml Interaction_Overview_Diagram
+title 13. Interaction Overview Diagram
+start
+:<<Sequence>> Intent Phase (Gemini Flash);
+:<<Sequence>> Architecture Phase (R1);
+if (Self-healing iteration required?) then (yes)
+  :<<Sequence>> Coding & Review Loop;
+else (no)
+  :<<Sequence>> Direct Assembly;
+endif
+:<<Sequence>> Final Preview & Deployment;
+stop
+@enduml
+
+' 14. Timing Diagram
+@startuml Timing_Diagram
+title 14. Timing Diagram
+robust "User" as U
+robust "Pipeline API" as P
+robust "DeepSeek/Claude" as M
+
+@0
+U is Idle
+P is Idle
+M is Idle
+
+@1
+U is Submitting
+P is Idle
+
+@2
+U is Waiting
+P is Orchestrating
+
+@3
+P is WaitingLLMs
+M is GeneratingCode
+
+@5
+M is Idle
+P is VerifyingOutput
+
+@6
+P is Completed
+U is TestingPreview
+@enduml

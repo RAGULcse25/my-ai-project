@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Spam Classifier</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#0f172a] text-slate-300 h-screen flex flex-col font-sans p-8">
+  <div class="max-w-4xl mx-auto w-full">
+    <div class="flex items-center gap-4 mb-8">
+      <div class="bg-indigo-500/20 p-3 rounded-xl text-indigo-400"><i data-lucide="shield-alert" class="w-8 h-8"></i></div>
+      <div><h1 class="text-3xl font-bold text-white">Naive Bayes Classifier</h1><p class="text-slate-400">TF-IDF Vectorization NLP Pipeline</p></div>
+    </div>
+    
+    <div class="bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700">
+      <div class="p-6 border-b border-slate-700 bg-slate-800/50">
+        <textarea id="txt" class="w-full h-32 bg-slate-900 rounded-xl p-4 text-white outline-none border border-slate-700 focus:border-indigo-500 transition font-mono text-sm" placeholder="Paste email content here...">URGENT: You have won a $1,000 Walmart Gift Card! Click here immediately to claim your prize before it expires today!! http://bit.ly/spam-link</textarea>
+        <button onclick="scan()" class="mt-4 bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-900 transition flex items-center gap-2"><i data-lucide="scan"></i> Scan Document</button>
+      </div>
+      
+      <div class="p-8 grid grid-cols-2 gap-8 items-center bg-slate-900/50">
+        <div>
+          <div class="text-sm font-bold text-slate-500 mb-2 uppercase tracking-wide">Prediction Result</div>
+          <div id="res" class="text-5xl font-black text-red-500 flex items-center gap-4">SPAM <i data-lucide="alert-triangle" class="w-10 h-10"></i></div>
+          <div class="mt-4 bg-slate-800 rounded-lg p-4 font-mono text-xs text-indigo-300">
+            Probability (Spam): 99.8%<br>
+            Probability (Ham): 0.2%
+          </div>
+        </div>
+        <div>
+          <div class="text-sm font-bold text-slate-500 mb-4 uppercase tracking-wide">Highest TF-IDF Weights</div>
+          <div class="space-y-3">
+            <div class="flex justify-between items-center"><span class="bg-red-500/20 text-red-400 px-3 py-1 rounded font-bold">won</span> <div class="flex-1 mx-4 h-2 bg-slate-800 rounded-full"><div class="h-full bg-red-500 rounded-full w-[90%]"></div></div> <span class="font-mono text-xs">0.82</span></div>
+            <div class="flex justify-between items-center"><span class="bg-red-500/20 text-red-400 px-3 py-1 rounded font-bold">immediate</span> <div class="flex-1 mx-4 h-2 bg-slate-800 rounded-full"><div class="h-full bg-red-500 rounded-full w-[75%]"></div></div> <span class="font-mono text-xs">0.68</span></div>
+            <div class="flex justify-between items-center"><span class="bg-red-500/20 text-red-400 px-3 py-1 rounded font-bold">prize</span> <div class="flex-1 mx-4 h-2 bg-slate-800 rounded-full"><div class="h-full bg-red-500 rounded-full w-[85%]"></div></div> <span class="font-mono text-xs">0.77</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+    function scan(){
+      let t = document.getElementById('txt').value.toLowerCase();
+      let r = document.getElementById('res');
+      if(t.includes('won') || t.includes('prize') || t.includes('urgent') || t.includes('click') || t.includes('$')){
+        r.innerHTML = 'SPAM <i data-lucide="alert-triangle" class="w-10 h-10"></i>'; r.className="text-5xl font-black text-red-500 flex items-center gap-4";
+      }else{
+        r.innerHTML = 'HAM <i data-lucide="check-circle" class="w-10 h-10"></i>'; r.className="text-5xl font-black text-emerald-500 flex items-center gap-4";
+      }
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

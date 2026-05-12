@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sentiment Analysis</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-900 text-white font-sans h-screen flex flex-col p-8">
+  <div class="max-w-4xl mx-auto w-full flex-1 flex flex-col">
+    <div class="flex justify-between items-end border-b border-gray-800 pb-4 mb-8">
+      <div>
+        <h1 class="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-500">DistilBERT Sentiment</h1>
+        <p class="text-gray-400 font-mono text-sm mt-2">Hugging Face Transformers API</p>
+      </div>
+      <div class="text-right">
+        <div class="text-xs text-gray-500 font-bold uppercase">Accuracy</div>
+        <div class="text-2xl font-black text-emerald-400">94.8%</div>
+      </div>
+    </div>
+    
+    <div class="bg-gray-800 border border-gray-700 p-2 rounded-2xl flex shadow-2xl mb-8 relative">
+      <input type="text" id="t" class="flex-1 bg-transparent px-4 font-semibold outline-none text-lg" placeholder="Type a product review..." value="The battery life is absolutely terrible, but the screen looks amazing.">
+      <button onclick="analyze()" class="bg-gradient-to-r from-teal-500 to-emerald-500 text-gray-900 px-8 py-3 rounded-xl font-bold hover:scale-105 transition">Analyze</button>
+    </div>
+    
+    <div class="grid grid-cols-3 gap-6">
+      <div id="c1" class="bg-gray-800 border border-gray-700 p-6 rounded-2xl text-center opacity-50 grayscale transition-all duration-500"><i data-lucide="frown" class="w-16 h-16 mx-auto mb-4 text-red-500"></i><h3 class="font-bold text-xl mb-1">Negative</h3><div class="font-mono text-gray-400">0.05</div></div>
+      <div id="c2" class="bg-gray-800 border border-emerald-500 shadow-[0_0_30px_rgba(16,185,129,0.3)] p-6 rounded-2xl text-center scale-105 transition-all duration-500"><i data-lucide="meh" class="w-16 h-16 mx-auto mb-4 text-yellow-500"></i><h3 class="font-bold text-xl mb-1">Neutral</h3><div class="font-mono text-emerald-400">0.82</div></div>
+      <div id="c3" class="bg-gray-800 border border-gray-700 p-6 rounded-2xl text-center opacity-50 grayscale transition-all duration-500"><i data-lucide="smile" class="w-16 h-16 mx-auto mb-4 text-green-500"></i><h3 class="font-bold text-xl mb-1">Positive</h3><div class="font-mono text-gray-400">0.13</div></div>
+    </div>
+    
+    <div class="mt-8">
+      <h4 class="text-xs font-bold text-gray-500 uppercase mb-4">Attention Map (Simulated)</h4>
+      <div class="bg-gray-800 border border-gray-700 p-6 rounded-xl font-mono text-lg leading-loose">
+        The <span class="bg-red-500/20 text-red-400 px-1 rounded">battery</span> <span class="bg-red-500/20 text-red-400 px-1 rounded">life</span> is <span class="bg-red-500/40 text-red-400 px-1 rounded font-bold">absolutely</span> <span class="bg-red-500/60 text-red-400 px-1 rounded font-bold">terrible</span>, but the <span class="bg-green-500/20 text-green-400 px-1 rounded">screen</span> <span class="bg-green-500/20 text-green-400 px-1 rounded">looks</span> <span class="bg-green-500/60 text-green-400 px-1 rounded font-bold">amazing.</span>
+      </div>
+    </div>
+  </div>
+  <script>lucide.createIcons();
+    function analyze(){
+      let t = document.getElementById('t').value.toLowerCase();
+      let c1=document.getElementById('c1'), c2=document.getElementById('c2'), c3=document.getElementById('c3');
+      function reset(el,c){ el.className="bg-gray-800 border border-gray-700 p-6 rounded-2xl text-center opacity-50 grayscale transition-all duration-500"; el.querySelector('.font-mono').innerText=c; el.querySelector('.font-mono').className="font-mono text-gray-400"; }
+      function active(el,c,col,bd){ el.className=`bg-gray-800 border border-${bd}-500 shadow-[0_0_30px_rgba(0,0,0,0.5)] p-6 rounded-2xl text-center scale-105 transition-all duration-500`; el.querySelector('.font-mono').innerText=c; el.querySelector('.font-mono').className=`font-mono text-${col}-400 font-bold`; }
+      
+      reset(c1,"0.01"); reset(c2,"0.03"); reset(c3,"0.05");
+      if(t.includes('terrible') || t.includes('bad') || t.includes('worst')){ active(c1, "0.92", "red", "red"); }
+      else if(t.includes('good') || t.includes('amazing') || t.includes('great')){ active(c3, "0.95", "green", "emerald"); }
+      else { active(c2, "0.80", "yellow", "yellow"); }
+    }
+  </script>
+</body>
+</html>

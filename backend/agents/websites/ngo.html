@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>NGO Charity</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-stone-50 text-stone-800 font-sans">
+<nav class="bg-emerald-700 text-white p-4 flex justify-between items-center px-8 shadow-md">
+  <div class="font-black text-2xl tracking-tighter flex items-center gap-2"><i data-lucide="heart-handshake"></i> EduHope</div>
+  <div class="hidden md:flex gap-6 font-medium text-emerald-100"><a href="#">Our Mission</a><a href="#">Projects</a><a href="#">Impact</a></div>
+  <button class="bg-amber-400 text-emerald-900 px-6 py-2 font-bold rounded-full shadow hover:bg-amber-300">Donate Now</button>
+</nav>
+
+<header class="relative flex py-32 px-8 flex-col items-center text-center bg-[url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600')] bg-cover bg-center bg-blend-overlay bg-emerald-900/80">
+  <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6">Education is a right, <br>not a privilege.</h1>
+  <p class="text-xl text-emerald-100 max-w-2xl mb-10">We build safe schools, provide critical learning materials, and empower teachers in under-resourced communities globally.</p>
+  <div class="flex gap-4">
+    <button class="bg-amber-400 text-emerald-900 px-8 py-4 font-bold rounded-full text-lg shadow-lg hover:bg-amber-300">Sponsor a Child</button>
+    <button class="bg-white/20 text-white backdrop-blur px-8 py-4 font-bold rounded-full text-lg border border-white/40">Volunteer</button>
+  </div>
+</header>
+
+<section class="py-20 px-8 max-w-5xl mx-auto grid md:grid-cols-3 gap-8">
+  <div class="text-center p-6 bg-white rounded-2xl shadow-sm border border-stone-200">
+    <div class="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-700"><i data-lucide="book-open"></i></div>
+    <h3 class="text-xl font-bold mb-2">50,000+</h3>
+    <p class="text-stone-500">Books Distributed</p>
+  </div>
+  <div class="text-center p-6 bg-white rounded-2xl shadow-sm border border-stone-200">
+    <div class="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-700"><i data-lucide="school"></i></div>
+    <h3 class="text-xl font-bold mb-2">120</h3>
+    <p class="text-stone-500">Schools Built</p>
+  </div>
+  <div class="text-center p-6 bg-white rounded-2xl shadow-sm border border-stone-200">
+    <div class="bg-emerald-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-emerald-700"><i data-lucide="graduation-cap"></i></div>
+    <h3 class="text-xl font-bold mb-2">15,000+</h3>
+    <p class="text-stone-500">Graduates Supported</p>
+  </div>
+</section>
+<script>lucide.createIcons();</script>
+</body>
+</html>

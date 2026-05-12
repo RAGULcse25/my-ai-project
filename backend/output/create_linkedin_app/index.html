@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn App - Dark Neon Theme</title>
+    <meta name="description" content="Dark Neon Theme LinkedIn App">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+html,body{margin:0!important;padding:0!important;overflow:hidden}
+
+        /* Dark Neon Theme */
+        body {
+            background-color: #1a1d23;
+            color: #ffffff;
+        }
+        .background {
+            background: linear-gradient(45deg, #2f343a, #3b414a);
+        }
+        .orb {
+            background: linear-gradient(45deg, #4f545a, #5f656a);
+        }
+        .sidebar {
+            background-color: #2f343a;
+        }
+        .nav-menu {
+            background-color: #3b414a;
+        }
+        .nav-item {
+            background-color: #4f545a;
+        }
+        .nav-link {
+            color: #ffffff;
+        }
+        .nav-link:hover {
+            color: #66d9ef;
+        }
+        .nav-badge {
+            background-color: #66d9ef;
+        }
+        /* Neon Effects */
+        .neon {
+            text-shadow: 0 0 10px #66d9ef, 0 0 20px #66d9ef, 0 0 30px #66d9ef;
+        }
+        .neon-button {
+            background-color: #4f545a;
+            border: 1px solid #66d9ef;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .neon-button:hover {
+            background-color: #5f656a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">L</div>
+                <span class="logo-text neon">LinkedIn App</span>
+            </div>
+
+            <ul class="nav-menu">
+                <li class="nav-section">
+                    <span class="nav-section-title neon">Main Menu</span>
+                    <ul>
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link active">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                                    <rect x="14" y="14" width="7" height="7" rx="1"/>
+                                </svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="analytics.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5"/>
+                                    <path d="M2 12l10 5 10-5"/>
+                                </svg>
+                                Analytics
+                                <span class="nav-badge">New</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="users.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                </svg>
+                                Users
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="settings.html" class="nav-link">
+                                <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06
+                                </svg>
+                                Settings
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <h1 class="neon">Create LinkedIn App</h1>
+                <form id="create-app-form">
+                    <label for="app-name">App Name:</label>
+                    <input type="text" id="app-name" name="app-name"><br><br>
+                    <label for="app-description">App Description:</label>
+                    <textarea id="app-description" name="app-description"></textarea><br><br>
+                    <button class="neon-button" type="submit">Create App</button>
+                </form>
+                <div id="app-created" style="display: none;">
+                    <h2 class="neon">App Created Successfully!</h2>
+                    <p>App Name: <span id="app-name-created"></span></p>
+                    <p>App Description: <span id="app-description-created"></span></p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const createAppForm = document.getElementById('create-app-form');
+        const appNameInput = document.getElementById('app-name');
+        const appDescriptionInput = document.getElementById('app-description');
+        const appCreatedDiv = document.getElementById('app-created');
+        const appNameCreatedSpan = document.getElementById('app-name-created');
+        const appDescriptionCreatedSpan = document.getElementById('app-description-created');
+
+        createAppForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const appName = appNameInput.value;
+            const appDescription = appDescriptionInput.value;
+
+            // Create app logic here
+            // For demonstration purposes, we'll just display the app details
+            appCreatedDiv.style.display = 'block';
+            appNameCreatedSpan.textContent = appName;
+            appDescriptionCreatedSpan.textContent = appDescription;
+        });
+    </script>
+</body>
+</html>

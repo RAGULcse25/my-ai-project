@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #070b14;
+  color: #e2e8f0;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+iframe { display: block; border: none; background: #fff; }
+
+::selection { background: #c4b5fd; color: #0a0014; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(196,181,253,0.2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(196,181,253,0.4); }
+
+/* ─── Standard keyframes ─────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(196,181,253,0.3); }
+  50%       { box-shadow: 0 0 40px rgba(249,168,212,0.5); }
+}
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* ─── Anime keyframes ────────────────────────────────── */
+@keyframes animeFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-8px) rotate(1deg); }
+  66%       { transform: translateY(-4px) rotate(-1deg); }
+}
+@keyframes animeGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(196,181,253,0.2), 0 0 30px rgba(196,181,253,0.05); }
+  50%       { box-shadow: 0 0 28px rgba(249,168,212,0.3), 0 0 55px rgba(147,197,253,0.1); }
+}
+@keyframes shimmerPass {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50%       { transform: scale(1.04); opacity: 1; }
+}
+@keyframes popIn {
+  0%   { transform: scale(0.85); opacity: 0; }
+  60%  { transform: scale(1.04); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes rippleOut {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes glowPulseBlue {
+  0%, 100% { box-shadow: 0 0 12px rgba(147,197,253,0.2); }
+  50%       { box-shadow: 0 0 24px rgba(147,197,253,0.45); }
+}
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ─── Utility classes ────────────────────────────────── */
+.animate-fadeIn   { animation: fadeIn  0.4s ease both; }
+.animate-slideUp  { animation: slideUp 0.5s cubic-bezier(.34,1.56,.64,1) both; }
+.animate-popIn    { animation: popIn   0.4s cubic-bezier(.34,1.56,.64,1) both; }
+.animate-float    { animation: animeFloat 4s ease-in-out infinite; }
+.anime-glow       { animation: animeGlow  3s ease-in-out infinite; }
+
+/* ─── Focus ring ─────────────────────────────────────── */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid rgba(196,181,253,0.6);
+  outline-offset: 2px;
+}
+
+* { scroll-behavior: smooth; }

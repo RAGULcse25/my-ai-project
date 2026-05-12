@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Expense Tracker</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#121212] h-screen overflow-hidden flex flex-col font-sans text-white">
+  <div class="px-6 pt-12 pb-8 flex flex-col items-center">
+    <p class="text-gray-400 text-sm font-medium mb-1">Total Balance</p>
+    <h1 class="font-bold text-4xl tracking-tight mb-6">$12,450<span class="text-gray-500 text-xl">.00</span></h1>
+    
+    <div class="flex gap-4 w-full">
+      <div class="flex-1 bg-green-500/10 p-4 rounded-2xl border border-green-500/20">
+        <div class="flex items-center gap-2 text-green-400 mb-2"><i data-lucide="arrow-down-left" class="w-4 h-4"></i><span class="text-xs font-bold uppercase">Income</span></div>
+        <div class="font-bold text-xl">$4,250</div>
+      </div>
+      <div class="flex-1 bg-red-500/10 p-4 rounded-2xl border border-red-500/20">
+        <div class="flex items-center gap-2 text-red-500 mb-2"><i data-lucide="arrow-up-right" class="w-4 h-4"></i><span class="text-xs font-bold uppercase">Expenses</span></div>
+        <div class="font-bold text-xl">$1,890</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="flex-1 bg-[#1A1A1A] rounded-t-3xl p-6 overflow-y-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="font-bold hover:text-white text-gray-300">Transactions</h2>
+    </div>
+    
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <div class="flex gap-4 items-center">
+          <div class="bg-gray-800 w-12 h-12 flex items-center justify-center rounded-2xl"><i data-lucide="coffee" class="text-orange-400"></i></div>
+          <div><h3 class="font-bold">Starbucks</h3><p class="text-xs text-gray-500">Today, 09:41 AM</p></div>
+        </div>
+        <div class="font-bold text-red-400">-$5.50</div>
+      </div>
+      <div class="flex justify-between items-center">
+        <div class="flex gap-4 items-center">
+          <div class="bg-gray-800 w-12 h-12 flex items-center justify-center rounded-2xl"><i data-lucide="monitor" class="text-blue-400"></i></div>
+          <div><h3 class="font-bold">Apple Store</h3><p class="text-xs text-gray-500">Yesterday</p></div>
+        </div>
+        <div class="font-bold text-red-400">-$999.00</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+    <button class="bg-[#c4a968] text-black w-16 h-16 rounded-full flex items-center justify-center shadow-[0_10px_25px_rgba(196,169,104,0.4)]"><i data-lucide="plus" class="w-8 h-8"></i></button>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

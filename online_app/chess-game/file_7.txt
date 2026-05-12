@@ -1,0 +1,32 @@
+# Chess Games API
+
+This is a Flask API for managing chess games.
+
+## Setup
+
+1. Create a virtual environment: `python -m venv venv`
+2. Activate the virtual environment: `source venv/bin/activate` (on Linux/Mac) or `venv\Scripts\activate` (on Windows)
+3. Install the dependencies: `pip install -r requirements.txt`
+4. Run the application: `python app.py`
+
+## API Endpoints
+
+* `GET /games`: Get all chess games
+* `POST /games`: Create a new chess game
+* `GET /games/<int:game_id>`: Get a chess game by ID
+* `PUT /games/<int:game_id>`: Update a chess game
+* `DELETE /games/<int:game_id>`: Delete a chess game
+
+## Features
+
+* Full CRUD operations for chess games
+* SQLite database with proper schema and migrations
+* Beautiful dark UI matching the IIT Design Standard
+* Client-side form validation with error messages
+* Loading states for all API calls
+* Toast notification system (NOT alert())
+* Mobile-responsive layout
+* Search + filter functionality
+* Pagination for lists
+* Proper HTTP status codes on all endpoints
+* Error handling with user-friendly messages

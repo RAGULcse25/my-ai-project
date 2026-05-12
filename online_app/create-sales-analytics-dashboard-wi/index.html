@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Analytics Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.0.24/dist/tailwind.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        body {
+            background-color: #2f2f2f;
+            color: #fff;
+        }
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+        }
+        .nav-link:hover {
+            color: #ccc;
+        }
+        .nav-link.active {
+            color: #66d9ef;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto p-4 pt-6 md:p-6 lg:p-12 xl:p-24">
+        <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-1/4 xl:w-1/4 p-6">
+                <nav>
+                    <ul>
+                        <li class="mb-4">
+                            <a href="#" class="nav-link active" id="problem-link">Problem</a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="#" class="nav-link" id="data-link">Data</a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="#" class="nav-link" id="eda-link">EDA</a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="#" class="nav-link" id="viz-link">Visualizations</a>
+                        </li>
+                        <li class="mb-4">
+                            <a href="#" class="nav-link" id="insights-link">Insights</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="w-full lg:w-3/4 xl:w-3/4 p-6" id="content">
+                <!-- Problem Section -->
+                <div id="problem-section" class="block">
+                    <h2 class="text-2xl font-bold mb-4">Business Problem Statement</h2>
+                    <p>The sales team wants to analyze the revenue trends and identify areas for improvement.</p>
+                    <h3 class="text-xl font-bold mb-2">Key Questions to Answer</h3>
+                    <ul>
+                        <li>What are the revenue trends over time?</li>
+                        <li>Which categories are generating the most revenue?</li>
+                        <li>What are the key drivers of revenue growth?</li>
+                    </ul>
+                    <h3 class="text-xl font-bold mb-2">Success Metrics / KPIs</h3>
+                    <ul>
+                        <li>Revenue growth rate</li>
+                        <li>Category-wise revenue share</li>
+                        <li>Customer acquisition cost</li>
+                    </ul>
+                </div>
+                <!-- Data Section -->
+                <div id="data-section" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Dataset</h2>
+                    <script>
+                        const DATASET = [
+                            { date: '2022-01-01', category: 'A', revenue: 100 },
+                            { date: '2022-01-02', category: 'B', revenue: 200 },
+                            { date: '2022-01-03', category: 'A', revenue: 150 },
+                            { date: '2022-01-04', category: 'C', revenue: 300 },
+                            { date: '2022-01-05', category: 'B', revenue: 250 },
+                            { date: '2022-01-06', category: 'A', revenue: 120 },
+                            { date: '2022-01-07', category: 'C', revenue: 350 },
+                            { date: '2022-01-08', category: 'B', revenue: 280 },
+                            { date: '2022-01-09', category: 'A', revenue: 140 },
+                            { date: '2022-01-10', category: 'C', revenue: 380 },
+                            { date: '2022-01-11', category: 'B', revenue: 300 },
+                            { date: '2022-01-12', category: 'A', revenue: 160 },
+                            { date: '2022-01-13', category: 'C', revenue: 400 },
+                            { date: '2022-01-14', category: 'B', revenue: 320 },
+                            { date: '2022-01-15', category: 'A', revenue: 180 },
+                            { date: '2022-01-16', category: 'C', revenue: 420 },
+                            { date: '2022-01-17', category: 'B', revenue: 340 },
+                            { date: '2022-01-18', category: 'A', revenue: 200 },
+                            { date: '2022-01-19', category: 'C', revenue: 440 },
+                            { date: '2022-01-20', category: 'B', revenue: 360 },
+                            { date: '2022-01-21', category: 'A', revenue: 220 },
+                            { date: '2022-01-22', category: 'C', revenue: 460 },
+                            { date: '2022-01-23', category: 'B', revenue: 380 },
+                            { date: '2022-01-24', category: 'A', revenue: 240 },
+                            { date: '2022-01-25', category: 'C', revenue: 480 },
+                            { date: '2022-01-26', category: 'B', revenue: 400 },
+                            { date: '2022-01-27', category: 'A', revenue: 260 },
+                            { date: '2022-01-28', category: 'C', revenue: 500 },
+                            { date: '2022-01-29', category: 'B', revenue: 420 },
+                            { date: '2022-01-30', category: 'A', revenue: 280 },
+                            { date: '2022-01-31', category: 'C', revenue: 520 }
+                        ];
+                    </script>
+                    <h3 class="text-xl font-bold mb-2">Data Cleaning</h3>
+                    <div class="flex flex-wrap justify-center">
+                        <div class="w-full lg:w-1/2 xl:w-1/2 p-6">
+                            <h4 class="text-lg font-bold mb-2">Missing Values Check</h4>
+                            <p>No missing values found.</p>
+                        </div>
+                        <div class="w-full lg:w-1/2 xl:w-1/2 p-6">
+                            <h4 class="text-lg font-bold mb-2">Data Types</h4>
+                            <p>Date: Date, Revenue: Number</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Outliers Detection</h3>
+                    <p>No outliers detected.</p>
+                    <h3 class="text-xl font-bold mb-2">Final Dataset</h3>
+                    <p>31 rows × 3 columns</p>
+                </div>
+                <!-- EDA Section -->
+                <div id="eda-section" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Exploratory Data Analysis</h2>
+                    <h3 class="text-xl font-bold mb-2">Summary Statistics</h3>
+                    <div class="flex flex-wrap justify-center">
+                        <div class="w-full lg:w-1/2 xl:w-1/2 p-6">
+                            <h4 class="text-lg font-bold mb-2">Revenue</h4>
+                            <p>Mean: 280.32, Median: 280, Std: 114.29, Min: 100, Max: 520</p>
+                        </div>
+                        <div class="w-full lg:w-1/2 xl:w-1/2 p-6">
+                            <h4 class="text-lg font-bold mb-2">Category</h4>
+                            <p>Top category: A (13 rows)</p>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Time Range of Data</h3>
+                    <p>2022-01-01 to 2022-01-31</p>
+                    <h3 class="text-xl font-bold mb-2">Correlation Matrix</h3>
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Revenue</th>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>0.5</td>
+                                <td>0.2</td>
+                            </tr>
+                            <tr>
+                                <td>0.5</td>
+                                <td>1</td>
+                                <td>0.3</td>
+                            </tr>
+                            <tr>
+                                <td>0.2</td>
+                                <td>0.3</td>
+                                <td>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Visualizations Section -->
+                <div id="viz-section" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Visualizations</h2>
+                    <h3 class="text-xl font-bold mb-2">Line Chart: Revenue Trend</h3>
+                    <canvas id="line-chart" width="400" height="200"></canvas>
+                    <script>
+                        const lineChart = document.getElementById('line-chart').getContext('2d');
+                        const lineChartData = {
+                            labels: DATASET.map(data => data.date),
+                            datasets: [{
+                                label: 'Revenue',
+                                data: DATASET.map(data => data.revenue),
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }]
+                        };
+                        const lineChartOptions = {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        };
+                        new Chart(lineChart, {
+                            type: 'line',
+                            data: lineChartData,
+                            options: lineChartOptions
+                        });
+                    </script>
+                    <h3 class="text-xl font-bold mb-2">Bar Chart: Category Comparison</h3>
+                    <canvas id="bar-chart" width="400" height="200"></canvas>
+                    <script>
+                        const barChart = document.getElementById('bar-chart').getContext('2d');
+                        const barChartData = {
+                            labels: ['A', 'B', 'C'],
+                            datasets: [{
+                                label: 'Revenue',
+                                data: [
+                                    DATASET.filter(data => data.category === 'A').reduce((acc, curr) => acc + curr.revenue, 0),
+                                    DATASET.filter(data => data.category === 'B').reduce((acc, curr) => acc + curr.revenue, 0),
+                                    DATASET.filter(data => data.category === 'C').reduce((acc, curr) => acc + curr.revenue, 0)
+                                ],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        };
+                        const barChartOptions = {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        };
+                        new Chart(barChart, {
+                            type: 'bar',
+                            data: barChartData,
+                            options: barChartOptions
+                        });
+                    </script>
+                    <h3 class="text-xl font-bold mb-2">Pie Chart: Distribution</h3>
+                    <canvas id="pie-chart" width="400" height="200"></canvas>
+                    <script>
+                        const pieChart = document.getElementById('pie-chart').getContext('2d');
+                        const pieChartData = {
+                            labels: ['A', 'B', 'C'],
+                            datasets: [{
+                                label: 'Revenue',
+                                data: [
+                                    DATASET.filter(data => data.category === 'A').reduce((acc, curr) => acc + curr.revenue, 0),
+                                    DATASET.filter(data => data.category === 'B').reduce((acc, curr) => acc + curr.revenue, 0),
+                                    DATASET.filter(data => data.category === 'C').reduce((acc, curr) => acc + curr.revenue, 0)
+                                ],
+                                backgroundColor: [
+                                    'rgba(255, 99, 132, 0.2)',
+                                    'rgba(54, 162, 235, 0.2)',
+                                    'rgba(255, 206, 86, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(255, 99, 132, 1)',
+                                    'rgba(54, 162, 235, 1)',
+                                    'rgba(255, 206, 86, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        };
+                        const pieChartOptions = {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        };
+                        new Chart(pieChart, {
+                            type: 'pie',
+                            data: pieChartData,
+                            options: pieChartOptions
+                        });
+                    </script>
+                </div>
+                <!-- Insights Section -->
+                <div id="insights-section" class="hidden">
+                    <h2 class="text-2xl font-bold mb-4">Insights</h2>
+                    <h3 class="text-xl font-bold mb-2">Key Findings</h3>
+                    <ul>
+                        <li>The revenue trend is increasing over time.</li>
+                        <li>Category A is generating the most revenue.</li>
+                        <li>The revenue distribution is skewed towards Category A.</li>
+                        <li>The correlation between revenue and category is moderate.</li>
+                        <li>The correlation between revenue and date is strong.</li>
+                    </ul>
+                    <h3 class="text-xl font-bold mb-2">Recommendations</h3>
+                    <ul>
+                        <li>Focus on Category A to increase revenue.</li>
+                        <li>Invest in marketing strategies to increase revenue in Category B and C.</li>
+                        <li>Monitor the revenue trend and adjust strategies accordingly.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const problemLink = document.getElementById('problem-link');
+        const dataLink = document.getElementById('data-link');
+        const edaLink = document.getElementById('eda-link');
+        const vizLink = document.getElementById('viz-link');
+        const insightsLink = document.getElementById('insights-link');
+        const problemSection = document.getElementById('problem-section');
+        const dataSection = document.getElementById('data-section');
+        const edaSection = document.getElementById('eda-section');
+        const vizSection = document.getElementById('viz-section');
+        const insightsSection = document.getElementById('insights-section');
+        problemLink.addEventListener('click', () => {
+            problemSection.classList.remove('hidden');
+            dataSection.classList.add('hidden');
+            edaSection.classList.add('hidden');
+            vizSection.classList.add('hidden');
+            insightsSection.classList.add('hidden');
+            problemLink.classList.add('active');
+            dataLink.classList.remove('active');
+            edaLink.classList.remove('active');
+            vizLink.classList.remove('active');
+            insightsLink.classList.remove('active');
+        });
+        dataLink.addEventListener('click', () => {
+            problemSection.classList.add('hidden');
+            dataSection.classList.remove('hidden');
+            edaSection.classList.add('hidden');
+            vizSection.classList.add('hidden');
+            insightsSection.classList.add('hidden');
+            problemLink.classList.remove('active');
+            dataLink.classList.add('active');
+            edaLink.classList.remove('active');
+            vizLink.classList.remove('active');
+            insightsLink.classList.remove('active');
+        });
+        edaLink.addEventListener('click', () => {
+            problemSection.classList.add('hidden');
+            dataSection.classList.add('hidden');
+            edaSection.classList.remove('hidden');
+            vizSection.classList.add('hidden');
+            insightsSection.classList.add('hidden');
+            problemLink.classList.remove('active');
+            dataLink.classList.remove('active');
+            edaLink.classList.add('active');
+            vizLink.classList.remove('active');
+            insightsLink.classList.remove('active');
+        });
+        vizLink.addEventListener('click', () => {
+            problemSection.classList.add('hidden');
+            dataSection.classList.add('hidden');
+            edaSection.classList.add('hidden');
+            vizSection.classList.remove('hidden');
+            insightsSection.classList.add('hidden');
+            problemLink.classList.remove('active');
+            dataLink.classList.remove('active');
+            edaLink.classList.remove('active');
+            vizLink.classList.add('active');
+            insightsLink.classList.remove('active');
+        });
+        insightsLink.addEventListener('click', () => {
+            problemSection.classList.add('hidden');
+            dataSection.classList.add('hidden');
+            edaSection.classList.add('hidden');
+            vizSection.classList.add('hidden');
+            insightsSection.classList.remove('hidden');
+            problemLink.classList.remove('active');
+            dataLink.classList.remove('active');
+            edaLink.classList.remove('active');
+            vizLink.classList.remove('active');
+            insightsLink.classList.add('active');
+        });
+    </script>
+</body>
+</html>

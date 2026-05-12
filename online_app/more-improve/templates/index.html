@@ -1,0 +1,131 @@
+```html
+{% extends "base.html" %}
+
+{% block title %}Task Horizon - Productivity Management{% endblock %}
+
+{% block content %}
+<section class="hero min-h-[80vh] flex items-center">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div class="text-center lg:text-left">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                    <span class="bg-gradient-to-r from-accent-purple via-accent-pink to-accent-blue bg-clip-text text-transparent">Task Horizon</span>
+                    <br>Redefining Productivity
+                </h1>
+                <p class="text-lg md:text-xl text-white/80 mb-8 max-w-lg mx-auto lg:mx-0">
+                    The ultimate project management tool for modern teams. Organize, collaborate, and achieve more with our intuitive platform.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                        Get Started - It's Free
+                    </a>
+                    <a href="#" class="btn btn-outline btn-lg">
+                        <i data-lucide="play" class="w-5 h-5 mr-2"></i>
+                        Watch Demo
+                    </a>
+                </div>
+            </div>
+            <div class="relative">
+                <div class="relative z-10 bg-glass-dark backdrop-blur-lg rounded-2xl p-6 shadow-2xl border border-white/10 transform rotate-1 hover:rotate-0 transition-transform duration-300">
+                    <img src="https://picsum.photos/seed/taskdashboard/800/600" alt="Dashboard Preview" class="rounded-xl shadow-lg">
+                </div>
+                <div class="absolute -bottom-6 -left-6 w-full h-full bg-gradient-to-r from-accent-purple/30 to-accent-blue/30 rounded-2xl blur-xl opacity-70 -z-10"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Features Designed for <span class="bg-gradient-to-r from-accent-purple to-accent-pink bg-clip-text text-transparent">Efficiency</span></h2>
+            <p class="text-lg text-white/70 max-w-2xl mx-auto">Everything you need to manage projects, collaborate with your team, and get work done.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="feature-card">
+                <div class="feature-icon bg-gradient-to-r from-accent-purple to-accent-pink">
+                    <i data-lucide="layout-dashboard" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-semibold mt-6 mb-3">Intuitive Dashboard</h3>
+                <p class="text-white/70">Get a complete overview of all your projects and tasks in one beautifully designed dashboard.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon bg-gradient-to-r from-accent-blue to-accent-teal">
+                    <i data-lucide="users" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-semibold mt-6 mb-3">Team Collaboration</h3>
+                <p class="text-white/70">Assign tasks, share files, and communicate with your team all in one place.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon bg-gradient-to-r from-accent-pink to-accent-orange">
+                    <i data-lucide="bar-chart-2" class="w-8 h-8"></i>
+                </div>
+                <h3 class="text-xl font-semibold mt-6 mb-3">Advanced Analytics</h3>
+                <p class="text-white/70">Track progress, identify bottlenecks, and optimize your workflow with powerful insights.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20 bg-gradient-to-b from-space-dark to-space-darker">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Trusted by <span class="bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">Teams Worldwide</span></h2>
+            <p class="text-lg text-white/70 max-w-2xl mx-auto">Join thousands of companies that rely on Task Horizon to power their productivity.</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-center">
+            <div class="flex justify-center">
+                <div class="bg-glass-dark p-6 rounded-xl w-32 h-20 flex items-center justify-center">
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent-purple to-accent-pink bg-clip-text text-transparent">TechCorp</span>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="bg-glass-dark p-6 rounded-xl w-32 h-20 flex items-center justify-center">
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent-blue to-accent-teal bg-clip-text text-transparent">InnoSoft</span>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="bg-glass-dark p-6 rounded-xl w-32 h-20 flex items-center justify-center">
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent-pink to-accent-orange bg-clip-text text-transparent">DesignHub</span>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <div class="bg-glass-dark p-6 rounded-xl w-32 h-20 flex items-center justify-center">
+                    <span class="text-xl font-bold bg-gradient-to-r from-accent-teal to-accent-blue bg-clip-text text-transparent">DataWave</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-20">
+    <div class="container mx-auto px-4">
+        <div class="bg-glass-dark backdrop-blur-lg rounded-2xl p-8 md:p-12 shadow-2xl border border-white/10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to <span class="bg-gradient-to-r from-accent-purple to-accent-pink bg-clip-text text-transparent">Transform</span> Your Workflow?</h2>
+                    <p class="text-lg text-white/80 mb-8">Join thousands of teams who have already revolutionized their productivity with Task Horizon.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">
+                            Start Free Trial
+                        </a>
+                        <a href="#" class="btn btn-outline btn-lg">
+                            Contact Sales
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="absolute -top-6 -right-6 w-32 h-32 bg-accent-purple/20 rounded-full blur-3xl -z-10"></div>
+                    <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-accent-blue/20 rounded-full blur-3xl -z-10"></div>
+                    <img src="https://picsum.photos/seed/teamwork/600/400" alt="Team Collaboration" class="rounded-xl shadow-lg w-full">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+```

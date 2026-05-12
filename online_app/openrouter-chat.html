@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenRouter AI Assistant</title>
+    <!-- Marked.js for parsing Markdown output from the AI -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: rgba(255, 255, 255, 0.03);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent-primary: #6C63FF;
+            --accent-secondary: #FF6B9D;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(108, 99, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 85% 30%, rgba(255, 107, 157, 0.08) 0%, transparent 40%);
+        }
+
+        /* ── Header ── */
+        header {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--panel-border);
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .settings-btn {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* ── Main Chat Area ── */
+        main {
+            flex: 1;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            gap: 20px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 85%;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            align-self: flex-end;
+        }
+
+        .message.ai {
+            align-self: flex-start;
+        }
+
+        .message-content {
+            padding: 16px 20px;
+            border-radius: 16px;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.2), rgba(108, 99, 255, 0.05));
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.ai .message-content {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-bottom-left-radius: 4px;
+        }
+
+        /* Markdown Styles inside AI Messages */
+        .message.ai .message-content p { margin-bottom: 12px; }
+        .message.ai .message-content p:last-child { margin-bottom: 0; }
+        .message.ai .message-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+            border: 1px solid var(--panel-border);
+        }
+        .message.ai .message-content code {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .message.ai .message-content pre code {
+            background: transparent;
+            padding: 0;
+        }
+
+        .sender-name {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0 4px;
+        }
+
+        .message.user .sender-name {
+            text-align: right;
+        }
+
+        /* ── Input Area ── */
+        .input-container {
+            width: 100%;
+            max-width: 900px;
+            padding: 0 24px 30px 24px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-box {
+            flex: 1;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 14px 20px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            resize: none;
+            min-height: 52px;
+            max-height: 200px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .input-box:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(108, 99, 255, 0.2);
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border: none;
+            border-radius: 14px;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+        }
+
+        .send-btn:active {
+            transform: translateY(0);
+        }
+
+        .send-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transform: translateX(2px);
+        }
+
+        /* ── Settings Modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: #111827;
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 450px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal h2 {
+            font-family: 'Outfit', sans-serif;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--panel-border);
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        /* Loading Dots */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 8px 0;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-secondary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+        .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">✨ OpenRouter AI</div>
+        <button class="settings-btn" onclick="openSettings()">⚙️ Settings</button>
+    </header>
+
+    <main id="chatArea">
+        <!-- Messages will appear here -->
+        <div class="message ai">
+            <span class="sender-name">System</span>
+            <div class="message-content">
+                Hello! I am your AI assistant powered by OpenRouter. Please ensure you have added your API Key in the settings to start chatting.
+            </div>
+        </div>
+    </main>
+
+    <div class="input-container">
+        <textarea id="promptInput" class="input-box" placeholder="Type your prompt here..." rows="1" oninput="autoResize(this)"></textarea>
+        <button class="send-btn" onclick="sendMessage()">
+            <svg viewBox="0 0 24 24">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal">
+            <h2>API Settings</h2>
+            <div class="form-group">
+                <label>OpenRouter API Key</label>
+                <input type="password" id="apiKeyInput" placeholder="sk-or-v1-...">
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <select id="modelSelect">
+                    <option value="anthropic/claude-3-opus:beta">Claude 3 Opus</option>
+                    <option value="anthropic/claude-3-sonnet:beta">Claude 3 Sonnet</option>
+                    <option value="google/gemini-pro">Gemini Pro</option>
+                    <option value="meta-llama/llama-3-70b-instruct">Llama 3 70B</option>
+                    <option value="openai/gpt-4-turbo">GPT-4 Turbo</option>
+                    <option value="mistralai/mixtral-8x7b-instruct">Mixtral 8x7B</option>
+                </select>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatArea = document.getElementById('chatArea');
+        const promptInput = document.getElementById('promptInput');
+        const settingsModal = document.getElementById('settingsModal');
+        
+        let apiKey = localStorage.getItem('openrouter_key') || '';
+        let selectedModel = localStorage.getItem('openrouter_model') || 'anthropic/claude-3-opus:beta';
+        
+        let conversationHistory = [];
+
+        // Initialize Settings
+        document.getElementById('apiKeyInput').value = apiKey;
+        document.getElementById('modelSelect').value = selectedModel;
+
+        if (!apiKey) {
+            setTimeout(openSettings, 500);
+        }
+
+        function openSettings() {
+            settingsModal.classList.add('active');
+        }
+
+        function closeSettings() {
+            settingsModal.classList.remove('active');
+        }
+
+        function saveSettings() {
+            apiKey = document.getElementById('apiKeyInput').value.trim();
+            selectedModel = document.getElementById('modelSelect').value;
+            localStorage.setItem('openrouter_key', apiKey);
+            localStorage.setItem('openrouter_model', selectedModel);
+            closeSettings();
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+
+        // Handle Enter to send (Shift+Enter for newline)
+        promptInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function appendMessage(role, text) {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ${role}`;
+            
+            const senderSpan = document.createElement('span');
+            senderSpan.className = 'sender-name';
+            senderSpan.textContent = role === 'user' ? 'You' : 'AI';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            if (role === 'ai') {
+                contentDiv.innerHTML = marked.parse(text); // Use marked.js for markdown
+            } else {
+                contentDiv.textContent = text;
+            }
+
+            msgDiv.appendChild(senderSpan);
+            msgDiv.appendChild(contentDiv);
+            chatArea.appendChild(msgDiv);
+            
+            // Scroll to bottom
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function appendTypingIndicator() {
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `message ai typing-message`;
+            msgDiv.id = 'typingIndicator';
+            
+            const senderSpan = document.createElement('span');
+            senderSpan.className = 'sender-name';
+            senderSpan.textContent = 'AI';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = `
+                <div class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+
+            msgDiv.appendChild(senderSpan);
+            msgDiv.appendChild(contentDiv);
+            chatArea.appendChild(msgDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        async function sendMessage() {
+            const text = promptInput.value.trim();
+            if (!text) return;
+
+            if (!apiKey) {
+                alert("Please configure your OpenRouter API key in settings first.");
+                openSettings();
+                return;
+            }
+
+            // UI Updates
+            appendMessage('user', text);
+            promptInput.value = '';
+            promptInput.style.height = 'auto';
+            appendTypingIndicator();
+
+            // Store in history
+            conversationHistory.push({ role: 'user', content: text });
+
+            try {
+                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${apiKey}`,
+                        "HTTP-Referer": window.location.href, // Required by OpenRouter
+                        "X-Title": "SEADS OpenRouter App",    // Optional identifier
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        model: selectedModel,
+                        messages: conversationHistory
+                    })
+                });
+
+                removeTypingIndicator();
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error?.message || "API Error");
+                }
+
+                const data = await response.json();
+                const aiReply = data.choices[0].message.content;
+
+                conversationHistory.push({ role: 'assistant', content: aiReply });
+                appendMessage('ai', aiReply);
+
+            } catch (error) {
+                removeTypingIndicator();
+                appendMessage('ai', `**Error:** ${error.message}`);
+                // Remove the last user message from history if it failed
+                conversationHistory.pop();
+            }
+        }
+    </script>
+</body>
+</html>

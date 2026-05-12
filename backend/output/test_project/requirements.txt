@@ -1,0 +1,29 @@
+fastapi
+uvicorn
+scikit-learn
+pandas
+numpy
+streamlit
+sqlite3
+mongodb
+python-dotenv
+pydantic
+typing
+numpydoc
+# For development and testing
+pytest
+flake8
+black
+isort
+mypy
+# For API documentation
+openapi-generator
+# For frontend development
+react
+# For data loading and manipulation
+requests
+beautifulsoup4
+lxml
+# For database interactions
+sqlalchemy
+pymongo

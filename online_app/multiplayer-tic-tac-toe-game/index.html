@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer Tic-Tac-Toe</title>
+    <style>
+        /* Add some basic styling to make the game look better */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #game-container {
+            width: 600px;
+            height: 600px;
+            border: 1px solid black;
+            margin: 40px auto;
+        }
+        #game-canvas {
+            width: 100%;
+            height: 100%;
+            border: 1px solid black;
+        }
+        #score-container {
+            margin-top: 20px;
+        }
+        #score-container span {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multiplayer Tic-Tac-Toe</h1>
+    <button id="start-button">Start Game</button>
+    <div id="game-container">
+        <canvas id="game-canvas" width="600" height="600"></canvas>
+    </div>
+    <div id="score-container">
+        <span id="player1-score">Player 1: 0</span>
+        <span id="player2-score">Player 2: 0</span>
+    </div>
+    <script>
+        // Get the canvas and context
+        const canvas = document.getElementById('game-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set the canvas dimensions
+        canvas.width = 600;
+        canvas.height = 600;
+
+        // Define the game variables
+        let playerTurn = 1;
+        let player1Score = 0;
+        let player2Score = 0;
+        let gameOver = false;
+        let gameStarted = false;
+
+        // Define the game board
+        const board = [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+
+        // Define the winning combinations
+        const winningCombinations = [
+            [[0, 0], [0, 1], [0, 2]],
+            [[1, 0], [1, 1], [1, 2]],
+            [[2, 0], [2, 1], [2, 2]],
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 1], [1, 1], [2, 1]],
+            [[0, 2], [1, 2], [2, 2]],
+            [[0, 0], [1, 1], [2, 2]],
+            [[0, 2], [1, 1], [2, 0]]
+        ];
+
+        // Draw the game board
+        function drawBoard() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    if (board[i][j] === 1) {
+                        ctx.fillStyle = 'blue';
+                        ctx.fillRect(j * 200, i * 200, 200, 200);
+                        ctx.fillStyle = 'white';
+                        ctx.font = '100px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('X', j * 200 + 100, i * 200 + 100);
+                    } else if (board[i][j] === 2) {
+                        ctx.fillStyle = 'red';
+                        ctx.fillRect(j * 200, i * 200, 200, 200);
+                        ctx.fillStyle = 'white';
+                        ctx.font = '100px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('O', j * 200 + 100, i * 200 + 100);
+                    }
+                    ctx.strokeStyle = 'black';
+                    ctx.strokeRect(j * 200, i * 200, 200, 200);
+                }
+            }
+        }
+
+        // Handle player input
+        function handleInput(event) {
+            if (gameOver || !gameStarted) return;
+            const x = event.clientX - canvas.offsetLeft;
+            const y = event.clientY - canvas.offsetTop;
+            const col = Math.floor(x / 200);
+            const row = Math.floor(y / 200);
+            if (board[row][col] === 0) {
+                board[row][col] = playerTurn;
+                if (checkWin()) {
+                    gameOver = true;
+                    if (playerTurn === 1) {
+                        player1Score++;
+                        document.getElementById('player1-score').innerText = `Player 1: ${player1Score}`;
+                    } else {
+                        player2Score++;
+                        document.getElementById('player2-score').innerText = `Player 2: ${player2Score}`;
+                    }
+                } else {
+                    playerTurn = playerTurn === 1 ? 2 : 1;
+                }
+                drawBoard();
+            }
+        }
+
+        // Check for a win
+        function checkWin() {
+            for (let i = 0; i < winningCombinations.length; i++) {
+                const combination = winningCombinations[i];
+                if (board[combination[0][0]][combination[0][1]] === board[combination[1][0]][combination[1][1]] &&
+                    board[combination[1][0]][combination[1][1]] === board[combination[2][0]][combination[2][1]] &&
+                    board[combination[0][0]][combination[0][1]] !== 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Handle game start
+        document.getElementById('start-button').addEventListener('click', () => {
+            gameStarted = true;
+            gameOver = false;
+            playerTurn = 1;
+            player1Score = 0;
+            player2Score = 0;
+            board.forEach(row => row.fill(0));
+            drawBoard();
+            document.getElementById('player1-score').innerText = `Player 1: 0`;
+            document.getElementById('player2-score').innerText = `Player 2: 0`;
+        });
+
+        // Handle game restart
+        document.addEventListener('keydown', event => {
+            if (event.key === 'r' && gameOver) {
+                gameStarted = true;
+                gameOver = false;
+                playerTurn = 1;
+                player1Score = 0;
+                player2Score = 0;
+                board.forEach(row => row.fill(0));
+                drawBoard();
+                document.getElementById('player1-score').innerText = `Player 1: 0`;
+                document.getElementById('player2-score').innerText = `Player 2: 0`;
+            }
+        });
+
+        // Add event listeners for player input
+        canvas.addEventListener('click', handleInput);
+        canvas.addEventListener('touchstart', event => {
+            const touch = event.touches[0];
+            const x = touch.clientX - canvas.offsetLeft;
+            const y = touch.clientY - canvas.offsetTop;
+            const col = Math.floor(x / 200);
+            const row = Math.floor(y / 200);
+            handleInput({ clientX: x + canvas.offsetLeft, clientY: y + canvas.offsetTop });
+        });
+
+        // Initialize the game
+        drawBoard();
+    </script>
+</body>
+</html>

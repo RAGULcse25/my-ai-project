@@ -1,0 +1,193 @@
+/* ── Reset ── */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+/* ── Variables ── */
+:root {
+  /* Define colors for Modern dark theme */
+  --primary: #6366f1; 
+  --accent: #8b5cf6; 
+  --bg: #0d1117; 
+  --surface: #161b22;
+  --text: #e2e8f0; 
+  --muted: #8b949e; 
+  --border: #21262d;
+  /* Define font sizes */
+  --font-size-heading: 2.5rem;
+  --font-size-subheading: 1.75rem;
+  --font-size-body: 1rem;
+}
+
+/* ── Base ── */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: var(--font-size-heading);
+}
+
+h2 {
+  font-size: var(--font-size-subheading);
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* ── Navigation ── */
+nav {
+  background-color: var(--surface);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-right: 20px;
+}
+
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--primary);
+}
+
+/* ── Hero section ── */
+.hero {
+  background-image: linear-gradient(to bottom, var(--surface), var(--bg));
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+/* ── Features grid ── */
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 2rem;
+}
+
+.feature {
+  background-color: var(--surface);
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.feature:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.feature h2 {
+  margin-bottom: 1rem;
+}
+
+.feature p {
+  margin-bottom: 2rem;
+}
+
+/* ── Cards ── */
+.card {
+  background-color: var(--surface);
+  padding: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  margin-bottom: 1rem;
+}
+
+.card p {
+  margin-bottom: 2rem;
+}
+
+/* ── Footer ── */
+footer {
+  background-color: var(--surface);
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+footer p {
+  margin-bottom: 1rem;
+}
+
+/* ── Animations (keyframes) ── */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ── Media queries (mobile-first, 768px, 1024px) ── */
+@media (max-width: 768px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .features {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .hero {
+    padding: 2rem 1rem;
+  }
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&display=swap');

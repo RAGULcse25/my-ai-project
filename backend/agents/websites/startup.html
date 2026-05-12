@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI SaaS Startup Landing Page</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap');
+body{background-color:#070B14;color:#e2e8f0;font-family:'Inter',sans-serif;overflow-x:hidden;}
+h1,h2,h3{font-family:'Outfit',sans-serif;}
+.glass{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);}
+.text-gradient{background:linear-gradient(135deg,#6C63FF,#4ECDE6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.glow-box{box-shadow:0 0 50px 0 rgba(78,205,230,0.15);}
+</style>
+</head>
+<body>
+<nav class="fixed top-0 w-full z-50 px-6 py-4">
+  <div class="max-w-7xl mx-auto glass rounded-full px-6 py-3 flex justify-between items-center">
+    <div class="font-bold text-xl flex items-center gap-2"><i data-lucide="cpu" class="text-[#6C63FF]"></i> NexaAI</div>
+    <div class="hidden md:flex gap-8 text-sm"><a href="#">Product</a><a href="#">Pricing</a><a href="#">API</a></div>
+    <div><a href="#" class="px-6 py-2 bg-gradient-to-r from-[#6C63FF] to-[#4ECDE6] rounded-full text-white font-bold inline-block">Start Free Trial</a></div>
+  </div>
+</nav>
+
+<section class="min-h-screen flex items-center justify-center pt-24 px-6 relative">
+  <div class="absolute top-[20%] left-[10%] w-[500px] h-[500px] bg-[#6C63FF] opacity-20 blur-[120px] rounded-full"></div>
+  <div class="absolute bottom-[20%] right-[10%] w-[400px] h-[400px] bg-[#4ECDE6] opacity-20 blur-[120px] rounded-full"></div>
+  <div class="text-center max-w-4xl relative z-10 block w-full">
+    <span class="px-4 py-2 rounded-full glass text-sm font-semibold text-[#4ECDE6] mb-6 inline-block">NexaAI Engine v2.0 is Live 🚀</span>
+    <h1 class="text-6xl md:text-8xl font-extrabold mb-8 leading-tight">Automate workflows with <br><span class="text-gradient">Sentient AI.</span></h1>
+    <p class="text-xl text-slate-400 mb-10 max-w-2xl mx-auto">Upload your enterprise data and let our neural networks orchestrate your entire SaaS tooling ecosystem instantly.</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <button class="px-8 py-4 bg-gradient-to-r from-[#6C63FF] to-[#4ECDE6] rounded-xl font-bold text-lg text-white">Deploy Engine</button>
+      <button class="px-8 py-4 glass rounded-xl font-bold text-lg">Read Documentation</button>
+    </div>
+    <div class="mt-16 relative">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" alt="Dashboard" class="rounded-xl border border-white/10 glow-box relative z-10 w-full object-cover h-[500px]">
+    </div>
+  </div>
+</section>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

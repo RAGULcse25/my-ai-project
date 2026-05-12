@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+scikit-learn
+pandas
+numpy
+streamlit
+python-multipart
+sqlite3
+python-dotenv
+numpy
+typing
+pathlib
+# For potential future development
+# tensorflow
+# keras 
+# matplotlib 
+# seaborn

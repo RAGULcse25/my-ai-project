@@ -1,0 +1,181 @@
+/* ── Reset ── */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+/* ── Variables ── */
+:root {
+  /* Define colors for Modern dark theme */
+  --primary: #6366f1; 
+  --accent: #8b5cf6; 
+  --bg: #0d1117; 
+  --surface: #161b22;
+  --text: #e2e8f0; 
+  --muted: #8b949e; 
+  --border: #21262d;
+  /* Define font sizes */
+  --font-size-heading: 2.5rem;
+  --font-size-subheading: 1.75rem;
+  --font-size-body: 1rem;
+}
+
+/* ── Base ── */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ── Typography ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Clash Display', sans-serif;
+  font-weight: 600;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: var(--font-size-heading);
+}
+
+h2 {
+  font-size: var(--font-size-subheading);
+}
+
+p {
+  margin-bottom: 1em;
+}
+
+a {
+  text-decoration: none;
+  color: var(--primary);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* ── Navigation ── */
+nav {
+  background-color: var(--surface);
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-right: 20px;
+}
+
+nav a {
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+
+nav a:hover {
+  color: var(--primary);
+}
+
+/* ── Hero section ── */
+.hero {
+  background-image: linear-gradient(to bottom, var(--surface), var(--bg));
+  background-size: 100% 300px;
+  background-position: 0% 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text);
+}
+
+.hero h1 {
+  font-size: var(--font-size-heading);
+  text-align: center;
+}
+
+/* ── Features grid ── */
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 2em;
+}
+
+.feature {
+  background-color: var(--surface);
+  padding: 2em;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.feature:hover {
+  transform: translateY(-10px);
+}
+
+/* ── Cards ── */
+.card {
+  background-color: var(--surface);
+  padding: 2em;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+/* ── Footer ── */
+footer {
+  background-color: var(--surface);
+  padding: 1em;
+  text-align: center;
+  color: var(--muted);
+}
+
+/* ── Animations (keyframes) ── */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ── Media queries (mobile-first, 768px, 1024px) ── */
+@media (max-width: 768px) {
+  .features {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .features {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .hero h1 {
+    font-size: var(--font-size-subheading);
+  }
+}
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&display=swap');

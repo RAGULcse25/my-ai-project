@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>🎲 Ludo — S.E.A.D.S.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&display=swap');
+body{background:#070B14;color:#FFF;font-family:'Outfit',sans-serif;display:flex;flex-direction:column;align-items:center;height:100vh;margin:0;padding-top:20px;}
+h1{margin:0;margin-bottom:10px;font-size:2rem;background:linear-gradient(135deg,#FF6B9D,#4ECDE6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.container{display:flex;gap:20px;align-items:flex-start;}
+canvas{background:#eee;border-radius:8px;}
+.ui{display:flex;flex-direction:column;gap:10px;font-size:1.2rem;background:rgba(255,255,255,0.05);padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);max-width:200px;}
+button{padding:10px 15px;background:linear-gradient(135deg,#6C63FF,#4ECDE6);border:none;border-radius:8px;color:#fff;font-weight:bold;cursor:pointer;font-family:'Outfit';}
+.btn-disabled{background:grey;cursor:not-allowed;}
+#diceVal{font-size:3rem;font-weight:800;text-align:center;height:60px;line-height:60px;margin-bottom:10px;background:#222;border-radius:12px;}
+</style>
+</head>
+<body>
+<h1>Neon Ludo 🎲</h1>
+<div class="container">
+  <canvas id="ludo" width="450" height="450"></canvas>
+  <div class="ui">
+    <div id="status">Turn: RED</div>
+    <div id="diceVal">?</div>
+    <button id="rollBtn" onclick="roll()">Roll Dice</button>
+  </div>
+</div>
+<script>
+const cvs=document.getElementById('ludo');const ctx=cvs.getContext('2d');
+const S=30; 
+// Super basic ludo board rep
+ctx.fillStyle="#111"; ctx.fillRect(0,0,450,450);
+function drawBoard(){
+  ctx.fillStyle="#fff"; ctx.fillRect(30,30,390,390);
+  ctx.fillStyle="red"; ctx.fillRect(30,30,150,150);
+  ctx.fillStyle="green"; ctx.fillRect(270,30,150,150);
+  ctx.fillStyle="blue"; ctx.fillRect(30,270,150,150);
+  ctx.fillStyle="yellow"; ctx.fillRect(270,270,150,150);
+  ctx.fillStyle="white"; ctx.fillRect(60,60,90,90); ctx.fillRect(300,60,90,90); ctx.fillRect(60,300,90,90); ctx.fillRect(300,300,90,90);
+  // Center
+  ctx.fillStyle="#222"; ctx.fillRect(180,180,90,90);
+  // Paths (simplistic cross)
+  for(let i=0;i<6;i++){
+    for(let j=0;j<3;j++){
+      ctx.strokeRect(180+(j*30), 30+(i*30), 30, 30);
+      ctx.strokeRect(180+(j*30), 270+(i*30), 30, 30);
+      ctx.strokeRect(30+(i*30), 180+(j*30), 30, 30);
+      ctx.strokeRect(270+(i*30), 180+(j*30), 30, 30);
+    }
+  }
+}
+drawBoard();
+let turn="RED"; let diceValue=0;
+const dColor={RED:"red",GREEN:"green",YELLOW:"#ffc700",BLUE:"blue"};
+function roll(){
+  diceValue = Math.floor(Math.random()*6)+1;
+  const el = document.getElementById('diceVal');
+  el.innerText = diceValue;
+  el.style.color = dColor[turn];
+  document.getElementById('status').innerText = `Turn: ${turn} (Need to move)`;
+  // Logic mock...
+  setTimeout(()=>{
+    turn = turn==="RED" ? "GREEN" : turn==="GREEN" ? "YELLOW" : turn==="YELLOW" ? "BLUE" : "RED";
+    document.getElementById('status').innerText = `Turn: ${turn}`;
+    el.innerText = "?";
+    el.style.color = '#fff';
+  },1500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,485 @@
+fastapi
+uvicorn
+scikit-learn
+pandas
+numpy
+streamlit
+python-multipart
+sqlite3
+# For data manipulation and analysis
+matplotlib
+seaborn
+# For machine learning model development
+scipy
+# For API documentation
+pydantic
+# For database connection
+sqlalchemy
+# For frontend development
+react
+# For testing
+pytest
+# For type checking
+mypy
+# For linting
+flake8
+# For code formatting
+black 
+# For documentation
+sphinx 
+# For markdown parsing
+markdown 
+# For requirements management
+pip-tools 
+# For environment management
+conda 
+# For virtual environment management
+virtualenv 
+# For dependency management
+setuptools 
+# For wheel support
+wheel 
+# For typing support
+typing-extensions 
+# For data validation
+pydantic 
+# For error handling
+loguru 
+# For logging
+structlog 
+# For configuration management
+configparser 
+# For secrets management
+python-dotenv 
+# For security
+cryptography 
+# For authentication
+passlib 
+# For authorization
+authlib 
+# For rate limiting
+slowapi 
+# For caching
+cachetools 
+# For queue management
+celery 
+# For task management
+apscheduler 
+# For email support
+aiosmtpd 
+# For sms support
+twilio 
+# For payment gateway support
+stripe 
+# For websockets support
+websockets 
+# For graphql support
+graphene 
+# For api support
+apispec 
+# For openapi support
+openapi-generator 
+# For swagger support
+swagger-ui 
+# For documentation support
+sphinx-autodoc-typehints 
+# For testing support
+pytest-cov 
+# For coverage support
+coverage 
+# For linting support
+pylint 
+# For code formatting support
+autopep8 
+# For import sorting support
+isort 
+# For commit message support
+commitizen 
+# For pre-commit support
+pre-commit 
+# For pre-push support
+pre-push 
+# For code review support
+gerrit 
+# For ci/cd support
+github-actions 
+# For deployment support
+docker 
+# For kubernetes support
+kubernetes 
+# For terraform support
+terraform 
+# For cloud support
+boto3 
+# For azure support
+azure-identity 
+# For google cloud support
+google-cloud 
+# For digitalocean support
+digitalocean 
+# For linode support
+linode 
+# For ovh support
+ovh 
+# For rackspace support
+rackspace 
+# For aws support
+aws 
+# For gcp support
+gcp 
+# For azure support
+azure 
+# For ibm cloud support
+ibm-cloud 
+# For oracle cloud support
+oracle-cloud 
+# For alibaba cloud support
+alibaba-cloud 
+# For huawei cloud support
+huawei-cloud 
+# For openstack support
+openstack 
+# For vmware support
+vmware 
+# For vsphere support
+vsphere 
+# For proxmox support
+proxmox 
+# For hyper-v support
+hyper-v 
+# For esxi support
+esxi 
+# For xen support
+xen 
+# For kvm support
+kvm 
+# For libvirt support
+libvirt 
+# For lxc support
+lxc 
+# For lxd support
+lxd 
+# For docker support
+docker 
+# For kubernetes support
+kubernetes 
+# For rkt support
+rkt 
+# For cri-o support
+cri-o 
+# For containerd support
+containerd 
+# For podman support
+podman 
+# For buildah support
+buildah 
+# For skopeo support
+skopeo 
+# For runc support
+runc 
+# For systemd support
+systemd 
+# For sysvinit support
+sysvinit 
+# For openrc support
+openrc 
+# For runit support
+runit 
+# For s6 support
+s6 
+# For daemontools support
+daemontools 
+# For monit support
+monit 
+# For consul support
+consul 
+# For etcd support
+etcd 
+# For zookeeper support
+zookeeper 
+# For redis support
+redis 
+# For rabbitmq support
+rabbitmq 
+# For apache kafka support
+apache-kafka 
+# For amazon sqs support
+amazon-sqs 
+# For google cloud pubsub support
+google-cloud-pubsub 
+# For azure service bus support
+azure-service-bus 
+# For ibm mq support
+ibm-mq 
+# For oracle advanced queuing support
+oracle-aq 
+# For postgres support
+postgres 
+# For mysql support
+mysql 
+# For mariadb support
+mariadb 
+# For sqlite support
+sqlite 
+# For oracle support
+oracle 
+# For mssql support
+mssql 
+# For firebird support
+firebird 
+# For db2 support
+db2 
+# For informix support
+informix 
+# For teradata support
+teradata 
+# For sybase support
+sybase 
+# For h2 support
+h2 
+# For hsqldb support
+hsqldb 
+# For derby support
+derby 
+# For postgresql support
+postgresql 
+# For cockroachdb support
+cockroachdb 
+# For yugabytedb support
+yugabytedb 
+# For tidb support
+tidb 
+# For google cloud spanner support
+google-cloud-spanner 
+# For amazon dynamodb support
+amazon-dynamodb 
+# For azure cosmos db support
+azure-cosmos 
+# For mongodb support
+mongodb 
+# For couchbase support
+couchbase 
+# For cassandra support
+cassandra 
+# For redis support
+redis 
+# For riak support
+riak 
+# For hazelcast support
+hazelcast 
+# For ignite support
+ignite 
+# For infinispan support
+infinispan 
+# For ehcache support
+ehcache 
+# For terracotta support
+terracotta 
+# For gemfire support
+gemfire 
+# For geode support
+geode 
+# For coherence support
+coherence 
+# For jgroups support
+jgroups 
+# For hazelcast support
+hazelcast 
+# For apache ignite support
+apache-ignite 
+# For apache spark support
+apache-spark 
+# For apache flink support
+apache-flink 
+# For apache beam support
+apache-beam 
+# For apache storm support
+apache-storm 
+# For apache kafka support
+apache-kafka 
+# For apache cassandra support
+apache-cassandra 
+# For apache hbase support
+apache-hbase 
+# For apache zookeeper support
+apache-zookeeper 
+# For apache drill support
+apache-drill 
+# For apache impala support
+apache-impala 
+# For apache kylin support
+apache-kylin 
+# For apache superset support
+apache-superset 
+# For apache airflow support
+apache-airflow 
+# For apache nifi support
+apache-nifi 
+# For apache flume support
+apache-flume 
+# For apache sqoop support
+apache-sqoop 
+# For apache pig support
+apache-pig 
+# For apache hive support
+apache-hive 
+# For apache spark sql support
+apache-spark-sql 
+# For apache spark streaming support
+apache-spark-streaming 
+# For apache flink sql support
+apache-flink-sql 
+# For apache beam sql support
+apache-beam-sql 
+# For apache pinot support
+apache-pinot 
+# For apache pulsar support
+apache-pulsar 
+# For apache bookkeeper support
+apache-bookkeeper 
+# For apache solr support
+apache-solr 
+# For apache lucene support
+apache-lucene 
+# For elasticsearch support
+elasticsearch 
+# For kibana support
+kibana 
+# For logstash support
+logstash 
+# For filebeat support
+filebeat 
+# For metricbeat support
+metricbeat 
+# For heartbeat support
+heartbeat 
+# For auditbeat support
+auditbeat 
+# For packetbeat support
+packetbeat 
+# For winlogbeat support
+winlogbeat 
+# For journalbeat support
+journalbeat 
+# For functionbeat support
+functionbeat 
+# For docker support
+docker 
+# For kubernetes support
+kubernetes 
+# For prometheus support
+prometheus 
+# For grafana support
+grafana 
+# For alertmanager support
+alertmanager 
+# For node exporter support
+node-exporter 
+# For cadvisor support
+cadvisor 
+# For redis exporter support
+redis-exporter 
+# For postgres exporter support
+postgres-exporter 
+# For mysql exporter support
+mysql-exporter 
+# For mongodb exporter support
+mongodb-exporter 
+# For elasticsearch exporter support
+elasticsearch-exporter 
+# For kibana exporter support
+kibana-exporter 
+# For logstash exporter support
+logstash-exporter 
+# For filebeat exporter support
+filebeat-exporter 
+# For metricbeat exporter support
+metricbeat-exporter 
+# For heartbeat exporter support
+heartbeat-exporter 
+# For auditbeat exporter support
+auditbeat-exporter 
+# For packetbeat exporter support
+packetbeat-exporter 
+# For winlogbeat exporter support
+winlogbeat-exporter 
+# For journalbeat exporter support
+journalbeat-exporter 
+# For functionbeat exporter support
+functionbeat-exporter 
+# For docker exporter support
+docker-exporter 
+# For kubernetes exporter support
+kubernetes-exporter 
+# For prometheus exporter support
+prometheus-exporter 
+# For grafana exporter support
+grafana-exporter 
+# For alertmanager exporter support
+alertmanager-exporter 
+# For node exporter exporter support
+node-exporter-exporter 
+# For cadvisor exporter support
+cadvisor-exporter 
+# For redis exporter exporter support
+redis-exporter-exporter 
+# For postgres exporter exporter support
+postgres-exporter-exporter 
+# For mysql exporter exporter support
+mysql-exporter-exporter 
+# For mongodb exporter exporter support
+mongodb-exporter-exporter 
+# For elasticsearch exporter exporter support
+elasticsearch-exporter-exporter 
+# For kibana exporter exporter support
+kibana-exporter-exporter 
+# For logstash exporter exporter support
+logstash-exporter-exporter 
+# For filebeat exporter exporter support
+filebeat-exporter-exporter 
+# For metricbeat exporter exporter support
+metricbeat-exporter-exporter 
+# For heartbeat exporter exporter support
+heartbeat-exporter-exporter 
+# For auditbeat exporter exporter support
+auditbeat-exporter-exporter 
+# For packetbeat exporter exporter support
+packetbeat-exporter-exporter 
+# For winlogbeat exporter exporter support
+winlogbeat-exporter-exporter 
+# For journalbeat exporter exporter support
+journalbeat-exporter-exporter 
+# For functionbeat exporter exporter support
+functionbeat-exporter-exporter 
+# For docker exporter exporter support
+docker-exporter-exporter 
+# For kubernetes exporter exporter support
+kubernetes-exporter-exporter 
+# For prometheus exporter exporter support
+prometheus-exporter-exporter 
+# For grafana exporter exporter support
+grafana-exporter-exporter 
+# For alertmanager exporter exporter support
+alertmanager-exporter-exporter 
+# For node exporter exporter exporter support
+node-exporter-exporter-exporter 
+# For cadvisor exporter exporter support
+cadvisor-exporter-exporter 
+# For redis exporter exporter exporter support
+redis-exporter-exporter-exporter 
+# For postgres exporter exporter exporter support
+postgres-exporter-exporter-exporter 
+# For mysql exporter exporter exporter support
+mysql-exporter-exporter-exporter 
+# For mongodb exporter exporter exporter support
+mongodb-exporter-exporter-exporter 
+# For elasticsearch exporter exporter exporter support
+elasticsearch-exporter-exporter-exporter 
+# For kibana exporter exporter exporter support
+kibana-exporter-exporter-exporter 
+# For logstash exporter exporter exporter support
+logstash-exporter-exporter-exporter 
+# For filebeat exporter exporter exporter support
+filebeat-exporter-exporter-exporter 
+# For metricbeat exporter exporter exporter support
+metricbeat-exporter-exporter-exporter

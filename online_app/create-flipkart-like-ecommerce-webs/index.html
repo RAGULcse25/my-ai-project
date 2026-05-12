@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Flipkart Clone</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{font-family:'Inter',sans-serif;box-sizing:border-box;margin:0;padding:0;}
+body{background:#f1f3f6;}
+.nav-bg{background:linear-gradient(135deg,#2874f0,#1a5dc8);}
+.badge{position:absolute;top:-6px;right:-6px;background:#ff6161;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.card{background:#fff;border-radius:4px;transition:box-shadow 0.2s;cursor:pointer;}
+.card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.15);}
+.price-tag{color:#388e3c;font-weight:700;}
+.discount{color:#388e3c;font-size:13px;}
+.original-price{text-decoration:line-through;color:#999;font-size:13px;}
+</style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="nav-bg sticky top-0 z-50 px-4 py-3 shadow-lg">
+  <div class="max-w-7xl mx-auto flex items-center gap-4">
+    <div class="text-white font-bold text-2xl italic tracking-tight">Flipkart<span class="text-yellow-300 text-xs font-normal not-italic ml-1">Plus ✦</span></div>
+    <div class="flex-1 flex bg-white rounded overflow-hidden shadow">
+      <input type="text" placeholder="Search for products, brands and more" class="flex-1 px-4 py-2 text-sm outline-none">
+      <button class="bg-[#2874f0] text-white px-6 py-2 hover:bg-blue-700 transition"><i data-lucide="search" class="w-4 h-4"></i></button>
+    </div>
+    <div class="flex items-center gap-6 text-white text-sm font-medium">
+      <button class="flex flex-col items-center gap-0.5 hover:text-yellow-300"><i data-lucide="user" class="w-5 h-5"></i><span>Login</span></button>
+      <button class="flex flex-col items-center gap-0.5 hover:text-yellow-300 relative"><i data-lucide="shopping-cart" class="w-5 h-5"></i><span>Cart</span><span class="badge">3</span></button>
+    </div>
+  </div>
+</nav>
+
+<!-- Category Nav -->
+<div class="bg-white shadow-sm py-4 px-4">
+  <div class="max-w-7xl mx-auto flex gap-8 overflow-x-auto">
+    <div class="flex flex-col items-center min-w-fit cursor-pointer hover:text-blue-600 group">
+      <img src="https://images.unsplash.com/photo-1555774698-0b77e0d5fac6?w=80&auto=format" class="w-16 h-16 object-cover rounded-full mb-1">
+      <span class="text-xs font-semibold text-gray-700">Mobiles</span>
+    </div>
+    <div class="flex flex-col items-center min-w-fit cursor-pointer hover:text-blue-600">
+      <img src="https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=80&auto=format" class="w-16 h-16 object-cover rounded-full mb-1">
+      <span class="text-xs font-semibold text-gray-700">Grocery</span>
+    </div>
+    <div class="flex flex-col items-center min-w-fit cursor-pointer hover:text-blue-600">
+      <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=80&auto=format" class="w-16 h-16 object-cover rounded-full mb-1">
+      <span class="text-xs font-semibold text-gray-700">Fashion</span>
+    </div>
+    <div class="flex flex-col items-center min-w-fit cursor-pointer hover:text-blue-600">
+      <img src="https://images.unsplash.com/photo-1593344484962-796055d4a3a4?w=80&auto=format" class="w-16 h-16 object-cover rounded-full mb-1">
+      <span class="text-xs font-semibold text-gray-700">Electronics</span>
+    </div>
+    <div class="flex flex-col items-center min-w-fit cursor-pointer hover:text-blue-600">
+      <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=80&auto=format" class="w-16 h-16 object-cover rounded-full mb-1">
+      <span class="text-xs font-semibold text-gray-700">Furniture</span>
+    </div>
+  </div>
+</div>
+
+<!-- Hero Banner -->
+<div class="max-w-7xl mx-auto px-4 py-4">
+  <div class="relative rounded-lg overflow-hidden h-80">
+    <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1400&auto=format" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 to-transparent flex items-center px-12">
+      <div class="text-white">
+        <div class="text-sm font-semibold text-yellow-300 mb-2">BIG BILLION DAYS SALE</div>
+        <h1 class="text-5xl font-black mb-4">Up to <span class="text-yellow-300">80% OFF</span></h1>
+        <button class="bg-yellow-400 text-gray-900 font-bold px-8 py-3 rounded hover:bg-yellow-300 transition shadow-lg">Shop Now →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Products Grid -->
+<div class="max-w-7xl mx-auto px-4 pb-12">
+  <h2 class="text-xl font-bold text-gray-800 mb-4 border-l-4 border-blue-600 pl-3">Trending Now</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+    <div class="card p-4 group">
+      <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=300&auto=format" class="w-full h-44 object-contain mb-3 group-hover:scale-105 transition">
+      <h3 class="text-sm font-medium text-gray-800 truncate">Samsung Galaxy S24 Ultra</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="price-tag text-lg">₹89,999</span>
+        <span class="original-price">₹1,24,999</span>
+      </div>
+      <span class="discount">28% off</span>
+      <div class="text-xs bg-green-100 text-green-700 font-bold px-2 py-0.5 rounded mt-2 inline-block">Free Delivery</div>
+    </div>
+    <div class="card p-4 group">
+      <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&auto=format" class="w-full h-44 object-contain mb-3 group-hover:scale-105 transition">
+      <h3 class="text-sm font-medium text-gray-800 truncate">Nike Air Max 270</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="price-tag text-lg">₹7,295</span>
+        <span class="original-price">₹12,995</span>
+      </div>
+      <span class="discount">44% off</span>
+    </div>
+    <div class="card p-4 group">
+      <img src="https://images.unsplash.com/photo-1593344484962-796055d4a3a4?w=300&auto=format" class="w-full h-44 object-cover mb-3 group-hover:scale-105 transition">
+      <h3 class="text-sm font-medium text-gray-800 truncate">boAt Airdopes 141</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="price-tag text-lg">₹999</span>
+        <span class="original-price">₹4,990</span>
+      </div>
+      <span class="discount">80% off</span>
+      <div class="text-xs bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded mt-2 inline-block">Flipkart Plus</div>
+    </div>
+    <div class="card p-4 group">
+      <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300&auto=format" class="w-full h-44 object-contain mb-3 group-hover:scale-105 transition">
+      <h3 class="text-sm font-medium text-gray-800 truncate">Fossil Gen 6 Smartwatch</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="price-tag text-lg">₹14,995</span>
+        <span class="original-price">₹22,495</span>
+      </div>
+      <span class="discount">33% off</span>
+    </div>
+    <div class="card p-4 group">
+      <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=300&auto=format" class="w-full h-44 object-cover mb-3 group-hover:scale-105 transition">
+      <h3 class="text-sm font-medium text-gray-800 truncate">Adidas Ultraboost 22</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <span class="price-tag text-lg">₹9,499</span>
+        <span class="original-price">₹17,999</span>
+      </div>
+      <span class="discount">47% off</span>
+    </div>
+  </div>
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

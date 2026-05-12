@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flipkart Clone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .top-bar {
+            background-color: #f0f0f0;
+            padding: 10px;
+            text-align: right;
+        }
+        .top-bar a {
+            text-decoration: none;
+            color: #333;
+            margin-right: 20px;
+        }
+        .header {
+            background-color: #2874f0;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        .header .search-bar {
+            width: 50%;
+            height: 30px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .header .cart-icon {
+            font-size: 24px;
+            margin-left: 20px;
+        }
+        .nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        .nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav li {
+            display: inline-block;
+            margin-right: 20px;
+            position: relative;
+        }
+        .nav li:hover .sub-menu {
+            display: block;
+        }
+        .sub-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #333;
+            padding: 10px;
+            border: 1px solid #444;
+        }
+        .sub-menu li {
+            display: block;
+            margin-right: 0;
+        }
+        .hero-section {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .category-sidebar {
+            width: 20%;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+        .banner-carousel {
+            width: 60%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+        .banner-carousel .banner {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+        .banner-carousel .banner.active {
+            opacity: 1;
+        }
+        .promotional-tiles {
+            width: 20%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .promotional-tile {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .product-section {
+            padding: 20px;
+        }
+        .product-section .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .product-row {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px;
+        }
+        .product-card {
+            width: 200px;
+            margin-right: 20px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        .product-card .product-image {
+            width: 100%;
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 10px;
+        }
+        .product-card .product-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .product-card .rating {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .product-card .price {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .product-card .add-to-cart {
+            background-color: #2874f0;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .product-card .wishlist {
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+        }
+        .filters-sidebar {
+            width: 20%;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+        .filters-sidebar .filter-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .filters-sidebar .filter-checkbox {
+            margin-bottom: 10px;
+        }
+        .cart-slide-out {
+            width: 380px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            overflow-y: auto;
+            transform: translateX(100%);
+            transition: transform 0.5s;
+        }
+        .cart-slide-out.active {
+            transform: translateX(0);
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item .product-image {
+            width: 50px;
+            height: 50px;
+            background-size: cover;
+            background-position: center;
+            margin-right: 10px;
+        }
+        .cart-item .product-name {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .cart-item .qty-controls {
+            display: flex;
+            justify-content: space-between;
+            width: 100px;
+        }
+        .cart-item .price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .price-breakdown {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .price-breakdown .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .place-order-button {
+            background-color: #2874f0;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .payment-modal .modal-content {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 500px;
+        }
+        .payment-modal .order-summary {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .payment-modal .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .payment-modal .payment-method {
+            width: 45%;
+            margin-bottom: 10px;
+        }
+        .payment-modal .upi-id {
+            width: 100%;
+            height: 30px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .payment-modal .pay-button {
+            background-color: #2874f0;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .order-tracking-page {
+            padding: 20px;
+        }
+        .order-tracking-page .order-id {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .order-tracking-page .progress-timeline {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .order-tracking-page .progress-item {
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        .toast-notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #2874f0;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <a href="#">Delivery location</a>
+        <a href="#">Become Seller</a>
+        <a href="#">Help</a>
+    </div>
+    <div class="header">
+        <div class="logo">Flipkart</div>
+        <input type="search" class="search-bar" placeholder="Search for products">
+        <div class="cart-icon">Cart (0)</div>
+        <button class="login-button">Login</button>
+    </div>
+    <div class="nav">
+        <ul>
+            <li><a href="#">Electronics</a>
+                <ul class="sub-menu">
+                    <li><a href="#">Mobiles</a></li>
+                    <li><a href="#">Laptops</a></li>
+                    <li><a href="#">TVs</a></li>
+                    <li><a href="#">Cameras</a></li>
+                    <li><a href="#">Audio</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Fashion</a>
+                <ul class="sub-menu">
+                    <li><a href="#">Men</a></li>
+                    <li><a href="#">Women</a></li>
+                    <li><a href="#">Kids</a></li>
+                    <li><a href="#">Shoes</a></li>
+                    <li><a href="#">Watches</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Home</a>
+                <ul class="sub-menu">
+                    <li><a href="#">Furniture</a></li>
+                    <li><a href="#">Appliances</a></li>
+                    <li><a href="#">Kitchen</a></li>
+                    <li><a href="#">Bedding</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Beauty</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Toys</a></li>
+        </ul>
+    </div>
+    <div class="hero-section">
+        <div class="category-sidebar">
+            <h2>Categories</h2>
+            <ul>
+                <li><a href="#">Electronics</a></li>
+                <li><a href="#">Fashion</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Beauty</a></li>
+                <li><a href="#">Sports</a></li>
+                <li><a href="#">Toys</a></li>
+            </ul>
+        </div>
+        <div class="banner-carousel">
+            <div class="banner" style="background-image: url('https://picsum.photos/seed/electronics/800/300');"></div>
+            <div class="banner" style="background-image: url('https://picsum.photos/seed/fashion/800/300');"></div>
+            <div class="banner" style="background-image: url('https://picsum.photos/seed/home/800/300');"></div>
+        </div>
+        <div class="promotional-tiles">
+            <div class="promotional-tile">
+                <h3>Promotional Tile 1</h3>
+                <p>Get 10% off on all electronics</p>
+            </div>
+            <div class="promotional-tile">
+                <h3>Promotional Tile 2</h3>
+                <p>Get 20% off on all fashion products</p>
+            </div>
+        </div>
+    </div>
+    <div class="product-section">
+        <h2 class="section-title">Top Deals</h2>
+        <div class="product-row">
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product1/200/200');"></div>
+                <h3 class="product-name">Product 1</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product2/200/200');"></div>
+                <h3 class="product-name">Product 2</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product3/200/200');"></div>
+                <h3 class="product-name">Product 3</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product4/200/200');"></div>
+                <h3 class="product-name">Product 4</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product5/200/200');"></div>
+                <h3 class="product-name">Product 5</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product6/200/200');"></div>
+                <h3 class="product-name">Product 6</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product7/200/200');"></div>
+                <h3 class="product-name">Product 7</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image" style="background-image: url('https://picsum.photos/seed/product8/200/200');"></div>
+                <h3 class="product-name">Product 8</h3>
+                <p class="rating">4.5/5</p>
+                <p class="price">₹1000</p>
+                <button class="add-to-cart">Add to Cart</button>
+                <button class="wishlist">Wishlist</button>
+            </div>
+        </div>
+    </div>
+    <div class="filters-sidebar">
+        <h2 class="filter-title">Brand</h2>
+        <label class="filter-checkbox">
+            <input type="checkbox" name="brand" value="Brand 1">
+            Brand 1
+        </label>
+        <label class="filter-checkbox">
+            <input type="checkbox" name="brand" value="Brand 2">
+            Brand 2
+        </label>
+        <label class="filter-checkbox">
+            <input type="checkbox" name="brand" value="Brand 3">
+            Brand 3
+        </label>
+        <h2 class="filter-title">Price</h2>
+        <input type="range" name="price" min="100" max="1000" value="500">
+        <h2 class="filter-title">Rating</h2>
+        <label class="filter-checkbox">
+            <input type="checkbox" name="rating" value="4">
+            4 and above
+        </label>
+        <label class="filter-checkbox">
+            <input type="checkbox" name="rating" value="3">
+            3 and above
+        </label>
+        <h2 class="filter-title">Discount</h2>
+        <label class="filter-checkbox">
+            <input type="checkbox" name="discount" value="10">
+            10% and above
+        </label>
+        <label class="filter-checkbox">
+            <input type="checkbox" name="discount" value="20">
+            20% and above
+        </label>
+    </div>
+    <div class="cart-slide-out">
+        <h2>Cart</h2>
+        <div class="cart-item">
+            <div class="product-image" style="background-image: url('https://picsum.photos/seed/product1/50/50');"></div>
+            <h3 class="product-name">Product 1</h3>
+            <div class="qty-controls">
+                <button>-</button>
+                <input type="number" value="1">
+                <button>+</button>
+            </div>
+            <p class="price">₹1000</p>
+        </div>
+        <div class="cart-item">
+            <div class="product-image" style="background-image: url('https://picsum.photos/seed/product2/50/50');"></div>
+            <h3 class="product-name">Product 2</h3>
+            <div class="qty-controls">
+                <button>-</button>
+                <input type="number" value="1">
+                <button>+</button>
+            </div>
+            <p class="price">₹1000</p>
+        </div>
+        <div class="price-breakdown">
+            <div class="price-item">
+                <p>Subtotal</p>
+                <p>₹2000</p>
+            </div>
+            <div class="price-item">
+                <p>Discount</p>
+                <p>₹100</p>
+            </div>
+            <div class="price-item">
+                <p>Shipping</p>
+                <p>₹50</p>
+            </div>
+            <div class="price-item">
+                <p>Total</p>
+                <p>₹1950</p>
+            </div>
+        </div>
+        <button class="place-order-button">Place Order</button>
+    </div>
+    <div class="payment-modal">
+        <div class="modal-content">
+            <h2 class="order-summary">Order Summary</h2>
+            <div class="payment-methods">
+                <div class="payment-method">
+                    <input type="radio" name="payment-method" value="upi">
+                    <label>UPI</label>
+                </div>
+                <div class="payment-method">
+                    <input type="radio" name="payment-method" value="card">
+                    <label>Card</label>
+                </div>
+                <div class="payment-method">
+                    <input type="radio" name="payment-method" value="net-banking">
+                    <label>Net Banking</label>
+                </div>
+                <div class="payment-method">
+                    <input type="radio" name="payment-method" value="emi">
+                    <label>EMI</label>
+                </div>
+                <div class="payment-method">
+                    <input type="radio" name="payment-method" value="cod">
+                    <label>COD</label>
+                </div>
+            </div>
+            <input type="text" class="upi-id" placeholder="Enter UPI ID">
+            <button class="pay-button">Pay</button>
+        </div>
+    </div>
+    <div class="order-tracking-page">
+        <h2 class="order-id">Order ID: #12345</h2>
+        <div class="progress-timeline">
+            <div class="progress-item">
+                <p>Ordered</p>
+            </div>
+            <div class="progress-item">
+                <p>Packed</p>
+            </div>
+            <div class="progress-item">
+                <p>Shipped</p>
+            </div>
+            <div class="progress-item">
+                <p>Delivered</p>
+            </div>
+        </div>
+        <p>Estimated delivery date: 2023-03-15</p>
+    </div>
+    <div class="toast-notification">
+        <p>Order placed successfully!</p>
+    </div>
+    <script>
+        // Add event listeners to product cards
+        const productCards = document.querySelectorAll('.product-card');
+        productCards.forEach((productCard) => {
+            productCard.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart')) {
+                    // Add product to cart
+                    const cartSlideOut = document.querySelector('.cart-slide-out');
+                    cartSlideOut.classList.add('active');
+                } else if (e.target.classList.contains('wishlist')) {
+                    // Add product to wishlist
+                    console.log('Product added to wishlist');
+                }
+            });
+        });

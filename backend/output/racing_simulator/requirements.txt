@@ -1,0 +1,20 @@
+# List of required packages for the Racing Simulator project
+fastapi
+uvicorn
+streamlit
+scikit-learn
+pandas
+numpy
+pygame
+sqlite3
+mongodb
+python-dotenv
+# For data manipulation and analysis
+matplotlib
+seaborn
+# For API documentation
+pydantic
+# For logging and error handling
+loguru
+# For testing
+pytest

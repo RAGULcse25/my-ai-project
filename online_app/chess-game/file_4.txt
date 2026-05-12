@@ -1,0 +1,51 @@
+const gamesTbody = document.getElementById('games-tbody');
+const createGameForm = document.getElementById('create-game-form');
+
+createGameForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const player1 = document.getElementById('player1').value;
+    const player2 = document.getElementById('player2').value;
+    const result = document.getElementById('result').value;
+    fetch('/games', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ player1, player2, result })
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+        const toast = document.createElement('div');
+        toast.classList.add('toast');
+        toast.textContent = 'Game created successfully';
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+                document.body.removeChild(toast);
+            }, 2000);
+        }, 100);
+    })
+    .catch((err) => console.error(err));
+});
+
+fetch('/games')
+    .then((res) => res.json())
+    .then((games) => {
+        games.forEach((game) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${game.player1}</td>
+                <td>${game.player2}</td>
+                <td>${game.result}</td>
+                <td>
+                    <a href="#" class="btn btn-primary" data-game-id="${game.id}">Edit</a>
+                    <a href="#" class="btn btn-danger" data-game-id="${game.id}">Delete</a>
+                </td>
+            `;
+            gamesTbody.appendChild(row);
+        });
+    })
+    .catch((err) => console.error(err));

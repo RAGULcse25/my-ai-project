@@ -1,0 +1,18 @@
+# List of required packages for the Racing Game Simulator project
+fastapi
+uvicorn
+streamlit
+scikit-learn
+pandas
+numpy
+pygame
+sqlalchemy
+mongodb
+python-dotenv
+pydantic
+# Optional packages for development and testing
+pytest
+flake8
+black
+isort
+mypy

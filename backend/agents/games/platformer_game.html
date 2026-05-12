@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>🏃 Platformer — S.E.A.D.S.</title>
+<style>
+body{margin:0;overflow:hidden;background:#070B14;font-family:sans-serif;}
+canvas{display:block;}
+#ui{position:absolute;top:20px;left:20px;color:#fff;font-size:24px;font-weight:bold;}
+</style>
+</head>
+<body>
+<div id="ui">Score: <span id="score">0</span> | Use Arrows / WASD</div>
+<canvas id="cvs"></canvas>
+<script>
+const cvs=document.getElementById('cvs');const ctx=cvs.getContext('2d');
+cvs.width=800; cvs.height=600;
+cvs.style.margin="0 auto";
+
+const keys = {};
+window.addEventListener('keydown', e => keys[e.code]=true);
+window.addEventListener('keyup', e => keys[e.code]=false);
+
+const player={x:50,y:400,w:30,h:30,vx:0,vy:0,speed:5,jump:-15,grounded:false};
+const gravity=0.8;
+let score=0;
+
+const platforms=[
+  {x:0, y:550, w:800, h:50},
+  {x:200, y:450, w:100, h:20},
+  {x:400, y:350, w:100, h:20},
+  {x:600, y:250, w:100, h:20}
+];
+const coins=[
+  {x:240,y:400,r:10,collected:false},
+  {x:440,y:300,r:10,collected:false},
+  {x:640,y:200,r:10,collected:false}
+];
+
+function loop(){
+  // physics
+  if(keys['ArrowLeft']||keys['KeyA']) player.vx = -player.speed;
+  else if(keys['ArrowRight']||keys['KeyD']) player.vx = player.speed;
+  else player.vx = 0;
+  
+  if((keys['ArrowUp']||keys['KeyW']) && player.grounded) {
+    player.vy = player.jump; player.grounded=false;
+  }
+  
+  player.vy += gravity;
+  player.x += player.vx;
+  player.y += player.vy;
+  
+  // collision 
+  player.grounded = false;
+  for(let p of platforms){
+    if(player.x < p.x+p.w && player.x+player.w > p.x &&
+       player.y < p.y+p.h && player.y+player.h > p.y){
+       // falling
+       if(player.vy > 0 && player.y+player.h - player.vy <= p.y){
+         player.grounded=true; player.vy=0; player.y = p.y - player.h;
+       }
+    }
+  }
+
+  // boundaries
+  if(player.y > cvs.height) { player.x=50; player.y=400; player.vy=0; }
+  
+  // draw
+  ctx.fillStyle='#070B14'; ctx.fillRect(0,0,cvs.width,cvs.height);
+  
+  ctx.fillStyle='#4ECDE6';
+  for(let p of platforms) ctx.fillRect(p.x,p.y,p.w,p.h);
+  
+  ctx.fillStyle='#FFD700';
+  for(let c of coins){
+    if(!c.collected){
+      if(Math.hypot(player.x+15 - c.x, player.y+15 - c.y) < c.r+15){
+        c.collected=true; score+=10; document.getElementById('score').innerText=score;
+      } else {
+        ctx.beginPath(); ctx.arc(c.x,c.y,c.r,0,Math.PI*2); ctx.fill();
+      }
+    }
+  }
+  
+  ctx.fillStyle='#FF6B9D';
+  ctx.fillRect(player.x,player.y,player.w,player.h);
+
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>

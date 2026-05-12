@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Weather App</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>body{background:linear-gradient(to bottom, #1e3c72, #2a5298); color:white; font-family:sans-serif;} .glass{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);}</style>
+</head>
+<body class="h-screen flex items-center justify-center p-4">
+  <div class="glass w-full max-w-4xl rounded-3xl p-8 grid md:grid-cols-2 gap-8 shadow-2xl">
+    <div>
+      <div class="flex items-center bg-white/10 rounded-full px-4 py-2 mb-8 border border-white/20">
+        <i data-lucide="search" class="w-5 h-5 opacity-70"></i>
+        <input type="text" placeholder="Search city..." class="bg-transparent w-full ml-3 outline-none text-white placeholder-white/50" value="Tokyo, Japan">
+      </div>
+      <div class="text-center">
+        <i data-lucide="cloud-lightning" class="w-32 h-32 mx-auto text-yellow-300 drop-shadow-[0_0_20px_rgba(253,224,71,0.5)] animate-pulse"></i>
+        <h1 class="text-7xl font-black mt-4">24°C</h1>
+        <p class="text-2xl font-light mt-1">Thunderstorms</p>
+        <p class="text-white/70 mt-2">Feels like 26°C • H: 28° L: 20°</p>
+      </div>
+      <div class="flex justify-between mt-8 glass rounded-2xl p-4">
+        <div class="text-center"><i data-lucide="wind" class="mx-auto mb-1 opacity-70"></i><p class="font-bold">12 km/h</p><p class="text-xs text-white/50">Wind</p></div>
+        <div class="text-center"><i data-lucide="droplet" class="mx-auto mb-1 opacity-70"></i><p class="font-bold">84%</p><p class="text-xs text-white/50">Humidity</p></div>
+        <div class="text-center"><i data-lucide="eye" class="mx-auto mb-1 opacity-70"></i><p class="font-bold">5 km</p><p class="text-xs text-white/50">Visibility</p></div>
+      </div>
+    </div>
+    <div class="glass rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between">
+      <h3 class="font-bold mb-4 flex items-center gap-2"><i data-lucide="calendar" class="w-5 h-5"></i> 7-Day Forecast</h3>
+      <div class="space-y-4 flex-1 overflow-y-auto pr-2">
+        <div class="flex justify-between items-center"><span class="w-12 text-white/70">Today</span><i data-lucide="cloud-lightning" class="text-yellow-300"></i><div class="w-32 bg-white/10 rounded-full h-1.5 flex"><div class="bg-gradient-to-r from-blue-400 to-yellow-400 w-full rounded-full"></div></div><span>20° / 28°</span></div>
+        <div class="flex justify-between items-center"><span class="w-12 text-white/70">Tue</span><i data-lucide="sun" class="text-yellow-400"></i><div class="w-32 bg-white/10 rounded-full h-1.5 flex"><div class="bg-gradient-to-r from-orange-400 to-red-400 w-3/4 ml-auto rounded-full"></div></div><span>22° / 31°</span></div>
+        <div class="flex justify-between items-center"><span class="w-12 text-white/70">Wed</span><i data-lucide="cloud-rain" class="text-blue-300"></i><div class="w-32 bg-white/10 rounded-full h-1.5 flex"><div class="bg-gradient-to-r from-blue-300 to-blue-500 w-1/2 mr-auto rounded-full"></div></div><span>18° / 24°</span></div>
+        <div class="flex justify-between items-center"><span class="w-12 text-white/70">Thu</span><i data-lucide="cloud" class="text-gray-300"></i><div class="w-32 bg-white/10 rounded-full h-1.5 flex"><div class="bg-gradient-to-r from-gray-400 to-gray-200 w-2/3 mx-auto rounded-full"></div></div><span>19° / 25°</span></div>
+        <div class="flex justify-between items-center"><span class="w-12 text-white/70">Fri</span><i data-lucide="sun" class="text-yellow-400"></i><div class="w-32 bg-white/10 rounded-full h-1.5 flex"><div class="bg-gradient-to-r from-yellow-400 to-orange-500 w-[90%] ml-auto rounded-full"></div></div><span>24° / 33°</span></div>
+      </div>
+      <div class="mt-4"><img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=400&auto=format" class="w-full h-32 object-cover rounded-xl opacity-60 hover:opacity-100 transition cursor-pointer border border-white/20"></div>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

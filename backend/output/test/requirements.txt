@@ -1,0 +1,23 @@
+# List of required packages for the project
+fastapi
+uvicorn
+scikit-learn
+pandas
+numpy
+streamlit
+mongodb
+sqlalchemy
+python-dotenv
+# For data manipulation and analysis
+matplotlib
+seaborn
+# For API documentation
+swagger-ui
+# For testing
+pytest
+# For type checking
+mypy
+# For linting
+flake8
+# For code formatting
+black

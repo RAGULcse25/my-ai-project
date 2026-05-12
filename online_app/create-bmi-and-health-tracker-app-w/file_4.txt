@@ -1,0 +1,27 @@
+const form = document.querySelector('form');
+const table = document.querySelector('table');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    fetch('/create', {
+        method: 'POST',
+        body: formData,
+    })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.error(error));
+});
+
+table.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') {
+        e.preventDefault();
+        const userId = e.target.getAttribute('data-user-id');
+        fetch(`/update/${userId}`, {
+            method: 'GET',
+        })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
+    }
+});

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp-style Chat Messenger</title>
+    <script>
+        // Load theme immediately to prevent flash
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #2f3436;
+            --bg-secondary: #1a1d23;
+            --bg-card: #2f3436;
+            --bg-card-hover: #3a3d41;
+            --text-primary: #ffffff;
+            --text-secondary: #b1b5c4;
+            --text-muted: #6c6f73;
+            --accent-green: #34c759;
+            --border: #3a3d41;
+        }
+        body {
+            font-family: 'Instrument Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .header-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .header-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-card);
+            padding: 10px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            transition: border-color 0.2s ease;
+        }
+        .header-search:focus-within {
+            border-color: var(--accent-green);
+        }
+        .header-search svg {
+            color: var(--text-muted);
+        }
+        .header-search input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 15px;
+            width: 180px;
+            font-family: inherit;
+        }
+        .header-search input::placeholder {
+            color: var(--text-muted);
+        }
+        .header-search input:focus {
+            outline: none;
+        }
+        .notification-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+        }
+        .notification-btn:hover {
+            background-color: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .message.sent {
+            background-color: var(--accent-green);
+            color: var(--text-primary);
+            align-self: flex-end;
+        }
+        .message.received {
+            background-color: var(--bg-card);
+            color: var(--text-primary);
+            align-self: flex-start;
+        }
+        .input-container {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+        .input-container input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 15px;
+            width: 100%;
+            font-family: inherit;
+        }
+        .input-container input::placeholder {
+            color: var(--text-muted);
+        }
+        .input-container input:focus {
+            outline: none;
+        }
+        .send-btn {
+            background-color: var(--accent-green);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .send-btn:hover {
+            background-color: var(--accent-green);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>WhatsApp-style Chat Messenger</h1>
+        <div class="header-right">
+            <div class="header-search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+                <input type="search" placeholder="Search">
+            </div>
+            <button class="notification-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2z"/>
+                    <path d="M8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.06-.178.391-.306.625-.423.816-.08.113-.161.229-.244.345-.082.115-.165.23-.255.345-.01.03-.025.058-.04.086.167.721.821 1.116 1.116 1.695a.5.5 0 0 0 .08-.02.394.394 0 0 0 .026-.017z"/>
+                    <path d="M8 7.673a2.803 2.803 0 0 1-2.803 2.803H6a2.803 2.803 0 0 1 2.803-2.803z"/>
+                    <path d="M8 10h.082a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <div class="chat-container" id="chat-container">
+        <div class="message received">
+            <img src="https://picsum.photos/seed/user/40/40" alt="User Image">
+            <span>Hello, how are you?</span>
+        </div>
+        <div class="message sent">
+            <img src="https://picsum.photos/seed/bot/40/40" alt="Bot Image">
+            <span>I'm good, thanks! How about you?</span>
+        </div>
+    </div>
+    <div class="input-container">
+        <input type="text" id="message-input" placeholder="Type a message">
+        <button class="send-btn" id="send-btn">Send</button>
+    </div>
+    <script>
+        const chatContainer = document.getElementById('chat-container');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        let messages = [];
+        sendBtn.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (message) {
+                messages.push({ message, sender: 'user' });
+                renderMessages();
+                messageInput.value = '';
+                setTimeout(() => {
+                    const response = `Bot: ${message}`;
+                    messages.push({ message: response, sender: 'bot' });
+                    renderMessages();
+                }, 1000);
+            }
+        });
+        function renderMessages() {
+            chatContainer.innerHTML = '';
+            messages.forEach((message, index) => {
+                const messageElement = document.createElement('div');
+                messageElement.classList.add('message');
+                if (message.sender === 'user') {
+                    messageElement.classList.add('sent');
+                } else {
+                    messageElement.classList.add('received');
+                }
+                const image = document.createElement('img');
+                image.src = message.sender === 'user' ? 'https://picsum.photos/seed/bot/40/40' : 'https://picsum.photos/seed/user/40/40';
+                image.alt = 'User Image';
+                messageElement.appendChild(image);
+                const text = document.createElement('span');
+                text.textContent = message.message;
+                messageElement.appendChild(text);
+                chatContainer.appendChild(messageElement);
+            });
+        }
+    </script>
+</body>
+</html>

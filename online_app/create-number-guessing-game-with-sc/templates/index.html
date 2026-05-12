@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.4/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide@1.7.1/dist/lucide.min.css" rel="stylesheet">
+</head>
+<body class="dark bg-gray-900 text-white">
+    <div class="max-w-md mx-auto p-4 pt-6 md:p-6">
+        <!-- Game Section -->
+        <div id="game-section" class="block">
+            <h1 class="text-3xl font-bold mb-4">Number Guessing Game</h1>
+            <p id="score" class="text-xl mb-4">Score: 0</p>
+            <p id="result" class="text-xl mb-4"></p>
+            <input id="guess" type="number" class="block w-full p-2 pl-10 text-sm text-gray-700 border border-gray-200 rounded-md focus:outline-none focus:ring-gray-500 focus:border-gray-500" placeholder="Guess a number between 1 and 100">
+            <button id="submit-guess" class="mt-4 py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-700">Guess</button>
+            <button id="new-game" class="mt-4 py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-700">New Game</button>
+        </div>
+
+        <!-- High Score Section -->
+        <div id="high-score-section" class="hidden">
+            <h1 class="text-3xl font-bold mb-4">High Scores</h1>
+            <ul id="high-scores" class="list-none mb-4">
+                <!-- High scores will be listed here -->
+            </ul>
+            <button id="back-to-game" class="py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-700">Back to Game</button>
+        </div>
+
+        <!-- About Section -->
+        <div id="about-section" class="hidden">
+            <h1 class="text-3xl font-bold mb-4">About</h1>
+            <p class="text-xl mb-4">This is a number guessing game where you try to guess a random number between 1 and 100.</p>
+            <button id="back-to-game-from-about" class="py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-700">Back to Game</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 flex justify-around p-4 bg-gray-800 text-white">
+        <button id="game-nav" class="py-2 px-4 bg-gray-700 text-white rounded-md hover:bg-gray-600">
+            <i class="lucide-gamepad"></i>
+        </button>
+        <button id="high-score-nav" class="py-2 px-4 bg-gray-700 text-white rounded-md hover:bg-gray-600">
+            <i class="lucide-trophy"></i>
+        </button>
+        <button id="about-nav" class="py-2 px-4 bg-gray-700 text-white rounded-md hover:bg-gray-600">
+            <i class="lucide-info"></i>
+        </button>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/@flask/app@2.2.2/dist/flask.min.js"></script>
+    <script>
+        // Get elements
+        const gameSection = document.getElementById('game-section');
+        const highScoreSection = document.getElementById('high-score-section');
+        const aboutSection = document.getElementById('about-section');
+        const guessInput = document.getElementById('guess');
+        const submitGuessButton = document.getElementById('submit-guess');
+        const newGameButton = document.getElementById('new-game');
+        const backToGameButton = document.getElementById('back-to-game');
+        const backToGameFromAboutButton = document.getElementById('back-to-game-from-about');
+        const gameNavButton = document.getElementById('game-nav');
+        const highScoreNavButton = document.getElementById('high-score-nav');
+        const aboutNavButton = document.getElementById('about-nav');
+        const scoreElement = document.getElementById('score');
+        const resultElement = document.getElementById('result');
+
+        // Initialize game
+        let score = 0;
+        let numberToGuess;
+        let attempts = 0;
+
+        // Function to start new game
+        function startNewGame() {
+            numberToGuess = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            score = 0;
+            scoreElement.textContent = `Score: ${score}`;
+            resultElement.textContent = '';
+            guessInput.value = '';
+        }
+
+        // Function to submit guess
+        function submitGuess() {
+            const guess = parseInt(guessInput.value);
+            if (isNaN(guess)) {
+                resultElement.textContent = 'Invalid input!';
+                return;
+            }
+            attempts++;
+            if (guess < numberToGuess) {
+                resultElement.textContent = 'Too low!';
+            } else if (guess > numberToGuess) {
+                resultElement.textContent = 'Too high!';
+            } else {
+                resultElement.textContent = `Congratulations! You found the number in ${attempts} attempts.`;
+                score++;
+                scoreElement.textContent = `Score: ${score}`;
+            }
+            guessInput.value = '';
+        }
+
+        // Function to show high scores
+        function showHighScores() {
+            gameSection.classList.add('hidden');
+            highScoreSection.classList.remove('hidden');
+        }
+
+        // Function to show about section
+        function showAbout() {
+            gameSection.classList.add('hidden');
+            aboutSection.classList.remove('hidden');
+        }
+
+        // Function to go back to game
+        function goBackToGame() {
+            highScoreSection.classList.add('hidden');
+            aboutSection.classList.add('hidden');
+            gameSection.classList.remove('hidden');
+        }
+
+        // Add event listeners
+        submitGuessButton.addEventListener('click', submitGuess);
+        newGameButton.addEventListener('click', startNewGame);
+        backToGameButton.addEventListener('click', goBackToGame);
+        backToGameFromAboutButton.addEventListener('click', goBackToGame);
+        gameNavButton.addEventListener('click', goBackToGame);
+        highScoreNavButton.addEventListener('click', showHighScores);
+        aboutNavButton.addEventListener('click', showAbout);
+
+        // Start new game
+        startNewGame();
+    </script>
+</body>
+</html>

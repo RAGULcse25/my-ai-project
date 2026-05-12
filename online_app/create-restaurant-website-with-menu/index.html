@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Restaurant Web Prototype</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700;800&family=Inter:wght@400;500;600&display=swap');
+body{background-color:#070B14;color:#e2e8f0;font-family:'Inter',sans-serif;overflow-x:hidden;}
+h1,h2,h3{font-family:'Outfit',sans-serif;}
+.text-gradient{background:linear-gradient(135deg,#FF6B9D,#FFB347);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+</style>
+</head>
+<body>
+<nav class="absolute top-0 w-full z-50 px-6 py-6 border-b border-white/10 text-center flex justify-between items-center bg-black/50 backdrop-blur-md">
+  <div class="font-bold text-2xl tracking-widest text-[#FF6B9D]">LUMIÈRE</div>
+  <div class="hidden md:flex gap-8 uppercase text-sm tracking-widest"><a href="#">Menu</a><a href="#">Our Story</a><a href="#">Chef</a></div>
+  <button class="px-6 py-2 border border-[#FF6B9D] text-[#FF6B9D] hover:bg-[#FF6B9D] hover:text-white rounded uppercase tracking-wider text-xs transition">Book Table</button>
+</nav>
+
+<section class="h-screen relative flex items-center justify-center">
+  <img src="https://images.unsplash.com/photo-1514933651103-005eab06c04d?auto=format&fit=crop&w=1920&q=80" alt="Restaurant bg" class="absolute inset-0 w-full h-full object-cover opacity-40">
+  <div class="absolute inset-0 bg-gradient-to-t from-[#070B14] to-transparent"></div>
+  <div class="relative z-10 text-center max-w-3xl px-6">
+    <h1 class="text-6xl md:text-8xl font-bold mb-4 uppercase tracking-tighter">A Taste of <br><span class="text-gradient">Elegance</span></h1>
+    <p class="text-xl text-slate-300 italic mb-10 max-w-xl mx-auto font-serif">Experience modern gastronomy fused with ancient culinary traditions in the heart of the city.</p>
+    <button class="bg-gradient-to-r from-[#FF6B9D] to-[#FFB347] text-white px-10 py-4 uppercase tracking-widest font-bold text-sm">View Menu</button>
+  </div>
+</section>
+
+<section class="py-24 px-6 bg-[#0a0f1a]">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8">
+    <div class="bg-black/50 p-8 border border-white/5 group hover:-translate-y-2 transition duration-300 text-center">
+      <img src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=600&q=80" class="w-full h-48 object-cover mb-4">
+      <h3 class="text-xl font-bold mb-2">Truffle Risotto</h3>
+      <p class="text-slate-400 text-sm mb-4">Aged arborio rice, wild mushrooms, 24-month parmesan.</p>
+      <div class="text-[#FFB347] font-bold text-lg">$34</div>
+    </div>
+    <div class="bg-black/50 p-8 border border-white/5 group hover:-translate-y-2 transition duration-300 text-center">
+      <img src="https://images.unsplash.com/photo-1551228495-256bd4d3ee12?auto=format&fit=crop&w=600&q=80" class="w-full h-48 object-cover mb-4">
+      <h3 class="text-xl font-bold mb-2">Wagyu Steak</h3>
+      <p class="text-slate-400 text-sm mb-4">A5 Japanese Wagyu, roasted garlic puree, asparagus.</p>
+      <div class="text-[#FFB347] font-bold text-lg">$85</div>
+    </div>
+    <div class="bg-black/50 p-8 border border-white/5 group hover:-translate-y-2 transition duration-300 text-center">
+      <img src="https://images.unsplash.com/photo-1579954115545-a95591f28b28?auto=format&fit=crop&w=600&q=80" class="w-full h-48 object-cover mb-4">
+      <h3 class="text-xl font-bold mb-2">Matcha Lava</h3>
+      <p class="text-slate-400 text-sm mb-4">Hot matcha liquid center, vanilla bean ice cream.</p>
+      <div class="text-[#FFB347] font-bold text-lg">$16</div>
+    </div>
+  </div>
+</section>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

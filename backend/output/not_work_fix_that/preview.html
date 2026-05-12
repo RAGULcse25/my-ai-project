@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not Work Fix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #212121;
+            --secondary-color: #333;
+            --accent-color: #03A9F4;
+            --background-color: #1a1a1a;
+            --text-color: #fff;
+            --font-family: 'Inter', sans-serif;
+        }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: var(--primary-color);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            font-weight: 600;
+            font-size: 24px;
+        }
+        .header button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .header button:hover {
+            background-color: #0477bd;
+        }
+        .task-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .task-list li {
+            padding: 10px;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+        .task-list li:last-child {
+            border-bottom: none;
+        }
+        .task-list li button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            float: right;
+        }
+        .task-list li button:hover {
+            background-color: #0477bd;
+        }
+        .task-list li span {
+            font-size: 16px;
+        }
+        .task-list li input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .add-task {
+            margin-top: 20px;
+        }
+        .add-task input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+        .add-task button {
+            background-color: var(--accent-color);
+            color: var(--text-color);
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .add-task button:hover {
+            background-color: #0477bd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Not Work Fix</h1>
+            <button id="clear-all">Clear All</button>
+        </div>
+        <ul class="task-list" id="task-list">
+            <li>
+                <input type="checkbox" id="task-1">
+                <span>Task 1</span>
+                <button class="delete-task" data-task-id="1">Delete</button>
+            </li>
+            <li>
+                <input type="checkbox" id="task-2">
+                <span>Task 2</span>
+                <button class="delete-task" data-task-id="2">Delete</button>
+            </li>
+            <li>
+                <input type="checkbox" id="task-3">
+                <span>Task 3</span>
+                <button class="delete-task" data-task-id="3">Delete</button>
+            </li>
+        </ul>
+        <div class="add-task">
+            <input type="text" id="new-task" placeholder="Add new task">
+            <button id="add-task">Add Task</button>
+        </div>
+    </div>
+    <script>
+        const taskList = document.getElementById('task-list');
+        const clearAllButton = document.getElementById('clear-all');
+        const addTaskButton = document.getElementById('add-task');
+        const newTaskInput = document.getElementById('new-task');
+
+        let taskId = 4;
+
+        clearAllButton.addEventListener('click', () => {
+            taskList.innerHTML = '';
+            taskId = 1;
+        });
+
+        addTaskButton.addEventListener('click', () => {
+            const newTask = newTaskInput.value;
+            if (newTask !== '') {
+                const taskHtml = `
+                    <li>
+                        <input type="checkbox" id="task-${taskId}">
+                        <span>${newTask}</span>
+                        <button class="delete-task" data-task-id="${taskId}">Delete</button>
+                    </li>
+                `;
+                taskList.insertAdjacentHTML('beforeend', taskHtml);
+                newTaskInput.value = '';
+                taskId++;
+            }
+        });
+
+        taskList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-task')) {
+                const taskId = e.target.dataset.taskId;
+                const task = document.querySelector(`[data-task-id="${taskId}"]`).parentElement;
+                task.remove();
+            }
+        });
+    </script>
+</body>
+</html>

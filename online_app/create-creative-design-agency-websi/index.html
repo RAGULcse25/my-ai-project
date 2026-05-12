@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Creative Agency</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{background:#F4F4F0;color:#1A1A1A;font-family:serif;}
+h1,h2,nav{font-family:sans-serif;}
+.marquee{white-space:nowrap;overflow:hidden;background:#1A1A1A;color:#F4F4F0;}
+.marquee span{display:inline-block;padding-left:100%;animation:scroll 15s linear infinite;font-family:sans-serif;font-weight:bold;text-transform:uppercase;}
+@keyframes scroll{0%{transform:translate(0,0);}100%{transform:translate(-100%,0);}}
+</style>
+</head>
+<body>
+<nav class="p-8 flex justify-between uppercase font-bold text-sm tracking-widest">
+  <div>Studio VANGUARD</div>
+  <div class="flex gap-8"><a href="#">Work</a><a href="#">About</a><a href="#">Contact</a></div>
+</nav>
+
+<header class="h-[70vh] flex flex-col justify-center px-8 relative">
+  <h1 class="text-8xl md:text-[150px] font-black leading-none tracking-tighter uppercase ml-[-5px]">We build <br><span class="italic font-serif font-normal text-amber-600">Digital</span> Culture.</h1>
+</header>
+
+<div class="marquee py-4 text-2xl"><span>Branding • Web Design • 3D Motion • Strategy • Art Direction • Branding • Web Design • 3D Motion • Strategy</span></div>
+
+<section class="py-24 px-8 grid md:grid-cols-2 gap-16 max-w-screen-2xl mx-auto">
+  <div>
+    <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=1000" class="w-full h-[600px] object-cover filter grayscale hover:grayscale-0 transition duration-700">
+    <div class="mt-4 flex justify-between font-bold sans-serif uppercase"><span>01. Urban Canvas</span><span>Art Direction</span></div>
+  </div>
+  <div class="mt-32">
+    <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?w=1000" class="w-full h-[600px] object-cover filter grayscale hover:grayscale-0 transition duration-700">
+    <div class="mt-4 flex justify-between font-bold sans-serif uppercase"><span>02. Neumorphic App</span><span>UI/UX Design</span></div>
+  </div>
+</section>
+</body>
+</html>

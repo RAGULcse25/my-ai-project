@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>K-Means Segments</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-[#fafafa] font-sans h-screen flex flex-col items-center justify-center p-8">
+  <div class="w-full max-w-6xl">
+    <div class="flex justify-between items-end mb-8">
+      <div>
+        <h1 class="text-3xl font-black text-gray-800">K-Means Customer Clustering</h1>
+        <p class="text-gray-500">Unsupervised Learning on Annual Income vs Spending Score</p>
+      </div>
+      <div class="flex items-center gap-4">
+        <label class="font-bold text-gray-600">Clusters (K)</label>
+        <input type="number" value="5" class="w-16 border rounded p-2 text-center font-bold outline-none" min="2" max="10">
+      </div>
+    </div>
+    
+    <div class="bg-white p-8 rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-gray-100 grid md:grid-cols-3 gap-8">
+      <div class="md:col-span-2">
+        <canvas id="c1" height="180"></canvas>
+      </div>
+      <div>
+        <h3 class="font-bold text-gray-700 mb-4 border-b pb-2">Identified Segments</h3>
+        <div class="space-y-3">
+          <div class="flex justify-between items-center bg-red-50 px-3 py-2 rounded"><span class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div>Standard</span><span class="font-bold text-gray-700">32%</span></div>
+          <div class="flex justify-between items-center bg-blue-50 px-3 py-2 rounded"><span class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-blue-500"></div>Target</span><span class="font-bold text-gray-700">18%</span></div>
+          <div class="flex justify-between items-center bg-green-50 px-3 py-2 rounded"><span class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-green-500"></div>Careful</span><span class="font-bold text-gray-700">22%</span></div>
+          <div class="flex justify-between items-center bg-purple-50 px-3 py-2 rounded"><span class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-purple-500"></div>Sensible</span><span class="font-bold text-gray-700">14%</span></div>
+          <div class="flex justify-between items-center bg-orange-50 px-3 py-2 rounded"><span class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-orange-500"></div>Careless</span><span class="font-bold text-gray-700">14%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    lucide.createIcons();
+    const g=()=>Array.from({length:30},()=>({x:Math.random()*100, y:Math.random()*100}));
+    new Chart(document.getElementById('c1'), {
+      type: 'scatter', data: {
+        datasets: [
+          { label: 'Cluster 1', data: g(), backgroundColor: '#ef4444' },
+          { label: 'Cluster 2', data: g(), backgroundColor: '#3b82f6' },
+          { label: 'Cluster 3', data: g(), backgroundColor: '#22c55e' },
+          { label: 'Cluster 4', data: g(), backgroundColor: '#a855f7' },
+          { label: 'Cluster 5', data: g(), backgroundColor: '#f97316' }
+        ]
+      }, options: { scales: { x: { title:{display:true,text:'Annual Income (k$)'} }, y: { title:{display:true,text:'Spending Score (1-100)'} } }, plugins: { legend: { display: false } } }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Health Tracker</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-teal-50 h-screen overflow-hidden flex flex-col items-center justify-center p-6 pb-12">
+  <div class="bg-white p-8 rounded-[40px] shadow-xl w-full max-w-sm text-center">
+    <h2 class="text-2xl font-bold mb-6 text-teal-900">BMI Calculator</h2>
+    
+    <div class="mb-4">
+      <label class="block text-left text-sm font-semibold text-gray-500 mb-2">Weight (kg)</label>
+      <input type="number" id="weight" value="70" class="w-full bg-teal-50 text-2xl font-bold text-center py-4 rounded-2xl outline-none shadow-inner text-teal-800">
+    </div>
+    
+    <div class="mb-8">
+      <label class="block text-left text-sm font-semibold text-gray-500 mb-2">Height (cm)</label>
+      <input type="number" id="height" value="175" class="w-full bg-teal-50 text-2xl font-bold text-center py-4 rounded-2xl outline-none shadow-inner text-teal-800">
+    </div>
+    
+    <div class="bg-teal-600 text-white p-6 rounded-3xl mb-6 shadow-lg shadow-teal-300">
+      <p class="text-teal-200 text-sm font-semibold uppercase mb-1">Your BMI</p>
+      <div class="text-5xl font-black mb-2" id="res">22.9</div>
+      <div class="bg-white/20 inline-block px-4 py-1 rounded-full text-sm font-black tracking-widest text-teal-50" id="cat">NORMAL</div>
+    </div>
+    
+    <button onclick="calc()" class="bg-gray-900 text-white w-full py-4 rounded-2xl font-bold">Calculate</button>
+  </div>
+<script>
+function calc(){
+  let w = parseFloat(document.getElementById('weight').value);
+  let h = parseFloat(document.getElementById('height').value)/100;
+  if(!w||!h) return;
+  let bmi = w/(h*h);
+  document.getElementById('res').innerText = bmi.toFixed(1);
+  let catEl = document.getElementById('cat');
+  if(bmi<18.5) {catEl.innerText="UNDERWEIGHT"; catEl.className="bg-blue-400 text-white px-4 py-1 rounded-full text-sm font-bold";}
+  else if(bmi<25) {catEl.innerText="NORMAL"; catEl.className="bg-green-400 text-white px-4 py-1 rounded-full text-sm font-bold";}
+  else if(bmi<30) {catEl.innerText="OVERWEIGHT"; catEl.className="bg-yellow-400 text-white px-4 py-1 rounded-full text-sm font-bold";}
+  else {catEl.innerText="OBESE"; catEl.className="bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold";}
+}
+</script>
+</body>
+</html>

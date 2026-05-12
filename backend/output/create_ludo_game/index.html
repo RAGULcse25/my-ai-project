@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Ludo Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0a0f;font-family:'JetBrains Mono',monospace;color:#fff}
+#app{display:flex;align-items:center;justify-content:center;height:100vh;gap:20px;flex-wrap:wrap;padding:10px}
+canvas{border:3px solid #333;border-radius:8px;box-shadow:0 0 30px rgba(99,102,241,0.3)}
+#sidebar{display:flex;flex-direction:column;gap:12px;min-width:180px;max-width:200px}
+.panel{background:#111;border:1px solid #222;border-radius:10px;padding:14px}
+.panel h3{font-size:10px;letter-spacing:2px;color:#666;text-transform:uppercase;margin-bottom:10px}
+#turnDisplay{font-family:'Orbitron';font-size:16px;font-weight:700;text-align:center;padding:12px;border-radius:8px;transition:all .3s}
+#diceArea{text-align:center}
+#diceCanvas{cursor:pointer;display:block;margin:0 auto 8px;border-radius:6px}
+#diceCanvas:hover{transform:scale(1.05)}
+#rollBtn{width:100%;padding:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:8px;color:#fff;font-family:'Orbitron';font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all .2s}
+#rollBtn:hover{transform:translateY(-1px);box-shadow:0 4px 15px rgba(99,102,241,0.4)}
+#rollBtn:disabled{background:#333;cursor:not-allowed;transform:none}
+#statusMsg{font-size:10px;color:#aaa;text-align:center;min-height:30px;line-height:1.5}
+.score-item{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid #1a1a2e;font-size:11px}
+.score-item:last-child{border:none}
+.color-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+#newGameBtn{width:100%;padding:8px;background:#1a1a2e;border:1px solid #333;border-radius:8px;color:#aaa;cursor:pointer;font-size:10px;letter-spacing:1px;text-transform:uppercase}
+#newGameBtn:hover{border-color:#6366f1;color:#fff}
+#winOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:100;flex-direction:column;gap:20px}
+#winOverlay h1{font-family:'Orbitron';font-size:40px;font-weight:900;text-shadow:0 0 30px currentColor}
+#winOverlay button{padding:14px 40px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:10px;color:#fff;font-family:'Orbitron';font-size:14px;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="app">
+  <canvas id="board" width="540" height="540"></canvas>
+  <div id="sidebar">
+    <div class="panel">
+      <h3>Current Turn</h3>
+      <div id="turnDisplay">Red</div>
+    </div>
+    <div class="panel" id="diceArea">
+      <h3>Dice</h3>
+      <canvas id="diceCanvas" width="70" height="70"></canvas>
+      <button id="rollBtn">🎲 Roll Dice</button>
+    </div>
+    <div class="panel">
+      <h3>Status</h3>
+      <div id="statusMsg">Roll the dice to start!</div>
+    </div>
+    <div class="panel">
+      <h3>Finished Tokens</h3>
+      <div id="scores">
+        <div class="score-item"><span><span class="color-dot" style="background:#e74c3c;display:inline-block;margin-right:6px"></span>Red</span><span id="scoreRed">0/4</span></div>
+        <div class="score-item"><span><span class="color-dot" style="background:#27ae60;display:inline-block;margin-right:6px"></span>Green</span><span id="scoreGreen">0/4</span></div>
+        <div class="score-item"><span><span class="color-dot" style="background:#f39c12;display:inline-block;margin-right:6px"></span>Yellow</span><span id="scoreYellow">0/4</span></div>
+        <div class="score-item"><span><span class="color-dot" style="background:#2980b9;display:inline-block;margin-right:6px"></span>Blue</span><span id="scoreBlue">0/4</span></div>
+      </div>
+    </div>
+    <button id="newGameBtn">↺ New Game</button>
+  </div>
+</div>
+
+<div id="winOverlay">
+  <h1 id="winTitle">Red Wins!</h1>
+  <p style="color:#aaa;font-size:14px">All 4 tokens reached home!</p>
+  <button onclick="initGame()">Play Again</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  LUDO GAME ENGINE — Complete Implementation
+// ═══════════════════════════════════════════════════════
+
+const C   = document.getElementById('board');
+const ctx = C.getContext('2d');
+const S   = 540; // board size
+const G   = S/15; // cell = 36px
+
+// ── COLORS ─────────────────────────────────────────────
+const COLORS = {
+  red:    {fill:'#e74c3c', dark:'#c0392b', light:'#ff6b6b', name:'Red',    text:'#ff4444'},
+  green:  {fill:'#27ae60', dark:'#1e8449', light:'#2ecc71', name:'Green',  text:'#44ff77'},
+  yellow: {fill:'#f39c12', dark:'#d68910', light:'#f1c40f', name:'Yellow', text:'#ffcc00'},
+  blue:   {fill:'#2980b9', dark:'#1a6fa8', light:'#3498db', name:'Blue',   text:'#44aaff'},
+};
+const ORDER = ['red','green','yellow','blue'];
+
+// ── BOARD PATH (shared 52 squares, pixel positions) ────
+// Each entry is [row, col] on the 15x15 grid
+const SHARED = [
+  [6,1],[5,1],[4,1],[3,1],[2,1],[1,1],  // red start going up
+  [0,1],[0,2],[0,3],[0,4],[0,5],[0,6],  // top left going right
+  [1,6],[2,6],[3,6],[4,6],[5,6],[6,6],  // wait — let me use standard path
+  [6,2],[6,3],[6,4],[6,5],[6,6],        // red home stretch going right
+  // ... rebuild properly below
+];
+
+// Standard Ludo path — 52 positions clockwise
+// Starting from Red's entry point (row6, col1)
+const PATH52 = [
+  // Down left column (Red start)
+  [6,1],[5,1],[4,1],[3,1],[2,1],[1,1],
+  // Top row left
+  [0,1],[0,2],[0,3],[0,4],[0,5],
+  // Top right corner
+  [0,6],[1,6],
+  // Right side going down (Green start area)
+  [1,7],[1,8],
+  [0,8],[0,9],[0,10],[0,11],[0,12],[0,13],
+  [1,13],[2,13],[3,13],[4,13],[5,13],
+  [6,13],[6,12],[6,11],[6,10],[6,9],[6,8],
+  [7,8],
+  [8,8],[8,9],[8,10],[8,11],[8,12],[8,13],
+  [9,13],[10,13],[11,13],[12,13],[13,13],
+  [13,12],[13,11],[13,10],[13,9],[13,8],
+  [13,7],[13,6],
+  [13,5],[13,4],[13,3],[13,2],[13,1],
+  [12,1],[11,1],[10,1],[9,1],[8,1],
+  [8,0],[8,6],
+];
+
+// Simpler reliable path - hardcoded correctly
+function buildLudoPath() {
+  // 52 square shared path starting at Red's entry (6,1)
+  return [
+    // Red section going up
+    [6,1],[5,1],[4,1],[3,1],[2,1],[1,1],
+    // Top going right
+    [0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,6],
+    // Green entry area
+    [1,7],[1,8],
+    // Top-right going right  
+    [0,8],[0,9],[0,10],[0,11],[0,12],[0,13],
+    // Right side going down
+    [1,13],[2,13],[3,13],[4,13],[5,13],[6,13],
+    // Yellow section going left
+    [6,12],[6,11],[6,10],[6,9],[6,8],[7,8],
+    // Yellow entry
+    [8,8],
+    // Bottom-right going right
+    [8,9],[8,10],[8,11],[8,12],[8,13],
+    // Right side going down
+    [9,13],[10,13],[11,13],[12,13],[13,13],
+    // Bottom going left
+    [13,12],[13,11],[13,10],[13,9],[13,8],[13,7],
+    // Blue entry
+    [13,6],
+    // Bottom-left going left
+    [13,5],[13,4],[13,3],[13,2],[13,1],
+    // Left side going up
+    [12,1],[11,1],[10,1],[9,1],[8,1],[7,1],
+  ];
+}
+
+const LUDO_PATH = buildLudoPath();
+
+// Home columns (6 squares each leading to center)
+const HOME_COLS = {
+  red:    [[6,2],[6,3],[6,4],[6,5],[6,6],[7,6]],
+  green:  [[2,7],[3,7],[4,7],[5,7],[6,7],[7,7]],
+  yellow: [[8,12],[8,11],[8,10],[8,9],[8,8],[7,8]], // wait adjusted
+  blue:   [[12,7],[11,7],[10,7],[9,7],[8,7],[7,7]],
+};
+
+// Correct home columns
+const HOME = {
+  red:    [[6,2],[6,3],[6,4],[6,5],[6,6],[7,6]],
+  green:  [[2,7],[3,7],[4,7],[5,7],[6,7],[7,6]],
+  yellow: [[8,12],[8,11],[8,10],[8,9],[8,8],[8,7]],
+  blue:   [[12,7],[11,7],[10,7],[9,7],[8,7],[7,7]],
+};
+
+// Entry points on shared path (index in LUDO_PATH)
+const ENTRY = { red:0, green:13, yellow:26, blue:39 };
+
+// Yard positions (where tokens wait before rolling 6)
+const YARDS = {
+  red:    [[1,2],[1,4],[3,2],[3,4]],
+  green:  [[1,10],[1,12],[3,10],[3,12]],
+  yellow: [[11,10],[11,12],[9,10],[9,12]], // adjusted
+  blue:   [[11,2],[11,4],[9,2],[9,4]],    // adjusted
+};
+
+// Safe squares (positions in shared path that are safe)
+const SAFE_POS = [0, 8, 13, 21, 26, 34, 39, 47];
+
+// ── GAME STATE ─────────────────────────────────────────
+let state = {};
+
+function initGame() {
+  state = {
+    turn:  0, // 0=red,1=green,2=yellow,3=blue
+    dice:  0,
+    rolled: false,
+    rolling: false,
+    selected: null, // {color,index}
+    tokens: {
+      red:    [{pos:-1},{pos:-1},{pos:-1},{pos:-1}],
+      green:  [{pos:-1},{pos:-1},{pos:-1},{pos:-1}],
+      yellow: [{pos:-1},{pos:-1},{pos:-1},{pos:-1}],
+      blue:   [{pos:-1},{pos:-1},{pos:-1},{pos:-1}],
+    },
+    finished: {red:0,green:0,yellow:0,blue:0},
+    extraTurn: false,
+    consecutive6: 0,
+    isAI: {red:false, green:true, yellow:true, blue:true}, // 1 human vs 3 AI
+  };
+  document.getElementById('winOverlay').style.display='none';
+  updateUI();
+  render();
+}
+
+// ── COORDINATE HELPER ──────────────────────────────────
+function gridToPixel(row, col) {
+  return {
+    x: col * G + G/2,
+    y: row * G + G/2,
+  };
+}
+
+function tokenPixelPos(color, tokenIndex) {
+  const t = state.tokens[color][tokenIndex];
+  if (t.pos === -1) {
+    // In yard
+    const yard = YARDS[color];
+    const pos = yard[tokenIndex] || yard[0];
+    return gridToPixel(pos[0], pos[1]);
+  }
+  if (t.pos >= 52) {
+    // In home column
+    const homeIdx = t.pos - 52;
+    const hc = HOME[color];
+    if (homeIdx < hc.length) return gridToPixel(hc[homeIdx][0], hc[homeIdx][1]);
+    return gridToPixel(7, 7); // center
+  }
+  // On shared path — offset by entry point
+  const entry = ENTRY[color];
+  const pathIdx = (entry + t.pos) % 52;
+  const cell = LUDO_PATH[pathIdx] || [7,7];
+  return gridToPixel(cell[0], cell[1]);
+}
+
+// ── DRAWING ────────────────────────────────────────────
+function drawBoard() {
+  // Background
+  ctx.fillStyle = '#1a1a2e';
+  ctx.fillRect(0,0,S,S);
+
+  // Draw 15x15 grid cells
+  for(let r=0; r<15; r++) {
+    for(let c=0; c<15; c++) {
+      const x = c*G, y = r*G;
+      let fill = '#f0f0f0';
+
+      // Home areas
+      if(r<6 && c<6)     fill = COLORS.red.light + '88';
+      if(r<6 && c>8)     fill = COLORS.green.light + '88';
+      if(r>8 && c>8)     fill = COLORS.yellow.light + '88';
+      if(r>8 && c<6)     fill = COLORS.blue.light + '88';
+
+      // Center square
+      if(r>=6 && r<=8 && c>=6 && c<=8) fill = '#222';
+      
+      // Path squares (lighter)
+      const isPath = isOnPath(r,c);
+      if(isPath) fill = '#fff';
+
+      // Safe squares (star color)
+      if(isSafeSquare(r,c)) fill = '#fffde7';
+
+      // Home columns
+      const homeColor = getHomeColumn(r,c);
+      if(homeColor) fill = COLORS[homeColor].light + 'cc';
+
+      ctx.fillStyle = fill;
+      ctx.fillRect(x+1, y+1, G-2, G-2);
+
+      // Safe square star
+      if(isSafeSquare(r,c)) {
+        ctx.fillStyle = '#ffa000';
+        ctx.font = `${G*0.5}px serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('★', x+G/2, y+G/2);
+      }
+    }
+  }
+
+  // Home area inner yards
+  drawYard('red',    1,1,4);
+  drawYard('green',  1,9,4);
+  drawYard('yellow', 9,9,4);
+  drawYard('blue',   9,1,4);
+
+  // Center triangle (finish area)
+  drawCenterTriangles();
+}
+
+function drawYard(color, startRow, startCol, size) {
+  const margin = G*0.15;
+  ctx.fillStyle = COLORS[color].fill;
+  ctx.beginPath();
+  ctx.roundRect(
+    startCol*G+margin, startRow*G+margin,
+    size*G-margin*2,   size*G-margin*2,
+    G*0.3
+  );
+  ctx.fill();
+  // Inner white area
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.roundRect(
+    startCol*G+G*0.4, startRow*G+G*0.4,
+    size*G-G*0.8,     size*G-G*0.8,
+    G*0.2
+  );
+  ctx.fill();
+}
+
+function drawCenterTriangles() {
+  const cx = 7.5*G, cy = 7.5*G, hs = 1.5*G;
+  const triangles = [
+    {color:'red',    pts:[[cx-hs,cy-hs],[cx+hs,cy-hs],[cx,cy]]},
+    {color:'green',  pts:[[cx+hs,cy-hs],[cx+hs,cy+hs],[cx,cy]]},
+    {color:'yellow', pts:[[cx+hs,cy+hs],[cx-hs,cy+hs],[cx,cy]]},
+    {color:'blue',   pts:[[cx-hs,cy+hs],[cx-hs,cy-hs],[cx,cy]]},
+  ];
+  triangles.forEach(t => {
+    ctx.beginPath();
+    ctx.moveTo(t.pts[0][0], t.pts[0][1]);
+    ctx.lineTo(t.pts[1][0], t.pts[1][1]);
+    ctx.lineTo(t.pts[2][0], t.pts[2][1]);
+    ctx.closePath();
+    ctx.fillStyle = COLORS[t.color].fill + 'cc';
+    ctx.fill();
+  });
+}
+
+function isOnPath(r,c) {
+  return LUDO_PATH.some(p => p[0]===r && p[1]===c);
+}
+
+function isSafeSquare(r,c) {
+  const SAFE_CELLS = [
+    [6,1],[1,6],[8,13],[13,8], // start squares
+    [2,6],[6,12],[12,8],[8,2], // mid safe
+  ];
+  return SAFE_CELLS.some(p => p[0]===r && p[1]===c);
+}
+
+function getHomeColumn(r,c) {
+  const homes = {
+    red:    [[6,2],[6,3],[6,4],[6,5],[6,6]],
+    green:  [[2,7],[3,7],[4,7],[5,7],[6,7]],
+    yellow: [[8,9],[8,10],[8,11],[8,12],[8,8]],
+    blue:   [[9,7],[10,7],[11,7],[12,7],[8,7]],
+  };
+  for(const [color,cells] of Object.entries(homes)) {
+    if(cells.some(p=>p[0]===r&&p[1]===c)) return color;
+  }
+  return null;
+}
+
+function drawTokens() {
+  ORDER.forEach(color => {
+    state.tokens[color].forEach((t,i) => {
+      if(t.pos === 57) return; // finished, in center
+      const {x,y} = tokenPixelPos(color, i);
+      const isSelected = state.selected &&
+        state.selected.color===color && state.selected.index===i;
+
+      // Glow effect if selected
+      if(isSelected) {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = COLORS[color].light;
+      }
+
+      // Token circle
+      ctx.beginPath();
+      ctx.arc(x, y, G*0.35, 0, Math.PI*2);
+      ctx.fillStyle = COLORS[color].fill;
+      ctx.fill();
+      ctx.strokeStyle = isSelected ? '#fff' : COLORS[color].dark;
+      ctx.lineWidth = isSelected ? 2.5 : 1.5;
+      ctx.stroke();
+
+      // Inner circle
+      ctx.beginPath();
+      ctx.arc(x, y, G*0.18, 0, Math.PI*2);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+
+      // Token number
+      ctx.fillStyle = COLORS[color].dark;
+      ctx.font = `bold ${G*0.2}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(i+1, x, y);
+
+      ctx.shadowBlur = 0;
+    });
+  });
+
+  // Show finished tokens in center
+  const cX = S/2, cY = S/2;
+  let finIdx = 0;
+  ORDER.forEach(color => {
+    const count = state.tokens[color].filter(t=>t.pos===57).length;
+    for(let k=0; k<count; k++) {
+      const angle = (finIdx/16)*Math.PI*2;
+      const r = G*0.6;
+      const fx = cX + Math.cos(angle)*r;
+      const fy = cY + Math.sin(angle)*r;
+      ctx.beginPath();
+      ctx.arc(fx, fy, G*0.25, 0, Math.PI*2);
+      ctx.fillStyle = COLORS[color].fill;
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      finIdx++;
+    }
+  });
+}
+
+function drawMovable() {
+  if(!state.rolled || state.rolling) return;
+  const color = ORDER[state.turn];
+  const movable = getMovableTokens(color);
+  if(movable.length === 0) return;
+  
+  // Pulse animation
+  const pulse = 0.8 + 0.2*Math.sin(Date.now()/200);
+  movable.forEach(i => {
+    const {x,y} = tokenPixelPos(color, i);
+    ctx.beginPath();
+    ctx.arc(x, y, G*0.45*pulse, 0, Math.PI*2);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([4,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+  requestAnimationFrame(render);
+}
+
+function render() {
+  ctx.clearRect(0,0,S,S);
+  drawBoard();
+  drawMovable();
+  drawTokens();
+}
+
+// ── DICE ───────────────────────────────────────────────
+function drawDice(value) {
+  const dc = document.getElementById('diceCanvas');
+  const dtx = dc.getContext('2d');
+  const W = 70;
+  dtx.clearRect(0,0,W,W);
+  
+  // Background
+  dtx.fillStyle = '#fff';
+  dtx.beginPath();
+  dtx.roundRect(4,4,W-8,W-8,8);
+  dtx.fill();
+  dtx.strokeStyle = '#333';
+  dtx.lineWidth = 2;
+  dtx.stroke();
+
+  if(value === 0) return;
+
+  // Dot positions for each face
+  const dots = {
+    1: [[.5,.5]],
+    2: [[.25,.25],[.75,.75]],
+    3: [[.25,.25],[.5,.5],[.75,.75]],
+    4: [[.25,.25],[.75,.25],[.25,.75],[.75,.75]],
+    5: [[.25,.25],[.75,.25],[.5,.5],[.25,.75],[.75,.75]],
+    6: [[.25,.25],[.75,.25],[.25,.5],[.75,.5],[.25,.75],[.75,.75]],
+  };
+
+  const currentDots = dots[value] || dots[1];
+  dtx.fillStyle = value===6 ? '#e74c3c' : '#1a1a2e';
+  currentDots.forEach(([dx,dy]) => {
+    dtx.beginPath();
+    dtx.arc(dx*(W-8)+4, dy*(W-8)+4, 5, 0, Math.PI*2);
+    dtx.fill();
+  });
+}
+
+function rollDice() {
+  if(state.rolled || state.rolling) return;
+  const color = ORDER[state.turn];
+  if(state.isAI[color]) return;
+
+  animateDice();
+}
+
+function animateDice(callback) {
+  state.rolling = true;
+  document.getElementById('rollBtn').disabled = true;
+  let count = 0;
+  const interval = setInterval(() => {
+    drawDice(Math.ceil(Math.random()*6));
+    count++;
+    if(count >= 10) {
+      clearInterval(interval);
+      const result = Math.ceil(Math.random()*6);
+      state.dice = result;
+      drawDice(result);
+      state.rolling = false;
+      state.rolled = true;
+
+      if(result === 6) {
+        state.consecutive6++;
+        if(state.consecutive6 >= 3) {
+          // Three 6s in a row — skip turn
+          setStatus(`${COLORS[color].name} rolled three 6s! Turn skipped.`);
+          state.consecutive6 = 0;
+          setTimeout(nextTurn, 1500);
+          return;
+        }
+        setStatus(`${COLORS[color].name} rolled 6! Extra turn!`);
+        state.extraTurn = true;
+      } else {
+        state.consecutive6 = 0;
+        state.extraTurn = false;
+      }
+
+      const movable = getMovableTokens(ORDER[state.turn]);
+      if(movable.length === 0) {
+        setStatus(`${COLORS[color].name} rolled ${result}. No valid moves.`);
+        setTimeout(nextTurn, 1200);
+      } else {
+        setStatus(`${COLORS[color].name} rolled ${result}. Click a token to move.`);
+        render();
+        // Auto-play if AI
+        if(state.isAI[ORDER[state.turn]]) {
+          setTimeout(() => aiMove(ORDER[state.turn]), 800);
+        }
+      }
+
+      if(callback) callback(result);
+    }
+  }, 80);
+  const color = ORDER[state.turn];
+}
+
+// ── AI LOGIC ───────────────────────────────────────────
+function aiRollAndMove(color) {
+  if(!state.rolled) {
+    animateDice(() => {
+      const movable = getMovableTokens(color);
+      if(movable.length > 0) {
+        setTimeout(() => aiMove(color), 600);
+      }
+    });
+  }
+}
+
+function aiMove(color) {
+  const movable = getMovableTokens(color);
+  if(movable.length === 0) { nextTurn(); return; }
+  
+  // AI strategy: prefer capture > finish > advance
+  let best = movable[0];
+  let bestScore = -1;
+  
+  movable.forEach(i => {
+    let score = 0;
+    const t = state.tokens[color][i];
+    const newPos = t.pos === -1 ? 0 : t.pos + state.dice;
+
+    // Prefer finishing
+    if(newPos === 56) score += 1000;
+    // Prefer capturing
+    if(wouldCapture(color, newPos)) score += 500;
+    // Prefer advancing closest to home
+    if(t.pos >= 0) score += t.pos + state.dice;
+
+    if(score > bestScore) { bestScore = score; best = i; }
+  });
+
+  moveToken(color, best);
+}
+
+function wouldCapture(color, newPos) {
+  if(newPos >= 52) return false;
+  const entry = ENTRY[color];
+  const pathIdx = (entry + newPos) % 52;
+  const cell = LUDO_PATH[pathIdx];
+  if(!cell) return false;
+  const isSafe = SAFE_POS.includes(newPos);
+  if(isSafe) return false;
+  
+  return ORDER.some(c => {
+    if(c === color) return false;
+    return state.tokens[c].some(t => {
+      if(t.pos < 0 || t.pos >= 52) return false;
+      const e = ENTRY[c];
+      const pi = (e + t.pos) % 52;
+      return pi === pathIdx;
+    });
+  });
+}
+
+// ── GAME LOGIC ─────────────────────────────────────────
+function getMovableTokens(color) {
+  const movable = [];
+  state.tokens[color].forEach((t, i) => {
+    if(t.pos === 57) return; // already finished
+    if(t.pos === -1) {
+      // In yard — need 6
+      if(state.dice === 6) movable.push(i);
+    } else {
+      const newPos = t.pos + state.dice;
+      if(newPos <= 57) movable.push(i); // can move
+    }
+  });
+  return movable;
+}
+
+function moveToken(color, tokenIndex) {
+  const t = state.tokens[color][tokenIndex];
+  
+  if(t.pos === -1) {
+    t.pos = 0; // Enter from yard
+    setStatus(`${COLORS[color].name} token ${tokenIndex+1} entered the board!`);
+  } else {
+    t.pos += state.dice;
+    if(t.pos > 57) { t.pos -= state.dice; return; }
+  }
+
+  // Check capture
+  if(t.pos < 52) {
+    const entry = ENTRY[color];
+    const pathIdx = (entry + t.pos) % 52;
+    const isSafe = SAFE_POS.includes(t.pos);
+    
+    if(!isSafe) {
+      ORDER.forEach(c => {
+        if(c === color) return;
+        state.tokens[c].forEach(ot => {
+          if(ot.pos < 0 || ot.pos >= 52) return;
+          const e = ENTRY[c];
+          const pi = (e + ot.pos) % 52;
+          if(pi === pathIdx) {
+            ot.pos = -1; // Send back to yard
+            setStatus(`${COLORS[color].name} captured ${COLORS[c].name} token!`);
+          }
+        });
+      });
+    }
+  }
+
+  // Check win
+  if(t.pos === 57 || t.pos >= 56) {
+    t.pos = 57;
+    state.finished[color]++;
+    updateScores();
+    if(state.finished[color] === 4) {
+      showWin(color);
+      return;
+    }
+  }
+
+  state.selected = null;
+  state.rolled = false;
+  render();
+  updateUI();
+
+  // Check extra turn
+  if(state.extraTurn) {
+    state.extraTurn = false;
+    setStatus(`${COLORS[color].name} gets another turn!`);
+    render();
+    document.getElementById('rollBtn').disabled = state.isAI[color];
+    if(state.isAI[color]) setTimeout(() => aiRollAndMove(color), 800);
+  } else {
+    nextTurn();
+  }
+}
+
+function nextTurn() {
+  state.turn = (state.turn + 1) % 4;
+  state.rolled = false;
+  state.selected = null;
+  const color = ORDER[state.turn];
+  
+  updateUI();
+  setStatus(`${COLORS[color].name}'s turn. ${state.isAI[color]?'AI thinking...':'Roll the dice!'}`);
+  render();
+  
+  document.getElementById('rollBtn').disabled = state.isAI[color] || false;
+  
+  if(state.isAI[color]) {
+    setTimeout(() => aiRollAndMove(color), 700);
+  }
+}
+
+function showWin(color) {
+  const overlay = document.getElementById('winOverlay');
+  const title   = document.getElementById('winTitle');
+  title.textContent = `🎉 ${COLORS[color].name} Wins!`;
+  title.style.color = COLORS[color].fill;
+  overlay.style.display = 'flex';
+}
+
+// ── UI HELPERS ─────────────────────────────────────────
+function setStatus(msg) {
+  document.getElementById('statusMsg').textContent = msg;
+}
+
+function updateUI() {
+  const color = ORDER[state.turn];
+  const turnEl = document.getElementById('turnDisplay');
+  turnEl.textContent = COLORS[color].name;
+  turnEl.style.color = COLORS[color].fill;
+  turnEl.style.background = COLORS[color].fill + '22';
+  turnEl.style.border = `2px solid ${COLORS[color].fill}55`;
+  
+  const btn = document.getElementById('rollBtn');
+  btn.disabled = state.rolled || state.isAI[color];
+}
+
+function updateScores() {
+  ORDER.forEach(c => {
+    const el = document.getElementById(`score${c.charAt(0).toUpperCase()+c.slice(1)}`);
+    if(el) el.textContent = `${state.finished[c]}/4`;
+  });
+}
+
+// ── EVENT LISTENERS ────────────────────────────────────
+document.getElementById('rollBtn').addEventListener('click', rollDice);
+document.getElementById('newGameBtn').addEventListener('click', initGame);
+
+C.addEventListener('click', (e) => {
+  const color = ORDER[state.turn];
+  if(state.isAI[color] || !state.rolled) return;
+  
+  const rect = C.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (S/rect.width);
+  const my = (e.clientY - rect.top)  * (S/rect.height);
+  const movable = getMovableTokens(color);
+  
+  // Find clicked token
+  for(const i of movable) {
+    const {x,y} = tokenPixelPos(color, i);
+    const dist = Math.sqrt((mx-x)**2 + (my-y)**2);
+    if(dist < G*0.45) {
+      state.selected = {color, index:i};
+      render();
+      setTimeout(() => moveToken(color, i), 50);
+      return;
+    }
+  }
+});
+
+// ── START ──────────────────────────────────────────────
+initGame();
+drawDice(0);
+</script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Multiplayer 2d car game!">
+    <meta property="og:image" content="https://car.js.org/og.png">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@pakastin">
+    <meta name="twitter:title" content="Multiplayer 2d car game!">
+    <meta name="twitter:image" content="https://car.js.org/og.png">
+    <title>Multiplayer 2d car game!</title>
+    <style>
+html,body{margin:0!important;padding:0!important;overflow:hidden;background:#0a0a0f}
+
+      body {
+        background-color: #2f2f2f;
+        font-family: Arial, sans-serif;
+      }
+      .wrapper {
+        width: 400px;
+        margin: 40px auto;
+      }
+      .scene {
+        position: relative;
+      }
+      canvas {
+        width: 400px;
+        height: 600px;
+        border: 1px solid #444;
+      }
+      .bullets, .cars, .map {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 400px;
+        height: 600px;
+      }
+      .car {
+        position: absolute;
+        width: 40px;
+        height: 60px;
+        background-color: #ff0000;
+      }
+      .car-body {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 20px;
+        height: 40px;
+        background-color: #ff0000;
+      }
+      .car-roof {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20px;
+        height: 10px;
+        background-color: #ff0000;
+      }
+      .car-name {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 40px;
+        height: 20px;
+        font-size: 12px;
+        text-align: center;
+        color: #fff;
+      }
+      .points {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 24px;
+        color: #fff;
+      }
+      .buttons {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+      }
+      .disconnect, .clearscreen {
+        width: 100px;
+        height: 30px;
+        font-size: 16px;
+        background-color: #444;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .name {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 100px;
+        background-color: #444;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+      }
+      .name-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 100px;
+        background-color: #444;
+        border-radius: 10px;
+      }
+      .name form {
+        margin-top: 20px;
+      }
+      .name input {
+        width: 150px;
+        height: 30px;
+        font-size: 16px;
+        background-color: #666;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 10px;
+      }
+      .name button {
+        width: 100px;
+        height: 30px;
+        font-size: 16px;
+        background-color: #444;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .bottomleft {
+        position: absolute;
+        bottom: 10px;
+        left: 10px;
+        font-size: 16px;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="scene">
+        <canvas id="game-canvas" width="400" height="600"></canvas>
+        <div class="bullets"></div>
+        <div class="cars">
+          <div class="car red"><div class="car-body"><div class="car-roof"></div></div><div class="car-name"></div></div>
+        </div>
+        <div class="map"></div>
+      </div>
+    </div>
+    <div class="points"></div>
+    <div class="buttons">
+      <button class="disconnect">Disconnect</button>
+      <button class="clearscreen">Clear screen</button>
+    </div>
+    <div class="name"><div class="name-bg"></div><form><p>Connecting...</p><input autofocus placeholder="Nickname" autocomplete="nickname"><button>Play!</button></form></div>
+    <div class="bottomleft">Use keyboard (up/down/left/right/space), swiping (shoot with second finger) or gamepad to drive the red car with other cars online!</div>
+    <script>
+      const canvas = document.getElementById('game-canvas');
+      const ctx = canvas.getContext('2d');
+      const road = [];
+      const cars = [];
+      const bullets = [];
+      let player;
+      let score = 0;
+      let lives = 3;
+      let gameOver = false;
+
+      // Initialize road
+      for (let i = 0; i < 600; i += 50) {
+        road.push({ x: 200, y: i });
+      }
+
+      // Initialize player
+      player = {
+        x: 200,
+        y: 500,
+        width: 40,
+        height: 60,
+        speed: 5,
+        direction: 'up'
+      };
+
+      // Initialize enemy cars
+      for (let i = 0; i < 5; i++) {
+        cars.push({
+          x: Math.random() * 360,
+          y: Math.random() * 600,
+          width: 40,
+          height: 60,
+          speed: Math.random() * 5
+        });
+      }
+
+      // Draw game
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#444';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw road
+        for (let i = 0; i < road.length; i++) {
+          ctx.fillStyle = '#666';
+          ctx.fillRect(road[i].x - 20, road[i].y, 40, 50);
+        }
+
+        // Draw player
+        ctx.fillStyle = '#ff0000';
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+
+        // Draw enemy cars
+        for (let i = 0; i < cars.length; i++) {
+          ctx.fillStyle = '#00ff00';
+          ctx.fillRect(cars[i].x, cars[i].y, cars[i].width, cars[i].height);
+        }
+
+        // Draw bullets
+        for (let i = 0; i < bullets.length; i++) {
+          ctx.fillStyle = '#ffff00';
+          ctx.fillRect(bullets[i].x, bullets[i].y, 10, 10);
+        }
+
+        // Draw HUD
+        ctx.fillStyle = '#fff';
+        ctx.font = '24px Arial';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(`Score: ${score}`, 10, 10);
+        ctx.fillText(`Lives: ${lives}`, 10, 40);
+
+        // Draw game over screen
+        if (gameOver) {
+          ctx.fillStyle = '#fff';
+          ctx.font = '48px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2);
+        }
+      }
+
+      // Update game
+      function update() {
+        // Update player
+        if (player.direction === 'up') {
+          player.y -= player.speed;
+        } else if (player.direction === 'down') {
+          player.y += player.speed;
+        } else if (player.direction === 'left') {
+          player.x -= player.speed;
+        } else if (player.direction === 'right') {
+          player.x += player.speed;
+        }
+
+        // Update enemy cars
+        for (let i = 0; i < cars.length; i++) {
+          cars[i].y += cars[i].speed;
+          if (cars[i].y > canvas.height) {
+            cars[i].y = -cars[i].height;
+            cars[i].x = Math.random() * 360;
+          }
+        }
+
+        // Update bullets
+        for (let i = 0; i < bullets.length; i++) {
+          bullets[i].y -= 10;
+          if (bullets[i].y < 0) {
+            bullets.splice(i, 1);
+          }
+        }
+
+        // Check collisions
+        for (let i = 0; i < cars.length; i++) {
+          if (checkCollision(player, cars[i])) {
+            lives--;
+            if (lives === 0) {
+              gameOver = true;
+            }
+          }
+        }
+
+        // Update score
+        score++;
+
+        // Draw game
+        draw();
+      }
+
+      // Check collision
+      function checkCollision(obj1, obj2) {
+        if (obj1.x + obj1.width > obj2.x &&
+            obj1.x < obj2.x + obj2.width &&
+            obj1.y + obj1.height > obj2.y &&
+            obj1.y < obj2.y + obj2.height) {
+          return true;
+        }
+        return false;
+      }
+
+      // Handle keyboard input
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowUp') {
+          player.direction = 'up';
+        } else if (e.key === 'ArrowDown') {
+          player.direction = 'down';
+        } else if (e.key === 'ArrowLeft') {
+          player.direction = 'left';
+        } else if (e.key === 'ArrowRight') {
+          player.direction = 'right';
+        } else if (e.key === ' ') {
+          bullets.push({ x: player.x + player.width / 2, y: player.y });
+        }
+      });
+
+      // Update game loop
+      setInterval(update, 1000 / 60);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Beauty Store</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>*{font-family:'Inter',sans-serif;box-sizing:border-box;margin:0;padding:0;} body{background:#fff5f7;}</style>
+</head>
+<body>
+<nav class="sticky top-0 z-50 bg-white shadow-sm px-6 py-4">
+  <div class="max-w-7xl mx-auto flex items-center gap-4">
+    <div class="font-black text-3xl tracking-tight text-pink-600">nykaa</div>
+    <div class="flex-1 flex bg-pink-50 rounded-full overflow-hidden border border-pink-200">
+      <input type="text" placeholder="Search for products, brands, categories..." class="flex-1 px-5 py-2.5 bg-transparent text-sm outline-none">
+      <button class="bg-pink-500 px-6 text-white font-semibold text-sm hover:bg-pink-600 transition rounded-full">Search</button>
+    </div>
+    <div class="flex items-center gap-5 text-gray-600">
+      <button class="hover:text-pink-600 flex items-center gap-1 text-sm"><i data-lucide="user" class="w-5 h-5"></i> Profile</button>
+      <button class="hover:text-pink-600 flex items-center gap-1 text-sm relative"><i data-lucide="heart" class="w-5 h-5"></i> Wishlist</button>
+      <button class="bg-pink-600 text-white px-4 py-2 rounded-full flex items-center gap-2 text-sm font-semibold hover:bg-pink-700 transition"><i data-lucide="shopping-bag" class="w-4 h-4"></i> Bag (3)</button>
+    </div>
+  </div>
+</nav>
+<div class="bg-pink-600 text-white text-center text-xs py-2 font-semibold">✨ Get 20% OFF on your first order! Code: BEAUTY20 | Free shipping above ₹499</div>
+
+<!-- Hero -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl p-10 text-white flex flex-col justify-between h-72 relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-16 translate-x-16"></div>
+      <div>
+        <p class="text-pink-200 text-sm font-semibold mb-2">New Launch</p>
+        <h1 class="text-4xl font-black mb-4 leading-tight">Summer Glow <br>Collection 2026</h1>
+        <button class="bg-white text-pink-600 font-bold px-6 py-2.5 rounded-full hover:shadow-lg transition">Shop Now</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 gap-4">
+      <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&auto=format" class="rounded-2xl h-full object-cover shadow-md hover:scale-105 transition">
+      <div class="flex flex-col gap-4">
+        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&auto=format" class="rounded-2xl h-32 object-cover shadow-md hover:scale-105 transition">
+        <img src="https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?w=400&auto=format" class="rounded-2xl h-32 object-cover shadow-md hover:scale-105 transition">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Products -->
+<div class="max-w-7xl mx-auto px-6 pb-16">
+  <h2 class="text-2xl font-bold mb-6 text-gray-800">Bestsellers 💄</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm group cursor-pointer hover:shadow-md transition border border-pink-50">
+      <div class="relative overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&auto=format" class="w-full h-52 object-cover group-hover:scale-105 transition duration-500">
+        <div class="absolute top-3 left-3 bg-pink-600 text-white text-xs font-bold px-2 py-1 rounded-full">HOT</div>
+        <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow hover:bg-pink-50"><i data-lucide="heart" class="w-4 h-4 text-pink-500"></i></button>
+      </div>
+      <div class="p-4">
+        <p class="text-xs text-pink-500 font-semibold mb-1">LAKME</p>
+        <h3 class="text-sm font-semibold text-gray-800">Absolute Matte Lipstick</h3>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="text-lg font-black text-gray-900">₹499</span>
+          <span class="text-xs text-gray-400 line-through">₹799</span>
+          <span class="text-xs text-green-600 font-bold">38% off</span>
+        </div>
+        <div class="flex gap-1 mt-2">{["#b91c1c","#6d28d9","#b45309","#be185d"].map(c=>`<div class="w-5 h-5 rounded-full border-2 border-white shadow cursor-pointer" style="background:${c}"></div>`).join('')}</div>
+        <button class="w-full mt-3 bg-pink-600 text-white text-sm font-bold py-2 rounded-xl hover:bg-pink-700 transition">Add to Bag</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm group cursor-pointer hover:shadow-md transition border border-pink-50">
+      <div class="relative overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&auto=format" class="w-full h-52 object-cover group-hover:scale-105 transition duration-500">
+        <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow hover:bg-pink-50"><i data-lucide="heart" class="w-4 h-4 text-pink-500"></i></button>
+      </div>
+      <div class="p-4">
+        <p class="text-xs text-pink-500 font-semibold mb-1">MAYBELLINE</p>
+        <h3 class="text-sm font-semibold text-gray-800">Fit Me Foundation</h3>
+        <div class="flex items-center gap-2 mt-2"><span class="text-lg font-black text-gray-900">₹349</span><span class="text-xs text-gray-400 line-through">₹549</span><span class="text-xs text-green-600 font-bold">36% off</span></div>
+        <button class="w-full mt-3 bg-pink-600 text-white text-sm font-bold py-2 rounded-xl hover:bg-pink-700 transition">Add to Bag</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm group cursor-pointer hover:shadow-md transition border border-pink-50">
+      <div class="relative overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?w=400&auto=format" class="w-full h-52 object-cover group-hover:scale-105 transition duration-500">
+        <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow hover:bg-pink-50"><i data-lucide="heart" class="w-4 h-4 text-pink-500"></i></button>
+      </div>
+      <div class="p-4">
+        <p class="text-xs text-pink-500 font-semibold mb-1">FOREST ESSENTIALS</p>
+        <h3 class="text-sm font-semibold text-gray-800">Kumkumadi Night Oil</h3>
+        <div class="flex items-center gap-2 mt-2"><span class="text-lg font-black text-gray-900">₹1,495</span><span class="text-xs text-gray-400 line-through">₹1,875</span></div>
+        <button class="w-full mt-3 bg-pink-600 text-white text-sm font-bold py-2 rounded-xl hover:bg-pink-700 transition">Add to Bag</button>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm group cursor-pointer hover:shadow-md transition border border-pink-50">
+      <div class="relative overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=400&auto=format" class="w-full h-52 object-cover group-hover:scale-105 transition duration-500">
+        <div class="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">NATURAL</div>
+        <button class="absolute top-3 right-3 bg-white rounded-full p-1.5 shadow hover:bg-pink-50"><i data-lucide="heart" class="w-4 h-4 text-pink-500"></i></button>
+      </div>
+      <div class="p-4">
+        <p class="text-xs text-pink-500 font-semibold mb-1">THE ORDINARY</p>
+        <h3 class="text-sm font-semibold text-gray-800">Niacinamide 10% Serum</h3>
+        <div class="flex items-center gap-2 mt-2"><span class="text-lg font-black text-gray-900">₹649</span><span class="text-xs text-gray-400 line-through">₹799</span><span class="text-xs text-green-600 font-bold">19% off</span></div>
+        <button class="w-full mt-3 bg-pink-600 text-white text-sm font-bold py-2 rounded-xl hover:bg-pink-700 transition">Add to Bag</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

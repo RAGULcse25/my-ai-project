@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Quiz Game</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.4/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/lucide@1.7.1/dist/lucide.min.css" rel="stylesheet">
+</head>
+<body class="dark bg-gray-900 text-white">
+    <div class="max-w-md mx-auto p-4">
+        <!-- Header Section -->
+        <div id="header" class="flex justify-between mb-4">
+            <h1 class="text-3xl font-bold">Python Quiz Game</h1>
+            <button id="leaderboard-btn" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded">
+                <i class="fi fi-br-leaderboard"></i>
+            </button>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz" class="block">
+            <h2 class="text-2xl font-bold mb-4">Quiz Time!</h2>
+            <p id="question" class="text-lg mb-4"></p>
+            <form id="quiz-form">
+                <input type="radio" id="option1" name="option" value="option1" class="mr-2">
+                <label for="option1" id="option1-label" class="text-lg"></label>
+                <br>
+                <input type="radio" id="option2" name="option" value="option2" class="mr-2">
+                <label for="option2" id="option2-label" class="text-lg"></label>
+                <br>
+                <input type="radio" id="option3" name="option" value="option3" class="mr-2">
+                <label for="option3" id="option3-label" class="text-lg"></label>
+                <br>
+                <input type="radio" id="option4" name="option" value="option4" class="mr-2">
+                <label for="option4" id="option4-label" class="text-lg"></label>
+                <br>
+                <button id="submit-btn" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded">
+                    Submit
+                </button>
+            </form>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div id="leaderboard" class="hidden">
+            <h2 class="text-2xl font-bold mb-4">Leaderboard</h2>
+            <table class="w-full text-lg">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Rank</th>
+                        <th class="px-4 py-2">Name</th>
+                        <th class="px-4 py-2">Score</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Result Section -->
+        <div id="result" class="hidden">
+            <h2 class="text-2xl font-bold mb-4">Result</h2>
+            <p id="result-message" class="text-lg"></p>
+            <button id="play-again-btn" class="bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded">
+                Play Again
+            </button>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="fixed bottom-0 left-0 right-0 bg-gray-800 p-4 flex justify-between">
+            <button id="home-btn" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded">
+                <i class="fi fi-br-home"></i>
+            </button>
+            <button id="quiz-btn" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded">
+                <i class="fi fi-br-quiz"></i>
+            </button>
+            <button id="leaderboard-btn-mobile" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded">
+                <i class="fi fi-br-leaderboard"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide sections
+        document.getElementById('leaderboard-btn').addEventListener('click', () => {
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('leaderboard').classList.remove('hidden');
+        });
+
+        document.getElementById('leaderboard-btn-mobile').addEventListener('click', () => {
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('leaderboard').classList.remove('hidden');
+        });
+
+        document.getElementById('play-again-btn').addEventListener('click', () => {
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('quiz').classList.remove('hidden');
+        });
+
+        // Submit quiz form
+        document.getElementById('submit-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Send form data to server and get result
+            // For demonstration purposes, assume result is "Correct" or "Incorrect"
+            const result = 'Correct'; // Replace with actual result
+            document.getElementById('result-message').textContent = result;
+            document.getElementById('quiz').classList.add('hidden');
+            document.getElementById('result').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

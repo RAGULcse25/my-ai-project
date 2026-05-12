@@ -1,0 +1,44 @@
+# Quiz Game
+
+A simple quiz game built with Flask and SQLite.
+
+## Setup
+
+1. Install the required packages: `pip install -r requirements.txt`
+2. Create the database: `flask db init`
+3. Run the application: `flask run`
+
+## Features
+
+* User registration and login
+* Question and answer management
+* Score tracking and leaderboard
+
+## API Documentation
+
+### Login
+
+* URL: `/login`
+* Method: `POST`
+* Request Body: `{"username": "username", "password": "password"}`
+* Response: `{"access_token": "access_token"}`
+
+### Register
+
+* URL: `/register`
+* Method: `POST`
+* Request Body: `{"username": "username", "password": "password"}`
+* Response: `{"access_token": "access_token"}`
+
+### Questions
+
+* URL: `/questions`
+* Method: `GET`
+* Response: `[{"id": 1, "question": "question", "answer": "answer"}]`
+
+### Submit
+
+* URL: `/submit`
+* Method: `POST`
+* Request Body: `{"user_id": 1, "score": 10}`
+* Response: `{"message": "Score submitted successfully"}`

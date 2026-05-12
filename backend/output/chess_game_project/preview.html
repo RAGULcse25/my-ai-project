@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2f2f2f;
+            --secondary-color: #4f4f4f;
+            --highlight-color: #66d9ef;
+            --glow-color: #66d9ef;
+            --font-family: 'Montserrat', sans-serif;
+        }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--primary-color);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .chessboard {
+            width: 600px;
+            height: 600px;
+            border: 1px solid var(--secondary-color);
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+            gap: 1px;
+        }
+        .square {
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .square:hover {
+            background-color: var(--secondary-color);
+        }
+        .piece {
+            font-size: 36px;
+            color: var(--highlight-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+        .turn-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: var(--highlight-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+        .score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: var(--highlight-color);
+            text-shadow: 0 0 10px var(--glow-color);
+        }
+        .win-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            color: var(--highlight-color);
+            text-shadow: 0 0 10px var(--glow-color);
+            animation: glow 2s infinite;
+        }
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px var(--glow-color);
+            }
+            50% {
+                text-shadow: 0 0 20px var(--glow-color);
+            }
+            100% {
+                text-shadow: 0 0 10px var(--glow-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chessboard" id="chessboard"></div>
+        <div class="turn-indicator" id="turn-indicator"></div>
+        <div class="score" id="score"></div>
+        <div class="win-message" id="win-message" style="display: none;"></div>
+    </div>
+    <script>
+        let board = [];
+        let turn = 'white';
+        let score = { white: 0, black: 0 };
+        let pieces = {
+            'white': {
+                'king': '\u2654',
+                'queen': '\u2655',
+                'rook': '\u2656',
+                'bishop': '\u2657',
+                'knight': '\u2658',
+                'pawn': '\u2659'
+            },
+            'black': {
+                'king': '\u265A',
+                'queen': '\u265B',
+                'rook': '\u265C',
+                'bishop': '\u265D',
+                'knight': '\u265E',
+                'pawn': '\u265F'
+            }
+        };
+        let selectedPiece = null;
+        let possibleMoves = [];
+
+        function createBoard() {
+            for (let i = 0; i < 8; i++) {
+                board[i] = [];
+                for (let j = 0; j < 8; j++) {
+                    board[i][j] = null;
+                }
+            }
+            // Initialize pawns
+            for (let i = 0; i < 8; i++) {
+                board[1][i] = { color: 'white', type: 'pawn' };
+                board[6][i] = { color: 'black', type: 'pawn' };
+            }
+            // Initialize rooks
+            board[0][0] = { color: 'white', type: 'rook' };
+            board[0][7] = { color: 'white', type: 'rook' };
+            board[7][0] = { color: 'black', type: 'rook' };
+            board[7][7] = { color: 'black', type: 'rook' };
+            // Initialize knights
+            board[0][1] = { color: 'white', type: 'knight' };
+            board[0][6] = { color: 'white', type: 'knight' };
+            board[7][1] = { color: 'black', type: 'knight' };
+            board[7][6] = { color: 'black', type: 'knight' };
+            // Initialize bishops
+            board[0][2] = { color: 'white', type: 'bishop' };
+            board[0][5] = { color: 'white', type: 'bishop' };
+            board[7][2] = { color: 'black', type: 'bishop' };
+            board[7][5] = { color: 'black', type: 'bishop' };
+            // Initialize queens
+            board[0][3] = { color: 'white', type: 'queen' };
+            board[7][3] = { color: 'black', type: 'queen' };
+            // Initialize kings
+            board[0][4] = { color: 'white', type: 'king' };
+            board[7][4] = { color: 'black', type: 'king' };
+        }
+
+        function drawBoard() {
+            let chessboard = document.getElementById('chessboard');
+            chessboard.innerHTML = '';
+            for (let i = 0; i < 8; i++) {
+                for (let j = 0; j < 8; j++) {
+                    let square = document.createElement('div');
+                    square.classList.add('square');
+                    square.dataset.row = i;
+                    square.dataset.col = j;
+                    if ((i + j) % 2 === 1) {
+                        square.style.background = '#3f3f3f';
+                    }
+                    if (board[i][j] !== null) {
+                        let piece = document.createElement('div');
+                        piece.classList.add('piece');
+                        piece.textContent = pieces[board[i][j].color][board[i][j].type];
+                        square.appendChild(piece);
+                    }
+                    chessboard.appendChild(square);
+                }
+            }
+        }
+
+        function getPossibleMoves(row, col) {
+            let piece = board[row][col];
+            let moves = [];
+            if (piece.type === 'pawn') {
+                if (piece.color === 'white') {
+                    if (row > 0 && board[row - 1][col] === null) {
+                        moves.push([row - 1, col]);
+                    }
+                    if (row === 1 && board[row - 1][col] === null && board[row - 2][col] === null) {
+                        moves.push([row - 2, col]);
+                    }
+                    if (row > 0 && col > 0 && board[row - 1][col - 1] !== null && board[row - 1][col - 1].color === 'black') {
+                        moves.push([row - 1, col - 1]);
+                    }
+                    if (row > 0 && col < 7 && board[row - 1][col + 1] !== null && board[row - 1][col + 1].color === 'black') {
+                        moves.push([row - 1, col + 1]);
+                    }
+                } else {
+                    if (row < 7 && board[row + 1][col] === null) {
+                        moves.push([row + 1, col]);
+                    }
+                    if (row === 6 && board[row + 1][col] === null && board[row + 2][col] === null) {
+                        moves.push([row + 2, col]);
+                    }
+                    if (row < 7 && col > 0 && board[row + 1][col - 1] !== null && board[row + 1][col - 1].color === 'white') {
+                        moves.push([row + 1, col - 1]);
+                    }
+                    if (row < 7 && col < 7 && board[row + 1][col + 1] !== null && board[row + 1][col + 1].color === 'white') {
+                        moves.push([row + 1, col + 1]);
+                    }
+                }
+            } else if (piece.type === 'knight') {
+                let directions = [[-2, -1], [-2, 1], [-1, -2], [-1, 2], [1, -2], [1, 2], [2, -1], [2, 1]];
+                for (let direction of directions) {
+                    let newRow = row + direction[0];
+                    let newCol = col + direction[1];
+                    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] === null || board[newRow][newCol].color !== piece.color) {
+                            moves.push([newRow, newCol]);
+                        }
+                    }
+                }
+            } else if (piece.type === 'bishop') {
+                let directions = [[-1, -1], [-1, 1], [1, -1], [1, 1]];
+                for (let direction of directions) {
+                    let newRow = row + direction[0];
+                    let newCol = col + direction[1];
+                    while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] === null) {
+                            moves.push([newRow, newCol]);
+                            newRow += direction[0];
+                            newCol += direction[1];
+                        } else if (board[newRow][newCol].color !== piece.color) {
+                            moves.push([newRow, newCol]);
+                            break;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else if (piece.type === 'rook') {
+                let directions = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+                for (let direction of directions) {
+                    let newRow = row + direction[0];
+                    let newCol = col + direction[1];
+                    while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] === null) {
+                            moves.push([newRow, newCol]);
+                            newRow += direction[0];
+                            newCol += direction[1];
+                        } else if (board[newRow][newCol].color !== piece.color) {
+                            moves.push([newRow, newCol]);
+                            break;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else if (piece.type === 'queen') {
+                let directions = [[-1, -1], [-1, 1], [1, -1], [1, 1], [-1, 0], [1, 0], [0, -1], [0, 1]];
+                for (let direction of directions) {
+                    let newRow = row + direction[0];
+                    let newCol = col + direction[1];
+                    while (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] === null) {
+                            moves.push([newRow, newCol]);
+                            newRow += direction[0];
+                            newCol += direction[1];
+                        } else if (board[newRow][newCol].color !== piece.color) {
+                            moves.push([newRow, newCol]);
+                            break;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else if (piece.type === 'king') {
+                let directions = [[-1, -1], [-1, 1], [1, -1], [1, 1], [-1, 0], [1, 0], [0, -1], [0, 1]];
+                for (let direction of directions) {
+                    let newRow = row + direction[0];
+                    let newCol = col + direction[1];
+                    if (newRow >= 0 && newRow < 8 && newCol >= 0 && newCol < 8) {
+                        if (board[newRow][newCol] === null || board[newRow][newCol].color !== piece.color) {
+                            moves.push([newRow, newCol]);
+                        }
+                    }
+                }
+            }
+            return moves;
+        }
+
+        function handleSquareClick(event) {
+            let row = parseInt(event.target.dataset.row);
+            let col = parseInt(event.target.dataset.col);
+            if (selectedPiece === null) {
+                if (board[row][col] !== null && board[row][col].color === turn) {
+                    selectedPiece = [row, col];
+                    possibleMoves = getPossibleMoves(row, col);
+                    event.target.style.background = 'rgba(102, 217, 239, 0.5)';
+                }
+            } else {
+                if (possibleMoves.includes([row, col])) {
+                    board[row][col] = board[selectedPiece[0]][selectedPiece[1]];
+                    board[selectedPiece[0]][selectedPiece[1]] = null;
+                    if (board[row][col].type === 'king') {
+                        if (turn === 'white') {
+                            score.white++;
+                        } else {
+                            score.black++;
+                        }
+                        document.getElementById('win-message').style.display = 'block';
+                        document.getElementById('win-message').textContent = turn === 'white' ? 'Black wins!' : 'White wins!';
+                        setTimeout(() => {
+                            document.getElementById('win-message').style.display = 'none';
+                            createBoard();
+                            drawBoard();
+                            turn = turn === 'white' ? 'black' : 'white';
+                        }, 2000);
+                    }
+                    turn = turn === 'white' ? 'black' : 'white';
+                    selectedPiece = null;
+                    possibleMoves = [];
+                    drawBoard();
+                } else {
+                    selectedPiece = null;
+                    possibleMoves = [];
+                    drawBoard();
+                }
+            }
+        }
+
+        function init() {
+            createBoard();
+            drawBoard();
+            document.getElementById('turn-indicator').textContent = 'Turn: White';
+            document.getElementById('score').textContent = 'Score: 0 - 0';
+            let squares = document.getElementsByClassName('square');
+            for (let square of squares) {
+                square.addEventListener('click', handleSquareClick);
+            }
+        }
+
+        init();
+    </script>
+</body>
+</html>

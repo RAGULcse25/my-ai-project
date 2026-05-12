@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Tech Blog</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{background-color:#111;color:#eee;font-family:sans-serif;}
+.glass-panel{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);padding:24px;}
+</style>
+</head>
+<body>
+<nav class="p-6 border-b border-white/10 flex justify-between items-center max-w-5xl mx-auto">
+  <div class="font-bold text-2xl tracking-tighter flex items-center gap-2"><i data-lucide="terminal" class="text-blue-400"></i> DevLog</div>
+  <div class="flex gap-6 text-sm text-gray-400"><a href="#" class="hover:text-white">Articles</a><a href="#" class="hover:text-white">Tutorials</a><a href="#" class="text-blue-400">Subscribe</a></div>
+</nav>
+<main class="max-w-5xl mx-auto py-12 px-6">
+  <h1 class="text-5xl font-bold mb-12 border-l-4 border-blue-500 pl-4">Latest Insights</h1>
+  <div class="grid md:grid-cols-2 gap-8">
+    <article class="glass-panel hover:-translate-y-1 transition duration-300">
+      <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800" class="w-full h-48 object-cover mb-4">
+      <div class="text-blue-400 text-xs font-bold mb-2 uppercase">Engineering . 5 min read</div>
+      <h2 class="text-2xl font-bold mb-3">Understanding the Vector Database hype</h2>
+      <p class="text-gray-400 text-sm mb-4">Why everyone is suddenly talking about vector embeddings and how to implement them.</p>
+      <a href="#" class="text-sm font-semibold underline decoration-blue-500 underline-offset-4">Read Full Article &rarr;</a>
+    </article>
+    <article class="glass-panel hover:-translate-y-1 transition duration-300">
+      <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800" class="w-full h-48 object-cover mb-4">
+      <div class="text-blue-400 text-xs font-bold mb-2 uppercase">Security . 8 min read</div>
+      <h2 class="text-2xl font-bold mb-3">Securing your API endpoints in 2026</h2>
+      <p class="text-gray-400 text-sm mb-4">Best practices for JWT, rate limiting, and avoiding modern OWASP top 10 vulnerabilities.</p>
+      <a href="#" class="text-sm font-semibold underline decoration-blue-500 underline-offset-4">Read Full Article &rarr;</a>
+    </article>
+  </div>
+</main>
+<script>lucide.createIcons();</script>
+</body>
+</html>

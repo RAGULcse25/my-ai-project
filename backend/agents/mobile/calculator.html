@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Calculator</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background-color:#1c1c1e;color:#fff;}
+.btn{display:flex;align-items:center;justify-content:center;font-size:24px;border-radius:50%;height:70px;width:70px;cursor:pointer;transition:0.2s;user-select:none;}
+.btn:active{opacity:0.6;}
+.btn-num{background-color:#505050;} .btn-op{background-color:#ff9f0a;} .btn-func{background-color:#d4d4d2;color:#000;}
+</style>
+</head>
+<body class="flex flex-col h-full px-5 pb-8">
+<div class="flex-1 flex flex-col justify-end pb-4">
+  <div class="text-right text-gray-400 text-2xl h-8 mb-2" id="history"></div>
+  <div class="text-right text-6xl font-light" id="display">0</div>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-auto">
+  <div class="btn btn-func" onclick="clr()">AC</div><div class="btn btn-func" onclick="sign()">±</div><div class="btn btn-func" onclick="pct()">%</div><div class="btn btn-op" onclick="op('/')">÷</div>
+  <div class="btn btn-num" onclick="num(7)">7</div><div class="btn btn-num" onclick="num(8)">8</div><div class="btn btn-num" onclick="num(9)">9</div><div class="btn btn-op" onclick="op('*')">×</div>
+  <div class="btn btn-num" onclick="num(4)">4</div><div class="btn btn-num" onclick="num(5)">5</div><div class="btn btn-num" onclick="num(6)">6</div><div class="btn btn-op" onclick="op('-')">−</div>
+  <div class="btn btn-num" onclick="num(1)">1</div><div class="btn btn-num" onclick="num(2)">2</div><div class="btn btn-num" onclick="num(3)">3</div><div class="btn btn-op" onclick="op('+')">+</div>
+  <div class="btn btn-num col-span-2 w-full rounded-full justify-start pl-8" onclick="num(0)">0</div><div class="btn btn-num" onclick="dot()">.</div><div class="btn btn-op" onclick="calc()">=</div>
+</div>
+<script>
+let disp="0", hist="", currentOp=null, prevVal=null, reset=false;
+const dEl=document.getElementById('display');
+const hEl=document.getElementById('history');
+function up(){dEl.innerText=disp;hEl.innerText=hist;}
+function num(n){if(disp==="0"||reset){disp=""+n;reset=false;}else{disp+=n;}up();}
+function dot(){if(!disp.includes(".")){disp+=".";}up();}
+function clr(){disp="0";hist="";prevVal=null;currentOp=null;up();}
+function sign(){disp=disp.startsWith("-")?disp.slice(1):"-"+disp;up();}
+function pct(){disp=String(parseFloat(disp)/100);up();}
+function op(o){
+  if(currentOp && !reset) calc();
+  prevVal=parseFloat(disp);currentOp=o;reset=true;
+  hist=prevVal + " " + (o==='/'?'÷':o==='*'?'×':o==='-'?'−':'+');up();
+}
+function calc(){
+  if(!currentOp || prevVal===null)return;
+  const curr=parseFloat(disp);let res=0;
+  if(currentOp==='+')res=prevVal+curr;
+  if(currentOp==='-')res=prevVal-curr;
+  if(currentOp==='*')res=prevVal*curr;
+  if(currentOp==='/')res=prevVal/curr;
+  hist+= " " + curr + " =";disp=String(res);
+  currentOp=null;prevVal=null;reset=true;up();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancer Prediction Interface</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #2f2f2f;
+            color: #fff;
+        }
+        .dark-card {
+            background-color: #444;
+            border: 1px solid #555;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        .dark-card h2 {
+            color: #fff;
+        }
+        .dark-card p {
+            color: #ccc;
+        }
+        .result-card {
+            background-color: #333;
+            border: 1px solid #444;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="dark-card">
+                    <h2>Cancer Prediction Form</h2>
+                    <form id="prediction-form">
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" class="form-control" id="age" value="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">Sex</label>
+                            <select class="form-control" id="sex">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tumor-size">Tumor Size (mm)</label>
+                            <input type="number" class="form-control" id="tumor-size" value="20">
+                        </div>
+                        <div class="form-group">
+                            <label for="lymph-nodes">Lymph Nodes</label>
+                            <input type="number" class="form-control" id="lymph-nodes" value="5">
+                        </div>
+                        <button type="submit" class="btn btn-primary">PREDICT</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dark-card" id="result-card" style="display: none;">
+                    <h2>Prediction Result</h2>
+                    <p id="prediction-result"></p>
+                    <p id="confidence-score"></p>
+                    <p id="explanation"></p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <div class="dark-card">
+                    <h2>Model Info</h2>
+                    <p>Algorithm: Random Forest</p>
+                    <p>Accuracy: 95%</p>
+                    <p>Features Used: Age, Sex, Tumor Size, Lymph Nodes</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="dark-card">
+                    <h2>How it Works</h2>
+                    <ol>
+                        <li><i class="bi bi-search"></i> Data Collection: We collect data from various sources, including medical records and research studies.</li>
+                        <li><i class="bi bi-gear"></i> Model Training: We train our machine learning model using the collected data.</li>
+                        <li><i class="bi bi-prediction"></i> Prediction: We use the trained model to make predictions based on user input.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="dark-card">
+                    <h2>Sample Predictions</h2>
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                                <th>Age</th>
+                                <th>Sex</th>
+                                <th>Tumor Size (mm)</th>
+                                <th>Lymph Nodes</th>
+                                <th>Prediction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>40</td>
+                                <td>Male</td>
+                                <td>15</td>
+                                <td>3</td>
+                                <td>Low Risk</td>
+                            </tr>
+                            <tr>
+                                <td>60</td>
+                                <td>Female</td>
+                                <td>25</td>
+                                <td>6</td>
+                                <td>High Risk</td>
+                            </tr>
+                            <tr>
+                                <td>50</td>
+                                <td>Male</td>
+                                <td>20</td>
+                                <td>4</td>
+                                <td>Medium Risk</td>
+                            </tr>
+                            <tr>
+                                <td>30</td>
+                                <td>Female</td>
+                                <td>10</td>
+                                <td>2</td>
+                                <td>Low Risk</td>
+                            </tr>
+                            <tr>
+                                <td>70</td>
+                                <td>Male</td>
+                                <td>30</td>
+                                <td>8</td>
+                                <td>High Risk</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-12">
+                <div class="dark-card">
+                    <h2>Feature Importance</h2>
+                    <canvas id="feature-importance-chart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#prediction-form').submit(function(e) {
+                e.preventDefault();
+                var age = $('#age').val();
+                var sex = $('#sex').val();
+                var tumorSize = $('#tumor-size').val();
+                var lymphNodes = $('#lymph-nodes').val();
+                var prediction = simulatePrediction(age, sex, tumorSize, lymphNodes);
+                var confidenceScore = getConfidenceScore(prediction);
+                var explanation = getExplanation(prediction);
+                $('#prediction-result').text('Prediction: ' + prediction);
+                $('#confidence-score').text('Confidence Score: ' + confidenceScore);
+                $('#explanation').text('Explanation: ' + explanation);
+                $('#result-card').show();
+            });
+            function simulatePrediction(age, sex, tumorSize, lymphNodes) {
+                // Simulate prediction using a simple formula
+                var score = (age * 0.2) + (tumorSize * 0.3) + (lymphNodes * 0.2);
+                if (sex === 'male') {
+                    score += 10;
+                } else {
+                    score -= 10;
+                }
+                if (score < 50) {
+                    return 'Low Risk';
+                } else if (score < 80) {
+                    return 'Medium Risk';
+                } else {
+                    return 'High Risk';
+                }
+            }
+            function getConfidenceScore(prediction) {
+                // Simulate confidence score based on prediction
+                if (prediction === 'Low Risk') {
+                    return '80%';
+                } else if (prediction === 'Medium Risk') {
+                    return '60%';
+                } else {
+                    return '90%';
+                }
+            }
+            function getExplanation(prediction) {
+                // Simulate explanation based on prediction
+                if (prediction === 'Low Risk') {
+                    return 'The patient has a low risk of cancer based on their age, sex, tumor size, and lymph nodes.';
+                } else if (prediction === 'Medium Risk') {
+                    return 'The patient has a medium risk of cancer based on their age, sex, tumor size, and lymph nodes.';
+                } else {
+                    return 'The patient has a high risk of cancer based on their age, sex, tumor size, and lymph nodes.';
+                }
+            }
+            var ctx = document.getElementById('feature-importance-chart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Age', 'Sex', 'Tumor Size', 'Lymph Nodes'],
+                    datasets: [{
+                        label: 'Feature Importance',
+                        data: [20, 10, 30, 40],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

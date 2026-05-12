@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>🔫 Shooter — S.E.A.D.S.</title>
+<style>
+body{margin:0;overflow:hidden;background:#000;}
+canvas{display:block;}
+#ui{position:absolute;top:20px;left:20px;color:#fff;font-family:sans-serif;font-size:24px;font-weight:bold;text-shadow:0 0 5px #000;}
+</style>
+</head>
+<body>
+<div id="ui">Score: <span id="score">0</span></div>
+<canvas id="cvs"></canvas>
+<script>
+const cvs=document.getElementById('cvs');const ctx=cvs.getContext('2d');
+cvs.width=window.innerWidth;cvs.height=window.innerHeight;
+const player={x:cvs.width/2,y:cvs.height/2,radius:20,color:'#4ECDE6'};
+const bullets=[];const enemies=[];let score=0; let frames=0;
+
+window.addEventListener('click', e=>{
+  const angle = Math.atan2(e.clientY-player.y, e.clientX-player.x);
+  bullets.push({x:player.x,y:player.y,vx:Math.cos(angle)*10,vy:Math.sin(angle)*10,r:5});
+});
+
+window.addEventListener('mousemove', e=>{ player.x=e.clientX; player.y=e.clientY; });
+
+function loop(){
+  ctx.fillStyle='rgba(0,0,0,0.3)';ctx.fillRect(0,0,cvs.width,cvs.height);
+  
+  // draw player
+  ctx.beginPath();ctx.arc(player.x,player.y,player.radius,0,Math.PI*2);ctx.fillStyle=player.color;ctx.fill();
+  
+  // bullets
+  bullets.forEach((b,i)=>{
+    b.x+=b.vx; b.y+=b.vy;
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fillStyle='#FF6B9D';ctx.fill();
+    if(b.x<0||b.x>cvs.width||b.y<0||b.y>cvs.height) bullets.splice(i,1);
+  });
+
+  // enemies
+  if(frames%60===0){
+    let ex=Math.random()*cvs.width, ey=Math.random()*cvs.height;
+    if(Math.random()<0.5) ex=Math.random()<0.5?0:cvs.width; else ey=Math.random()<0.5?0:cvs.height;
+    const angle = Math.atan2(player.y-ey, player.x-ex);
+    enemies.push({x:ex,y:ey,vx:Math.cos(angle)*2,vy:Math.sin(angle)*2,r:15});
+  }
+
+  enemies.forEach((en,i)=>{
+    en.x+=en.vx; en.y+=en.vy;
+    ctx.beginPath();ctx.arc(en.x,en.y,en.r,0,Math.PI*2);ctx.fillStyle='#61d345';ctx.fill();
+    
+    // collision with bullet
+    bullets.forEach((b,bi)=>{
+      const dist=Math.hypot(b.x-en.x, b.y-en.y);
+      if(dist < b.r + en.r){
+        enemies.splice(i,1); bullets.splice(bi,1); score++;
+        document.getElementById('score').innerText=score;
+      }
+    });
+  });
+
+  frames++;
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Canva Clone</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-[#F3F4F6] flex flex-col h-screen font-sans overflow-hidden">
+  <nav class="bg-gradient-to-r from-teal-500 to-blue-600 text-white h-14 flex items-center justify-between px-4 shadow-md z-20">
+    <div class="font-bold tracking-tight">DesignSpace</div>
+    <div class="flex gap-4 items-center">
+      <span class="text-xs bg-white/20 px-2 py-1 rounded">1080 x 1080 px</span>
+      <button class="bg-white text-blue-600 px-4 py-1.5 rounded text-sm font-bold shadow hover:bg-gray-50 transition">Share</button>
+      <button class="bg-teal-700 text-white px-4 py-1.5 rounded text-sm font-bold shadow hover:bg-teal-800 transition">Download</button>
+    </div>
+  </nav>
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Left Narrow Bar -->
+    <div class="w-20 bg-[#0E1318] flex flex-col items-center py-4 gap-6 text-gray-400 border-r border-gray-800 z-10 shadow-2xl">
+      <div class="flex flex-col items-center gap-1 cursor-pointer hover:text-white transition"><i data-lucide="layout-template" class="w-6 h-6"></i><span class="text-[10px]">Design</span></div>
+      <div class="flex flex-col items-center gap-1 cursor-pointer hover:text-white transition"><i data-lucide="shapes" class="w-6 h-6"></i><span class="text-[10px]">Elements</span></div>
+      <div class="flex flex-col items-center gap-1 cursor-pointer hover:text-white transition text-teal-400"><i data-lucide="upload-cloud" class="w-6 h-6"></i><span class="text-[10px]">Uploads</span></div>
+      <div class="flex flex-col items-center gap-1 cursor-pointer hover:text-white transition"><i data-lucide="type" class="w-6 h-6"></i><span class="text-[10px]">Text</span></div>
+    </div>
+    
+    <!-- Uploads Panel -->
+    <div class="w-72 bg-white border-r shadow-sm flex flex-col z-10">
+      <div class="p-4 border-b"><button class="w-full bg-teal-500 text-white font-bold py-2 rounded shadow hover:bg-teal-600 transition">Upload files</button></div>
+      <div class="flex-1 p-4 overflow-y-auto grid grid-cols-2 gap-2 content-start">
+        <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=400" class="w-full h-24 object-cover rounded shadow-sm border border-transparent hover:border-teal-500 cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400" class="w-full h-24 object-cover rounded shadow-sm border border-transparent hover:border-teal-500 cursor-pointer">
+        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400" class="w-full h-24 object-cover rounded shadow-sm border border-transparent hover:border-teal-500 cursor-pointer">
+      </div>
+    </div>
+
+    <!-- Canvas Workspace -->
+    <div class="flex-1 bg-gray-100 flex items-center justify-center p-8 relative">
+      <!-- Toolbar -->
+      <div class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-lg shadow-md flex gap-4 text-gray-600">
+        <button class="hover:text-teal-600" title="Delete"><i data-lucide="trash-2" class="w-5 h-5"></i></button>
+        <button class="hover:text-teal-600" title="Duplicate"><i data-lucide="copy" class="w-5 h-5"></i></button>
+        <div class="w-px bg-gray-300"></div>
+        <button class="hover:text-teal-600" title="Bring Forward"><i data-lucide="layer-forward" class="w-5 h-5"></i></button>
+        <button class="hover:text-teal-600" title="Send Backward"><i data-lucide="layer-backward" class="w-5 h-5"></i></button>
+      </div>
+      
+      <!-- Box/Canvas -->
+      <div class="w-[500px] h-[500px] bg-white shadow-2xl relative overflow-hidden group">
+        <!-- Background -->
+        <div class="absolute inset-0 bg-[#F4F1DE]"></div>
+        
+        <!-- Editable Element with border on hover -->
+        <div class="absolute top-10 left-10 w-64 h-80 cursor-move group/item">
+          <div class="absolute inset-0 border-2 border-teal-500 hidden group-hover/item:block pointer-events-none"></div>
+          <img src="https://images.unsplash.com/photo-1542204165-65bf26472b9b?w=600" class="w-full h-full object-cover">
+          <!-- Resize handles -->
+          <div class="absolute -top-1 -left-1 w-3 h-3 bg-white border border-teal-500 hidden group-hover/item:block"></div>
+          <div class="absolute -top-1 -right-1 w-3 h-3 bg-white border border-teal-500 hidden group-hover/item:block"></div>
+          <div class="absolute -bottom-1 -left-1 w-3 h-3 bg-white border border-teal-500 hidden group-hover/item:block"></div>
+          <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-white border border-teal-500 hidden group-hover/item:block"></div>
+        </div>
+        
+        <!-- Editable Text -->
+        <div class="absolute bottom-20 right-10 text-right cursor-move group/text">
+          <div class="absolute inset-0 border-2 border-teal-500 -inset-2 hidden group-hover/text:block pointer-events-none"></div>
+          <h2 class="text-5xl font-black text-[#3D405B] tracking-tighter" style="font-family:serif;">Minimal</h2>
+          <h2 class="text-5xl font-black text-[#E07A5F] tracking-tighter" style="font-family:serif;">Style.</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

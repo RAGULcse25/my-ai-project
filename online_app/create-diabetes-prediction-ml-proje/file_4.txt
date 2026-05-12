@@ -1,0 +1,22 @@
+# Diabetes Prediction Project
+
+This project uses a Random Forest classifier and an SVM model to predict the likelihood of diabetes based on various input features.
+
+## Setup
+
+1. Install the required dependencies by running `pip install -r requirements.txt`
+2. Train the models by running `python train_model.py`
+3. Start the FastAPI server by running `uvicorn predict:app --host 0.0.0.0 --port 8000`
+4. Open a web browser and navigate to `http://localhost:8000` to access the prediction form
+
+## Training the Models
+
+The `train_model.py` script generates a synthetic dataset, preprocesses the data, trains the Random Forest and SVM models, and saves the models to disk.
+
+## Making Predictions
+
+The `predict.py` script defines a FastAPI endpoint that accepts a JSON payload with the input features and returns a JSON response with the predicted likelihood of diabetes.
+
+## Prediction Form
+
+The `index.html` file contains a prediction form that sends a POST request to the `/predict` endpoint with the input features. The form displays the predicted likelihood of diabetes and a feature importance chart.

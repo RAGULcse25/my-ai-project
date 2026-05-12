@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048 Game</title>
+    <link rel="stylesheet" href="https://unpkg.com/lucide@latest/dist/umd/lucide.min.css">
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #6C63FF;
+            --secondary-color: #FF6B9D;
+            --background-color: #070B14;
+            --text-color: #FFFFFF;
+            --glassmorphism-color: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Glassmorphism Styles */
+        .glassmorphism {
+            backdrop-filter: blur(20px);
+            background: var(--glassmorphism-color);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        /* Game Board Styles */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+            width: 400px;
+            height: 400px;
+            margin: 40px auto;
+        }
+
+        .game-board .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--text-color);
+            background-color: var(--glassmorphism-color);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        /* Start Menu Styles */
+        .start-menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .start-menu button {
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .start-menu button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Pause Menu Styles */
+        .pause-menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .pause-menu button {
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .pause-menu button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Game Over Screen Styles */
+        .game-over-screen {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .game-over-screen button {
+            padding: 10px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-color);
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .game-over-screen button:hover {
+            background-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="start-menu">
+        <button id="start-button">Start Game</button>
+    </div>
+    <div class="game-board" id="game-board">
+        <!-- Game board cells will be generated dynamically -->
+    </div>
+    <div class="pause-menu" id="pause-menu" style="display: none;">
+        <button id="resume-button">Resume Game</button>
+        <button id="restart-button">Restart Game</button>
+    </div>
+    <div class="game-over-screen" id="game-over-screen" style="display: none;">
+        <h1>Game Over!</h1>
+        <button id="play-again-button">Play Again</button>
+    </div>
+
+    <script>
+        // Get the game board and cells
+        const gameBoard = document.getElementById('game-board');
+        const cells = [];
+
+        // Initialize the game board
+        for (let i = 0; i < 16; i++) {
+            const cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.textContent = '';
+            gameBoard.appendChild(cell);
+            cells.push(cell);
+        }
+
+        // Initialize the game state
+        let gameState = {
+            score: 0,
+            tiles: [],
+            gameOver: false,
+        };
+
+        // Function to generate a new tile
+        function generateTile() {
+            const emptyCells = cells.filter((cell) => cell.textContent === '');
+            const randomIndex = Math.floor(Math.random() * emptyCells.length);
+            const randomCell = emptyCells[randomIndex];
+            randomCell.textContent = Math.random() < 0.9 ? '2' : '4';
+            gameState.tiles.push({ value: parseInt(randomCell.textContent), cell: randomCell });
+        }
+
+        // Function to move tiles
+        function moveTiles(direction) {
+            const newTiles = [];
+            const mergedTiles = [];
+
+            // Move tiles up
+            if (direction === 'up') {
+                for (let i = 0; i < 4; i++) {
+                    const column = [];
+                    for (let j = 0; j < 4; j++) {
+                        const cell = cells[j * 4 + i];
+                        if (cell.textContent !== '') {
+                            column.push(parseInt(cell.textContent));
+                        }
+                    }
+                    const mergedColumn = mergeTiles(column);
+                    for (let j = 0; j < 4; j++) {
+                        const cell = cells[j * 4 + i];
+                        if (j < mergedColumn.length) {
+                            cell.textContent = mergedColumn[j].toString();
+                            newTiles.push({ value: mergedColumn[j], cell });
+                        } else {
+                            cell.textContent = '';
+                        }
+                    }
+                }
+            }
+
+            // Move tiles down
+            else if (direction === 'down') {
+                for (let i = 0; i < 4; i++) {
+                    const column = [];
+                    for (let j = 3; j >= 0; j--) {
+                        const cell = cells[j * 4 + i];
+                        if (cell.textContent !== '') {
+                            column.push(parseInt(cell.textContent));
+                        }
+                    }
+                    const mergedColumn = mergeTiles(column);
+                    for (let j = 0; j < 4; j++) {
+                        const cell = cells[(3 - j) * 4 + i];
+                        if (j < mergedColumn.length) {
+                            cell.textContent = mergedColumn[j].toString();
+                            newTiles.push({ value: mergedColumn[j], cell });
+                        } else {
+                            cell.textContent = '';
+                        }
+                    }
+                }
+            }
+
+            // Move tiles left
+            else if (direction === 'left') {
+                for (let i = 0; i < 4; i++) {
+                    const row = [];
+                    for (let j = 0; j < 4; j++) {
+                        const cell = cells[i * 4 + j];
+                        if (cell.textContent !== '') {
+                            row.push(parseInt(cell.textContent));
+                        }
+                    }
+                    const mergedRow = mergeTiles(row);
+                    for (let j = 0; j < 4; j++) {
+                        const cell = cells[i * 4 + j];
+                        if (j < mergedRow.length) {
+                            cell.textContent = mergedRow[j].toString();
+                            newTiles.push({ value: mergedRow[j], cell });
+                        } else {
+                            cell.textContent = '';
+                        }
+                    }
+                }
+            }
+
+            // Move tiles right
+            else if (direction === 'right') {
+                for (let i = 0; i < 4; i++) {
+                    const row = [];
+                    for (let j = 3; j >= 0; j--) {
+                        const cell = cells[i * 4 + j];
+                        if (cell.textContent !== '') {
+                            row.push(parseInt(cell.textContent));
+                        }
+                    }
+                    const mergedRow = mergeTiles(row);
+                    for (let j = 0; j < 4; j++) {
+                        const cell = cells[i * 4 + (3 - j)];
+                        if (j < mergedRow.length) {
+                            cell.textContent = mergedRow[j].toString();
+                            newTiles.push({ value: mergedRow[j], cell });
+                        } else {
+                            cell.textContent = '';
+                        }
+                    }
+                }
+            }
+
+            // Update the game state
+            gameState.tiles = newTiles;
+            gameState.score = calculateScore();
+            checkGameOver();
+        }
+
+        // Function to merge tiles
+        function mergeTiles(tiles) {
+            const mergedTiles = [];
+            let i = 0;
+            while (i < tiles.length) {
+                if (i + 1 < tiles.length && tiles[i] === tiles[i + 1]) {
+                    mergedTiles.push(tiles[i] * 2);
+                    i += 2;
+                } else {
+                    mergedTiles.push(tiles[i]);
+                    i++;
+                }
+            }
+            return mergedTiles;
+        }
+
+        // Function to calculate the score
+        function calculateScore() {
+            let score = 0;
+            for (const tile of gameState.tiles) {
+                score += tile.value;
+            }
+            return score;
+        }
+
+        // Function to check if the game is over
+        function checkGameOver() {
+            if (gameState.tiles.length === 16) {
+                for (let i = 0; i < 16; i++) {
+                    const cell = cells[i];
+                    if (cell.textContent === '') {
+                        return;
+                    }
+                }
+                gameState.gameOver = true;
+            }
+        }
+
+        // Function to handle key presses
+        function handleKeyPress(event) {
+            if (event.key === 'ArrowUp') {
+                moveTiles('up');
+            } else if (event.key === 'ArrowDown') {
+                moveTiles('down');
+            } else if (event.key === 'ArrowLeft') {
+                moveTiles('left');
+            } else if (event.key === 'ArrowRight') {
+                moveTiles('right');
+            }
+        }
+
+        // Function to handle start button click
+        function handleStartButtonClick() {
+            generateTile();
+            generateTile();
+            document.addEventListener('keydown', handleKeyPress);
+            document.getElementById('start-menu').style.display = 'none';
+        }
+
+        // Function to handle resume button click
+        function handleResumeButtonClick() {
+            document.getElementById('pause-menu').style.display = 'none';
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // Function to handle restart button click
+        function handleRestartButtonClick() {
+            gameState = {
+                score: 0,
+                tiles: [],
+                gameOver: false,
+            };
+            for (const cell of cells) {
+                cell.textContent = '';
+            }
+            generateTile();
+            generateTile();
+            document.getElementById('pause-menu').style.display = 'none';
+            document.getElementById('game-over-screen').style.display = 'none';
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // Function to handle play again button click
+        function handlePlayAgainButtonClick() {
+            gameState = {
+                score: 0,
+                tiles: [],
+                gameOver: false,
+            };
+            for (const cell of cells) {
+                cell.textContent = '';
+            }
+            generateTile();
+            generateTile();
+            document.getElementById('game-over-screen').style.display = 'none';
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        // Add event listeners
+        document.getElementById('start-button').addEventListener('click', handleStartButtonClick);
+        document.getElementById('resume-button').addEventListener('click', handleResumeButtonClick);
+        document.getElementById('restart-button').addEventListener('click', handleRestartButtonClick);
+        document.getElementById('play-again-button').addEventListener('click', handlePlayAgainButtonClick);
+
+        // Generate a new tile every 100ms
+        setInterval(() => {
+            if (gameState.tiles.length < 16) {
+                generateTile();
+            }
+        }, 100);
+
+        // Update the game state every 100ms
+        setInterval(() => {
+            if (gameState.gameOver) {
+                document.getElementById('game-over-screen').style.display = 'block';
+                document.removeEventListener('keydown', handleKeyPress);
+            }
+        }, 100);
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Banner Maker</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen font-sans">
+  <nav class="bg-white px-6 py-4 border-b flex justify-between items-center shadow-sm">
+    <div class="font-bold text-xl flex items-center gap-2"><i data-lucide="layout" class="text-indigo-600"></i> BannerForge</div>
+    <div class="flex gap-4">
+      <select class="border rounded p-2 text-sm"><option>LinkedIn Banner</option><option>Twitter Header</option></select>
+      <button class="bg-indigo-600 text-white px-6 py-2 rounded font-bold shadow-md hover:bg-indigo-700">Download PNG</button>
+    </div>
+  </nav>
+  <div class="flex-1 flex overflow-hidden">
+    <!-- Left Sidebar -->
+    <div class="w-80 bg-white border-r overflow-y-auto p-4 flex flex-col gap-4">
+      <h3 class="font-bold text-gray-500 text-sm mb-2">TEMPLATES</h3>
+      <div class="bg-gray-100 h-24 rounded border-2 border-indigo-500 flex items-center justify-center font-bold text-gray-500">Corporate Blue</div>
+      <div class="bg-gray-100 h-24 rounded border border-gray-200 flex items-center justify-center font-bold text-gray-400 hover:border-indigo-400 cursor-pointer transition">Creative Pink</div>
+      <div class="bg-gray-100 h-24 rounded border border-gray-200 flex items-center justify-center font-bold text-gray-400 hover:border-indigo-400 cursor-pointer transition">Minimal Dark</div>
+      
+      <h3 class="font-bold text-gray-500 text-sm mt-4 mb-2">TEXT OVERLAY</h3>
+      <input type="text" value="Innovating the Future" class="w-full border p-2 rounded focus:outline-none focus:border-indigo-500 mb-2">
+      <input type="text" value="Learn about our AI solutions &rarr;" class="w-full border p-2 rounded focus:outline-none focus:border-indigo-500 text-sm text-gray-600">
+    </div>
+    
+    <!-- Canvas Area -->
+    <div class="flex-1 bg-gray-200 flex items-center justify-center p-8">
+      <div class="bg-white shadow-xl relative overflow-hidden" style="width:1128px; height:376px; transform: scale(0.7); transform-origin: center;">
+        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200" class="absolute inset-0 w-full h-full object-cover">
+        <div class="absolute inset-0 bg-blue-900/60 blend-multiply"></div>
+        <div class="relative z-10 h-full flex flex-col justify-center p-16">
+          <h1 class="text-white text-6xl font-black mb-4 tracking-tighter">Innovating the Future</h1>
+          <p class="text-blue-100 text-2xl border-l-4 border-amber-400 pl-4 w-1/2">Learn about our AI solutions &rarr;</p>
+        </div>
+        <div class="absolute bottom-8 right-8 bg-amber-400 text-blue-900 font-bold px-6 py-2 rounded-full text-lg">Follow Us</div>
+      </div>
+    </div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

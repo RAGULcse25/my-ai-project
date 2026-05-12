@@ -1,0 +1,58 @@
+const loginBtn = document.getElementById('login-btn');
+const registerBtn = document.getElementById('register-btn');
+const loginForm = document.getElementById('login-form');
+const registerForm = document.getElementById('register-form');
+const submitBtn = document.getElementById('submit-btn');
+const registerSubmitBtn = document.getElementById('register-submit-btn');
+
+loginBtn.addEventListener('click', () => {
+    loginForm.style.display = 'block';
+    registerForm.style.display = 'none';
+});
+
+registerBtn.addEventListener('click', () => {
+    registerForm.style.display = 'block';
+    loginForm.style.display = 'none';
+});
+
+submitBtn.addEventListener('click', () => {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            localStorage.setItem('token', data.access_token);
+            window.location.href = '/questions';
+        }
+    });
+});
+
+registerSubmitBtn.addEventListener('click', () => {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+        } else {
+            localStorage.setItem('token', data.access_token);
+            window.location.href = '/questions';
+        }
+    });
+});

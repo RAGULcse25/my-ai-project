@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Shoes Store</title>
+<script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>*{font-family:'Inter',sans-serif;box-sizing:border-box;margin:0;padding:0;}</style>
+</head>
+<body class="bg-gray-50">
+<nav class="bg-white sticky top-0 z-50 shadow-sm px-6 py-4">
+  <div class="max-w-7xl mx-auto flex items-center gap-4">
+    <div class="font-black text-2xl tracking-tighter">SOLE<span class="text-red-500">VAULT</span></div>
+    <div class="flex-1 flex bg-gray-100 rounded-full overflow-hidden border border-gray-200">
+      <input type="text" placeholder="Search by brand, size, style..." class="flex-1 px-5 py-2.5 bg-transparent text-sm outline-none">
+      <button class="bg-gray-900 px-6 text-white font-semibold rounded-full hover:bg-gray-800 transition text-sm">Search</button>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="flex gap-2 text-sm font-medium text-gray-600">
+        <button class="hover:text-red-500 flex items-center gap-1"><i data-lucide="heart" class="w-5 h-5"></i></button>
+        <button class="bg-gray-900 text-white px-4 py-2 rounded-full flex items-center gap-2 hover:bg-gray-800 transition font-semibold"><i data-lucide="shopping-bag" class="w-4 h-4"></i> 3</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Filters -->
+<div class="bg-white border-b px-6 py-3">
+  <div class="max-w-7xl mx-auto flex gap-4 items-center overflow-x-auto">
+    <span class="text-sm font-bold text-gray-500 whitespace-nowrap">Filter:</span>
+    <div class="flex gap-2">
+      <select class="border border-gray-200 rounded-full px-4 py-1.5 text-sm outline-none bg-white font-medium"><option>All Brands</option><option>Nike</option><option>Adidas</option><option>Puma</option><option>New Balance</option></select>
+      <select class="border border-gray-200 rounded-full px-4 py-1.5 text-sm outline-none bg-white font-medium"><option>All Sizes</option><option>UK 6</option><option>UK 7</option><option>UK 8</option><option>UK 9</option><option>UK 10</option></select>
+      <select class="border border-gray-200 rounded-full px-4 py-1.5 text-sm outline-none bg-white font-medium"><option>All Styles</option><option>Running</option><option>Casual</option><option>Sports</option><option>Formal</option></select>
+      <select class="border border-gray-200 rounded-full px-4 py-1.5 text-sm outline-none bg-white font-medium"><option>Price Range</option><option>Under ₹3,000</option><option>₹3,000 - ₹8,000</option><option>Above ₹8,000</option></select>
+    </div>
+  </div>
+</div>
+
+<!-- Hero -->
+<div class="max-w-7xl mx-auto px-6 py-8">
+  <div class="bg-[#111] rounded-3xl overflow-hidden h-72 relative flex items-center">
+    <div class="px-12 z-10 relative">
+      <p class="text-red-400 font-bold text-sm mb-2 uppercase tracking-widest">New Drop</p>
+      <h1 class="text-6xl font-black text-white leading-tight mb-4">Nike<br>Air Force 1</h1>
+      <button class="bg-red-500 hover:bg-red-400 text-white font-bold px-8 py-3 rounded-full transition shadow-lg shadow-red-900">Shop Now — ₹7,495</button>
+    </div>
+    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&auto=format" class="absolute right-0 h-full w-1/2 object-cover opacity-60">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#111] via-[#111]/80 to-transparent"></div>
+  </div>
+</div>
+
+<!-- Products -->
+<div class="max-w-7xl mx-auto px-6 pb-16">
+  <h2 class="text-2xl font-bold mb-6">Top Picks 👟</h2>
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-xl transition shadow-sm">
+      <div class="bg-gray-100 relative overflow-hidden h-52 flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&auto=format" class="h-44 object-contain group-hover:scale-110 group-hover:-rotate-6 transition duration-500">
+        <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">NEW</div>
+      </div>
+      <div class="p-4">
+        <p class="text-xs font-bold text-gray-400 mb-1">NIKE</p>
+        <h3 class="font-bold text-gray-800">Air Max 270</h3>
+        <div class="flex gap-2 mt-2">
+          <span class="text-xs border border-gray-200 rounded px-2 py-0.5 cursor-pointer hover:bg-gray-900 hover:text-white transition">UK 7</span>
+          <span class="text-xs border border-gray-200 rounded px-2 py-0.5 cursor-pointer hover:bg-gray-900 hover:text-white transition">UK 8</span>
+          <span class="text-xs border border-gray-200 rounded px-2 py-0.5 cursor-pointer hover:bg-gray-900 hover:text-white transition">UK 9</span>
+        </div>
+        <div class="flex justify-between items-center mt-3">
+          <span class="font-black text-xl">₹9,995</span>
+          <button class="bg-gray-900 text-white rounded-full w-9 h-9 flex items-center justify-center hover:bg-red-500 transition"><i data-lucide="shopping-bag" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-xl transition shadow-sm">
+      <div class="bg-gray-100 relative overflow-hidden h-52 flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&auto=format" class="h-44 object-contain group-hover:scale-110 group-hover:-rotate-6 transition duration-500">
+      </div>
+      <div class="p-4">
+        <p class="text-xs font-bold text-gray-400 mb-1">ADIDAS</p>
+        <h3 class="font-bold text-gray-800">Ultraboost 22</h3>
+        <div class="flex gap-2 mt-2"><span class="text-xs border border-gray-200 rounded px-2 py-0.5">UK 8</span><span class="text-xs border border-gray-200 rounded px-2 py-0.5">UK 9</span></div>
+        <div class="flex justify-between items-center mt-3"><span class="font-black text-xl">₹14,999</span><button class="bg-gray-900 text-white rounded-full w-9 h-9 flex items-center justify-center hover:bg-red-500 transition"><i data-lucide="shopping-bag" class="w-4 h-4"></i></button></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-xl transition shadow-sm">
+      <div class="bg-gray-100 relative overflow-hidden h-52 flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400&auto=format" class="h-44 object-contain group-hover:scale-110 group-hover:-rotate-6 transition duration-500">
+        <div class="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded-full">SALE</div>
+      </div>
+      <div class="p-4">
+        <p class="text-xs font-bold text-gray-400 mb-1">PUMA</p>
+        <h3 class="font-bold text-gray-800">RS-X Reinvention</h3>
+        <div class="flex gap-2 mt-2"><span class="text-xs border border-gray-200 rounded px-2 py-0.5">UK 7</span><span class="text-xs border border-gray-200 rounded px-2 py-0.5">UK 8</span></div>
+        <div class="flex justify-between items-center mt-3"><span class="font-black text-xl">₹6,995</span><button class="bg-gray-900 text-white rounded-full w-9 h-9 flex items-center justify-center hover:bg-red-500 transition"><i data-lucide="shopping-bag" class="w-4 h-4"></i></button></div>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl overflow-hidden group cursor-pointer hover:shadow-xl transition shadow-sm">
+      <div class="bg-gray-100 relative overflow-hidden h-52 flex items-center justify-center">
+        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=400&auto=format" class="h-44 object-contain group-hover:scale-110 group-hover:-rotate-6 transition duration-500">
+      </div>
+      <div class="p-4">
+        <p class="text-xs font-bold text-gray-400 mb-1">NEW BALANCE</p>
+        <h3 class="font-bold text-gray-800">990v5 Made in USA</h3>
+        <div class="flex gap-2 mt-2"><span class="text-xs border border-gray-200 rounded px-2 py-0.5">UK 9</span><span class="text-xs border border-gray-200 rounded px-2 py-0.5">UK 10</span></div>
+        <div class="flex justify-between items-center mt-3"><span class="font-black text-xl">₹22,995</span><button class="bg-gray-900 text-white rounded-full w-9 h-9 flex items-center justify-center hover:bg-red-500 transition"><i data-lucide="shopping-bag" class="w-4 h-4"></i></button></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>lucide.createIcons();</script>
+</body>
+</html>

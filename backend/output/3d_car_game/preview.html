@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Retro Racer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #3498db;
+      --secondary-color: #f1c40f;
+      --background-color: #2c3e50;
+      --text-color: #ecf0f1;
+      --font-family: 'Orbitron', sans-serif;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--background-color);
+      font-family: var(--font-family);
+      color: var(--text-color);
+    }
+    #game-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #game-canvas {
+      border: 1px solid var(--primary-color);
+    }
+    #score-container {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #game-over-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 48px;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas" width="800" height="600"></canvas>
+    <div id="score-container">Distance: 0m</div>
+    <div id="game-over-container">Game Over!</div>
+  </div>
+  <script>
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    const scoreContainer = document.getElementById('score-container');
+    const gameOverContainer = document.getElementById('game-over-container');
+    let carX = canvas.width / 2;
+    let carY = canvas.height - 50;
+    let carSpeed = 5;
+    let roadSpeed = 2;
+    let obstacles = [];
+    let score = 0;
+    let gameOver = false;
+    let lastFrameTime = 0;
+    let fps = 60;
+    let font = '24px Orbitron';
+
+    function drawRoad() {
+      ctx.fillStyle = '#333';
+      ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+      for (let i = 0; i < canvas.width; i += 50) {
+        ctx.fillStyle = '#666';
+        ctx.fillRect(i, canvas.height - 90, 10, 20);
+      }
+    }
+
+    function drawCar() {
+      ctx.fillStyle = '#f1c40f';
+      ctx.fillRect(carX, carY, 50, 50);
+    }
+
+    function drawObstacles() {
+      for (let i = 0; i < obstacles.length; i++) {
+        ctx.fillStyle = '#ff0000';
+        ctx.fillRect(obstacles[i].x, obstacles[i].y, 50, 50);
+      }
+    }
+
+    function updateObstacles() {
+      for (let i = 0; i < obstacles.length; i++) {
+        obstacles[i].y += roadSpeed;
+        if (obstacles[i].y > canvas.height) {
+          obstacles.splice(i, 1);
+        }
+      }
+      if (Math.random() < 0.05) {
+        obstacles.push({ x: Math.random() * (canvas.width - 50), y: -50 });
+      }
+    }
+
+    function checkCollisions() {
+      for (let i = 0; i < obstacles.length; i++) {
+        if (carX < obstacles[i].x + 50 &&
+          carX + 50 > obstacles[i].x &&
+          carY < obstacles[i].y + 50 &&
+          carY + 50 > obstacles[i].y) {
+          gameOver = true;
+        }
+      }
+    }
+
+    function update() {
+      if (!gameOver) {
+        carSpeed += 0.01;
+        roadSpeed += 0.01;
+        score += carSpeed / 10;
+        scoreContainer.textContent = `Distance: ${Math.floor(score)}m`;
+        updateObstacles();
+        checkCollisions();
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawRoad();
+      drawCar();
+      drawObstacles();
+      if (gameOver) {
+        gameOverContainer.style.display = 'block';
+      }
+    }
+
+    function loop(timestamp) {
+      const elapsed = timestamp - lastFrameTime;
+      if (elapsed > 1000 / fps) {
+        lastFrameTime = timestamp;
+        update();
+        draw();
+      }
+      requestAnimationFrame(loop);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a') {
+        carX -= carSpeed;
+      } else if (e.key === 'ArrowRight' || e.key === 'd') {
+        carX += carSpeed;
+      }
+      if (carX < 0) {
+        carX = 0;
+      } else if (carX > canvas.width - 50) {
+        carX = canvas.width - 50;
+      }
+    });
+
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube App</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border-bottom: 1px solid #444;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .header .search {
+            display: flex;
+            align-items: center;
+        }
+        .header .search input {
+            padding: 10px;
+            border: none;
+            border-radius: 10px 0 0 10px;
+        }
+        .header .search button {
+            padding: 10px;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            background-color: #444;
+            color: #fff;
+            cursor: pointer;
+        }
+        .videos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .video {
+            margin: 10px;
+            width: calc(33.33% - 20px);
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .video img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .video .info {
+            padding: 10px;
+        }
+        .video .info .title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .video .info .description {
+            font-size: 14px;
+            color: #666;
+        }
+        .toast {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 10px;
+            z-index: 1;
+        }
+        .toast.success {
+            background-color: #2ecc71;
+        }
+        .toast.error {
+            background-color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">YouTube App</div>
+            <div class="search">
+                <input type="text" id="search-input" placeholder="Search videos">
+                <button id="search-button">Search</button>
+            </div>
+        </div>
+        <div class="videos" id="videos"></div>
+        <div class="toast" id="toast"></div>
+    </div>
+    <script>
+        let videos = [
+            { id: 1, title: "Video 1", description: "This is video 1", thumbnail: "https://via.placeholder.com/150" },
+            { id: 2, title: "Video 2", description: "This is video 2", thumbnail: "https://via.placeholder.com/150" },
+            { id: 3, title: "Video 3", description: "This is video 3", thumbnail: "https://via.placeholder.com/150" },
+            { id: 4, title: "Video 4", description: "This is video 4", thumbnail: "https://via.placeholder.com/150" },
+            { id: 5, title: "Video 5", description: "This is video 5", thumbnail: "https://via.placeholder.com/150" },
+        ];
+        let searchInput = document.getElementById("search-input");
+        let searchButton = document.getElementById("search-button");
+        let videosContainer = document.getElementById("videos");
+        let toast = document.getElementById("toast");
+        let storedVideos = localStorage.getItem("videos");
+        if (storedVideos) {
+            videos = JSON.parse(storedVideos);
+        }
+        function renderVideos() {
+            videosContainer.innerHTML = "";
+            videos.forEach(video => {
+                let videoElement = document.createElement("div");
+                videoElement.classList.add("video");
+                videoElement.innerHTML = `
+                    <img src="${video.thumbnail}" alt="${video.title}">
+                    <div class="info">
+                        <div class="title">${video.title}</div>
+                        <div class="description">${video.description}</div>
+                    </div>
+                `;
+                videosContainer.appendChild(videoElement);
+            });
+        }
+        function searchVideos() {
+            let searchQuery = searchInput.value.toLowerCase();
+            let filteredVideos = videos.filter(video => video.title.toLowerCase().includes(searchQuery) || video.description.toLowerCase().includes(searchQuery));
+            videosContainer.innerHTML = "";
+            filteredVideos.forEach(video => {
+                let videoElement = document.createElement("div");
+                videoElement.classList.add("video");
+                videoElement.innerHTML = `
+                    <img src="${video.thumbnail}" alt="${video.title}">
+                    <div class="info">
+                        <div class="title">${video.title}</div>
+                        <div class="description">${video.description}</div>
+                    </div>
+                `;
+                videosContainer.appendChild(videoElement);
+            });
+        }
+        function showToast(message, type) {
+            toast.innerHTML = message;
+            toast.classList.add(type);
+            setTimeout(() => {
+                toast.classList.remove(type);
+            }, 2000);
+        }
+        function addVideo() {
+            let title = prompt("Enter video title");
+            let description = prompt("Enter video description");
+            let thumbnail = prompt("Enter video thumbnail");
+            let newVideo = { id: videos.length + 1, title, description, thumbnail };
+            videos.push(newVideo);
+            localStorage.setItem("videos", JSON.stringify(videos));
+            renderVideos();
+            showToast("Video added successfully", "success");
+        }
+        function removeVideo(id) {
+            let index = videos.findIndex(video => video.id === id);
+            if (index !== -1) {
+                videos.splice(index, 1);
+                localStorage.setItem("videos", JSON.stringify(videos));
+                renderVideos();
+                showToast("Video removed successfully", "success");
+            } else {
+                showToast("Video not found", "error");
+            }
+        }
+        renderVideos();
+        searchButton.addEventListener("click", searchVideos);
+        videosContainer.addEventListener("click", event => {
+            if (event.target.classList.contains("video")) {
+                let videoId = event.target.dataset.id;
+                removeVideo(videoId);
+            }
+        });
+        document.addEventListener("keydown", event => {
+            if (event.key === "a" && event.ctrlKey) {
+                addVideo();
+            }
+        });
+    </script>
+</body>
+</html>

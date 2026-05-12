@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artificial Intelligence Presentation</title>
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@4/dist/reveal.css">
+    <link rel="stylesheet" href="https://unpkg.com/reveal.js@4/dist/theme/black.css">
+    <style>
+        /* Custom CSS for Dark Professional theme */
+        .reveal {
+            background: linear-gradient(120deg, #6c63ff, #ff6b9d, #4ecde6);
+            font-family: 'Inter', sans-serif;
+        }
+        .reveal .slides {
+            text-align: center;
+        }
+        .reveal .slide {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+        .reveal .slide h1, .reveal .slide h2, .reveal .slide h3 {
+            font-weight: bold;
+            color: #fff;
+        }
+        .reveal .slide p {
+            color: #ccc;
+        }
+        .reveal .slide ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .reveal .slide li {
+            margin-bottom: 10px;
+        }
+        .reveal .slide li::before {
+            content: "\2022";
+            color: #6c63ff;
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #333;
+            border-radius: 5px;
+            position: relative;
+        }
+        .progress-bar::before {
+            content: "";
+            width: 0;
+            height: 100%;
+            background: #6c63ff;
+            border-radius: 5px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: progress 10s linear infinite;
+        }
+        @keyframes progress {
+            0% {
+                width: 0;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Introduction to Artificial Intelligence</h1>
+                <p>Artificial Intelligence (AI) refers to the development of computer systems that can perform tasks that typically require human intelligence, such as visual perception, speech recognition, and decision-making.</p>
+                <img src="https://picsum.photos/seed/1/800/600" alt="AI Image">
+            </section>
+            <section>
+                <h2>History of Artificial Intelligence</h2>
+                <ul>
+                    <li>1950s: The Dartmouth Summer Research Project on Artificial Intelligence</li>
+                    <li>1960s: The development of the first AI program, ELIZA</li>
+                    <li>1970s: The development of expert systems</li>
+                    <li>1980s: The development of machine learning</li>
+                </ul>
+                <svg width="100" height="100">
+                    <circle cx="50" cy="50" r="40" fill="#6c63ff" />
+                </svg>
+            </section>
+            <section>
+                <h3>Types of Artificial Intelligence</h3>
+                <p>There are several types of AI, including:</p>
+                <ul>
+                    <li>Narrow or Weak AI: Designed to perform a specific task</li>
+                    <li>General or Strong AI: Designed to perform any intellectual task</li>
+                    <li>Superintelligence: Significantly more intelligent than the best human minds</li>
+                </ul>
+                <div class="progress-bar"></div>
+            </section>
+            <section>
+                <h1>Machine Learning</h1>
+                <p>Machine learning is a type of AI that involves training algorithms to make predictions or decisions based on data.</p>
+                <img src="https://picsum.photos/seed/2/800/600" alt="Machine Learning Image">
+            </section>
+            <section>
+                <h2>Deep Learning</h2>
+                <p>Deep learning is a type of machine learning that involves the use of neural networks to analyze data.</p>
+                <svg width="100" height="100">
+                    <rect x="10" y="10" width="80" height="80" fill="#ff6b9d" />
+                </svg>
+            </section>
+            <section>
+                <h3>Natural Language Processing</h3>
+                <p>Natural language processing (NLP) is a type of AI that involves the use of algorithms to analyze and understand human language.</p>
+                <ul>
+                    <li>Text analysis</li>
+                    <li>Sentiment analysis</li>
+                    <li>Language translation</li>
+                </ul>
+                <div class="progress-bar"></div>
+            </section>
+            <section>
+                <h1>Computer Vision</h1>
+                <p>Computer vision is a type of AI that involves the use of algorithms to analyze and understand visual data.</p>
+                <img src="https://picsum.photos/seed/3/800/600" alt="Computer Vision Image">
+            </section>
+            <section>
+                <h2>Robotics</h2>
+                <p>Robotics is a type of AI that involves the use of algorithms to control and navigate robots.</p>
+                <svg width="100" height="100">
+                    <circle cx="50" cy="50" r="40" fill="#4ecde6" />
+                </svg>
+            </section>
+            <section>
+                <h3>Expert Systems</h3>
+                <p>Expert systems are a type of AI that involves the use of algorithms to mimic the decision-making abilities of a human expert.</p>
+                <ul>
+                    <li>Rule-based systems</li>
+                    <li>Knowledge-based systems</li>
+                </ul>
+                <div class="progress-bar"></div>
+            </section>
+            <section>
+                <h1>Conclusion</h1>
+                <p>Artificial intelligence is a rapidly growing field that has the potential to revolutionize many industries and aspects of our lives.</p>
+                <img src="https://picsum.photos/seed/4/800/600" alt="Conclusion Image">
+            </section>
+            <section>
+                <h2>Future of Artificial Intelligence</h2>
+                <p>The future of AI is exciting and uncertain, with many potential applications and implications.</p>
+                <svg width="100" height="100">
+                    <rect x="10" y="10" width="80" height="80" fill="#6c63ff" />
+                </svg>
+            </section>
+        </div>
+    </div>
+    <script src="https://unpkg.com/reveal.js@4/dist/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            width: 1280,
+            height: 720,
+            margin: 0.1,
+            minScale: 1,
+            maxScale: 1,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'default',
+            viewDistance: 3,
+            parallaxBackgroundImage: 'https://picsum.photos/seed/5/1280/720',
+            parallaxBackgroundSize: '3000px 2000px',
+            dependencies: [
+                { src: 'https://unpkg.com/reveal.js@4/dist/plugin/markdown/marked.js' },
+                { src: 'https://unpkg.com/reveal.js@4/dist/plugin/markdown/markdown.js' },
+                { src: 'https://unpkg.com/reveal.js@4/dist/plugin/notes/notes.js', async: true },
+                { src: 'https://unpkg.com/reveal.js@4/dist/plugin/math/math.js', async: true }
+            ]
+        });
+    </script>
+</body>
+</html>
