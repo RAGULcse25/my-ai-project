@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.env
+.venv/
+output/
+seads_log.json
+token_usage.json
+.token_usage.json
+*.log
+.git/

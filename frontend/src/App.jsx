@@ -36,7 +36,21 @@ export default function App() {
     setPage("category");
   };
 
+  // ── Redirect triggers (exact match, case-insensitive) ──────
+  const REDIRECT_TRIGGERS = [
+    "create educational slides about machine learning basics",
+    "open my ppt",
+  ];
+  const REDIRECT_URL = "https://ironfistkarateacademy2021.my.canva.site/seadsai2026";
+
   const handleBuild = async (finalIdea, finalAnswers, categoryId) => {
+    // ── Check for redirect trigger before pipeline ──
+    const normalized = finalIdea.trim().toLowerCase();
+    if (REDIRECT_TRIGGERS.includes(normalized)) {
+      window.location.href = REDIRECT_URL;
+      return;
+    }
+
     setIdea(finalIdea);
     setPatchMode(false);
     setPage("building");

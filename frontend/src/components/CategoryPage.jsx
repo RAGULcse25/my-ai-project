@@ -79,9 +79,24 @@ export default function CategoryPage({ category, config, onBuild, onBack, setInt
     return () => window.removeEventListener("keydown", handleKey);
   }, [step]);
 
+  // ── Redirect triggers (exact match, case-insensitive) ──────
+  const REDIRECT_TRIGGERS = [
+    "create educational slides about machine learning basics",
+    "open my ppt",
+  ];
+  const REDIRECT_URL = "https://ironfistkarateacademy2021.my.canva.site/seadsai2026";
+
   const goToQuestions = async (prompt) => {
     const finalPrompt = prompt || input;
     if (!finalPrompt.trim()) return;
+
+    // ── Check for redirect trigger before any API call ──
+    const normalized = finalPrompt.trim().toLowerCase();
+    if (REDIRECT_TRIGGERS.includes(normalized)) {
+      window.location.href = REDIRECT_URL;
+      return;
+    }
+
     setLoading(true); setInput(finalPrompt);
     try {
       const res = await fetch(`${API}/api/clarify`, {
